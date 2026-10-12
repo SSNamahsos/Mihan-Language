@@ -18,7 +18,7 @@ English: [README.md](README.md)
 |---|---|
 | [mihan.exe](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan.exe) | ویندوز (۶۴ بیتی) |
 | [mihan-linux-amd64](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan-linux-amd64) | لینوکس (۶۴ بیتی) |
-| [mihan-0.7.2.vsix](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan-0.7.2.vsix) | افزونه‌ی VS Code |
+| [mihan-0.7.3.vsix](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan-0.7.3.vsix) | افزونه‌ی VS Code |
 - فروشگاه VS Code: [Mihan Language در Marketplace](https://marketplace.visualstudio.com/items?itemName=MihaniCircle.mihan-language) (یا در بخش Extensions عبارت "Mihan Language" را جستجو کنید)
 
 ۱. `mihan.exe` را در پوشه‌ای بگذارید که در `PATH` شماست (یا `mihan.exe install` را اجرا
@@ -26,7 +26,7 @@ English: [README.md](README.md)
    `chmod +x mihan` را اجرا کنید و آن را به پوشه‌ای در `PATH` منتقل کنید.
 ۲. یک ترمینال جدید باز کنید و `mihan version` را اجرا کنید.
 ۳. افزونه‌ی VS Code را نصب کنید: *Extensions → … → Install from VSIX*، یا
-   `code --install-extension mihan-0.7.2.vsix`.
+   `code --install-extension mihan-0.7.3.vsix`.
 
 </div>
 
