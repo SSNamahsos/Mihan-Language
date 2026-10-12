@@ -1,0 +1,6 @@
+lines = []
+har i az 0 ta 200000
+    bast lines, "khat " + i
+benevis "/tmp/mihan-bench.txt", por(lines, "\n")
+back = bekhan("/tmp/mihan-bench.txt").tab("\n")
+chap_khat tule(back)

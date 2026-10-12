@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{name}} — Android preview</title>
+<style>
+  :root { --w: {{w}}px; --h: {{h}}px; }
+  * { box-sizing: border-box; }
+  body { margin: 0; height: 100vh; display: flex; background: #1b1d22; color: #ddd;
+         font: 13px system-ui, sans-serif; overflow: hidden; }
+  #stage { flex: 1; display: flex; overflow: hidden; flex-direction: column; align-items: center; justify-content: center; min-width: 0; }
+  #tools { display: flex; gap: 6px; margin-bottom: 10px; }
+  #tools button, #tools select { background: #2c2f36; color: #ddd; border: 1px solid #444; border-radius: 6px; padding: 4px 10px; font: inherit; cursor: pointer; }
+  #phone { position: relative; background: #0b0b0c; border-radius: 38px; padding: 14px; box-shadow: 0 10px 40px #0009, inset 0 0 0 2px #333; transform-origin: center; flex: none; }
+  #screen { width: var(--w); height: var(--h); background: #fff; border-radius: 26px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+  .landscape #screen { width: var(--h); height: var(--w); }
+  #status { height: 26px; flex: none; background: #f2f2f2; color: #222; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 12px; font-weight: 600; }
+  #app { flex: 1; position: relative; background: #fff; overflow: hidden; }
+  #app iframe, #app pre, #home { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  #app pre { margin: 0; padding: 12px; font: 15px monospace; white-space: pre-wrap; word-wrap: break-word; color: #111; overflow: auto; background: #fff; }
+  #home { display: none; background: linear-gradient(160deg, #3a5ba0, #7a4ea0); color: #fff; align-items: flex-start; padding: 28px; gap: 22px; flex-wrap: wrap; }
+  .icon { width: 72px; text-align: center; cursor: pointer; }
+  .icon div { width: 58px; height: 58px; margin: 0 auto 6px; border-radius: 16px; background: #fff; color: #3a5ba0; display: grid; place-items: center; font-size: 26px; font-weight: 700; box-shadow: 0 3px 10px #0004; }
+  #nav { height: 46px; flex: none; background: #f2f2f2; display: flex; justify-content: space-around; align-items: center; }
+  #nav button { background: none; border: 0; font-size: 20px; color: #333; width: 64px; height: 40px; border-radius: 20px; cursor: pointer; }
+  #nav button:active { background: #ddd; }
+  #toast { position: absolute; left: 50%; bottom: 70px; transform: translateX(-50%); background: rgba(30,30,30,.92); color: #fff; padding: 10px 18px; border-radius: 20px; opacity: 0; transition: opacity .25s; pointer-events: none; max-width: 80%; text-align: center; }
+  #toast.show { opacity: 1; }
+  #sheet { position: absolute; left: 0; right: 0; bottom: 0; background: #fff; color: #222; border-radius: 16px 16px 0 0; box-shadow: 0 -4px 20px #0003; padding: 16px; transform: translateY(110%); transition: transform .3s; }
+  #sheet.show { transform: none; }
+  #sheet .apps { display: flex; gap: 14px; margin-top: 12px; }
+  #sheet .apps span { background: #eef; padding: 8px 10px; border-radius: 10px; }
+  @keyframes buzz { 0%,100% { translate: 0 } 20% { translate: -4px 0 } 40% { translate: 4px 0 } 60% { translate: -3px 0 } 80% { translate: 3px 0 } }
+  .buzz { animation: buzz .12s linear 3; }
+  #log { width: 480px; flex: none; display: flex; flex-direction: column; background: #121317; border-left: 1px solid #2a2a2a; }
+  #log header { padding: 8px 10px; display: flex; gap: 8px; align-items: center; border-bottom: 1px solid #2a2a2a; }
+  #log header label { font-size: 12px; color: #aaa; }
+  #rows { flex: 1; overflow: auto; font: 12px ui-monospace, monospace; padding: 4px 0; }
+  .row { padding: 2px 10px; white-space: pre-wrap; word-break: break-word; border-left: 3px solid transparent; }
+  .row b { color: #777; font-weight: normal; margin-right: 6px; }
+  .print { border-color: #4a9; } .error { border-color: #e55; color: #f99; } .req { border-color: #59f; color: #9bf; }
+  .life { border-color: #c9f; color: #dbf; } .url { border-color: #fc5; color: #fd8; } .exit { border-color: #fa5; color: #fb8; } .bridge { border-color: #5dd; color: #8ee; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="tools">
+    <select id="device" title="device">
+      <option value="412x915">Pixel (412×915)</option>
+      <option value="360x640">small phone (360×640)</option>
+      <option value="800x1280">tablet (800×1280)</option>
+    </select>
+    <button id="rotate" title="rotate">⟳ rotate</button>
+    <button id="restart" title="close and open the app again">↻ restart app</button>
+    <button id="zoom" title="fit the window">fit</button>
+  </div>
+  <div id="phone">
+    <div id="screen">
+      <div id="status"><span id="clock">12:00</span><span>▾ ▴ ▮ 87%</span></div>
+      <div id="app">
+        <pre id="text">…</pre>
+        <iframe id="frame" style="display:none" title="app"></iframe>
+        <div id="home"><div class="icon" id="appicon"><div>{{initial}}</div>{{name}}</div></div>
+        <div id="toast"></div>
+        <div id="sheet"><b>Share</b><div id="sharetext" style="margin-top:6px;color:#555"></div>
+          <div class="apps"><span>Messages</span><span>Email</span><span>Copy</span></div></div>
+      </div>
+      <div id="nav">
+        <button id="back" title="back">◁</button>
+        <button id="homebtn" title="home">○</button>
+        <button id="recent" title="rotate">▢</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="log">
+  <header><b>log</b>
+    <label><input type="checkbox" data-k="print" checked> print</label>
+    <label><input type="checkbox" data-k="req" checked> requests</label>
+    <label><input type="checkbox" data-k="error" checked> errors</label>
+    <label><input type="checkbox" data-k="life" checked> app</label>
+    <label><input type="checkbox" data-k="bridge" checked> phone</label>
+    <button id="clear" style="margin-left:auto;background:#2c2f36;color:#ddd;border:1px solid #444;border-radius:6px">clear</button>
+  </header>
+  <div id="rows"></div>
+</div>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var frame = $("frame"), text = $("text"), home = $("home"), phone = $("phone");
+  var state = { url: "", running: true, paused: false, landscape: false, finished: false };
+  var size = "{{w}}x{{h}}";
+  $("device").value = size;
+  document.querySelector("#appicon div").textContent = "{{name}}".charAt(0).toUpperCase();
+
+  function post(what, textArg) {
+    fetch("/_preview/do?what=" + what + "&text=" + encodeURIComponent(textArg || ""), { method: "POST" });
+  }
+  function clock() { var d = new Date(); $("clock").textContent = d.toTimeString().slice(0, 5); }
+  setInterval(clock, 10000); clock();
+
+  // The log.
+  var shown = { print: true, req: true, error: true, life: true, bridge: true, url: true, exit: true };
+  var rows = $("rows");
+  function addRow(ev) {
+    var kind = ev.kind === "url" || ev.kind === "exit" ? ev.kind : ev.kind;
+    var d = document.createElement("div");
+    d.className = "row " + kind;
+    d.dataset.k = kind === "url" || kind === "exit" ? "life" : kind;
+    var label = { print: "out", error: "err", req: "http", life: "app", url: "app", exit: "app", bridge: "phone" }[kind] || kind;
+    d.innerHTML = "<b>" + ev.at + " " + label + "</b>";
+    d.appendChild(document.createTextNode(ev.text));
+    if (!shown[d.dataset.k]) d.style.display = "none";
+    var stick = rows.scrollTop + rows.clientHeight >= rows.scrollHeight - 20;
+    rows.appendChild(d);
+    if (stick) rows.scrollTop = rows.scrollHeight;
+  }
+  document.querySelectorAll("#log input").forEach(function (cb) {
+    cb.onchange = function () {
+      shown[cb.dataset.k] = cb.checked;
+      rows.querySelectorAll(".row").forEach(function (r) { if (r.dataset.k === cb.dataset.k) r.style.display = cb.checked ? "" : "none"; });
+    };
+  });
+  $("clear").onclick = function () { rows.innerHTML = ""; };
+
+  // What the app shows: the address once there is one, else the output.
+  function show() {
+    fetch("/_preview/state").then(function (r) { return r.json(); }).then(function (st) {
+      if (state.finished || state.paused) return;
+      if (st.url && st.url !== state.url) {
+        state.url = st.url;
+        frame.src = st.url;
+        frame.style.display = ""; text.style.display = "none";
+      } else if (!st.url) {
+        state.url = "";
+        frame.style.display = "none"; text.style.display = "";
+        text.textContent = st.output || "…";
+      }
+    });
+  }
+  var es = new EventSource("/_preview/events");
+  es.onmessage = function (m) {
+    var ev = JSON.parse(m.data);
+    addRow(ev);
+    if (ev.kind === "url" || ev.kind === "print" || ev.kind === "exit" || ev.kind === "error" || ev.kind === "life") show();
+  };
+  show();
+
+  // The phone's features, asked for by the page through /_mihan/mihan.js.
+  var toastTimer;
+  function toast(t) {
+    var el = $("toast"); el.textContent = t; el.classList.add("show");
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { el.classList.remove("show"); }, 2000);
+  }
+  window.addEventListener("message", function (ev) {
+    var m = ev.data || {};
+    if (!m.mihan) return;
+    if (m.mihan === "toast") { toast(m.data); post("toast", m.data); }
+    else if (m.mihan === "vibrate") { phone.classList.remove("buzz"); void phone.offsetWidth; phone.classList.add("buzz"); post("vibrate", m.data + " ms"); }
+    else if (m.mihan === "share") { $("sharetext").textContent = m.data.text; $("sheet").classList.add("show"); post("share", m.data.text); }
+    else if (m.mihan === "exit") { finishApp(); }
+    else if (m.mihan === "console" || m.mihan === "jserror" || m.mihan === "page") { post(m.mihan, String(m.data)); }
+  });
+  $("sheet").onclick = function () { $("sheet").classList.remove("show"); };
+
+  function tell(kind) { try { frame.contentWindow.postMessage({ mihan: kind }, "*"); } catch (e) {} }
+  function finishApp() {
+    state.finished = true; state.url = "";
+    frame.src = "about:blank"; frame.style.display = "none"; text.style.display = "none";
+    home.style.display = "flex";
+    post("finish");
+  }
+  // Back: the page is asked first (mihan.onBack), then it goes back a page; a
+  // program that only prints closes, as the app does with nothing to go back to.
+  $("back").onclick = function () {
+    if ($("sheet").classList.contains("show")) { $("sheet").classList.remove("show"); return; }
+    if (state.finished || state.paused) return;
+    post("back", "back button");
+    if (frame.style.display !== "none") tell("back"); else finishApp();
+  };
+  $("homebtn").onclick = function () {
+    if (state.finished || state.paused) return;
+    state.paused = true; tell("pause"); post("pause", "onPause: home button");
+    home.style.display = "flex";
+  };
+  $("appicon").onclick = function () {
+    home.style.display = "none";
+    if (state.finished) {
+      state.finished = false; text.textContent = "…"; text.style.display = "";
+      post("restart"); setTimeout(show, 300);
+    } else if (state.paused) {
+      state.paused = false; tell("resume"); post("resume", "onResume: opened again");
+    }
+  };
+  function rotate() {
+    state.landscape = !state.landscape;
+    document.body.classList.toggle("landscape", state.landscape);
+    post("rotate", "rotated to " + (state.landscape ? "landscape" : "portrait") + " (the app keeps running, as configChanges asks)");
+    fit();
+  }
+  $("rotate").onclick = rotate; $("recent").onclick = rotate;
+  $("restart").onclick = function () {
+    home.style.display = "none"; state.finished = false; state.paused = false; state.url = "";
+    frame.style.display = "none"; text.style.display = ""; text.textContent = "…";
+    post("restart"); setTimeout(show, 300);
+  };
+  $("device").onchange = function () {
+    var p = this.value.split("x");
+    document.documentElement.style.setProperty("--w", p[0] + "px");
+    document.documentElement.style.setProperty("--h", p[1] + "px");
+    post("rotate", "device " + this.options[this.selectedIndex].text);
+    fit();
+  };
+  function fit() {
+    phone.style.zoom = "";
+    var r = phone.getBoundingClientRect(), stage = $("stage").getBoundingClientRect();
+    var s = Math.min(1, (stage.width - 30) / r.width, (stage.height - 70) / r.height);
+    phone.style.zoom = s.toFixed(3);
+  }
+  $("zoom").onclick = fit;
+  window.addEventListener("resize", fit);
+  setTimeout(fit, 50);
+})();
+</script>
+</body>
+</html>

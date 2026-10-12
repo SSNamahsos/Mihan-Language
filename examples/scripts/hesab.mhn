@@ -1,0 +1,49 @@
+#barghoman: 3 1 4 1 5 9 2 6
+#khoroji
+#| toul: 8
+#| jam: 31
+#| bishtarin: 9
+#| kamin: 1
+#| darazesham: 3.875
+#| 3: 1 bar
+#| 1: 2 bar
+#| 4: 1 bar
+#| 5: 1 bar
+#| 9: 1 bar
+#| 2: 1 bar
+#| 6: 1 bar
+
+adad = []
+har k dar arghoman()
+    adad = bast(adad, adad_karda(k))
+
+agar tule(adad) == 0
+    chap_khat "به این برنامه عددی نداده‌ای."
+    chap_khat "مثال:  mihan run examples/scripts/hesab.mhn 3 1 4 1 5 9 2 6"
+else
+    toul = tule(adad)
+    jam = 0
+    bishtarin = adad[0]
+    kamin = adad[0]
+    har x dar adad
+        jam = jam + x
+        agar x > bishtarin
+            bishtarin = x
+        agar x < kamin
+            kamin = x
+
+    chap_khat $"toul: {toul}"
+    chap_khat $"jam: {jam}"
+    chap_khat $"bishtarin: {bishtarin}"
+    chap_khat $"kamin: {kamin}"
+    chap_khat $"darazesham: {jam / toul}"
+
+    tedad = {}
+    har x dar adad
+        agar tedad.barmadar(x)
+            tedad[x] = tedad[x] + 1
+        warna
+            tedad[x] = 1
+
+    har k dar tedad
+        chap_khat $"{k}: {tedad[k]} bar"

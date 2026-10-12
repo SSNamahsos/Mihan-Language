@@ -1,0 +1,65 @@
+#khoroji
+#| Negar Studio: http://127.0.0.1:*
+
+poshe_dade = masir(poshe_barname(), "dade")
+parvande_payam = masir(poshe_dade, "payam-ha.json")
+
+kar_ha = [
+    {"onvan": "Barand-e Kafe Saba", "daste": "Branding", "rang": "#f97316", "sal": 2026},
+    {"onvan": "App-e Safar-e Iran", "daste": "Mobile", "rang": "#6366f1", "sal": 2026},
+    {"onvan": "Site-e Ketabkhane Ruz", "daste": "Web", "rang": "#10b981", "sal": 2025},
+    {"onvan": "Dashboard-e Foroosh", "daste": "Product", "rang": "#ec4899", "sal": 2025},
+    {"onvan": "Hoviyat-e Basari Nava", "daste": "Branding", "rang": "#eab308", "sal": 2024},
+    {"onvan": "Site-e Klinik-e Dandan", "daste": "Web", "rang": "#06b6d4", "sal": 2024}
+]
+
+funct json_pasokh(vaziat, dade)
+    bargard {
+        "vaziat": vaziat,
+        "matn": json_benevis(dade),
+        "sarlawah": {"Content-Type": "application/json; charset=utf-8"}
+    }
+
+funct payam_ha()
+    agar masir_hast(parvande_payam)
+        bargard json_bekhan(bekhan(parvande_payam))
+    bargard []
+
+funct zakhire_payam(darakht)
+    koshish
+        f = json_bekhan(darakht["matn"])
+    giroft khata e
+        bargard json_pasokh(400, {"khata": "JSON-e dorost befrestid"})
+    khata_ha = []
+    agar na dict_hast(f)
+        bargard json_pasokh(400, {"khata": "JSON-e dorost befrestid"})
+    agar na f.barmadar("naam") ya tule(f["naam"].jabeja()) < 2
+        bast khata_ha, "naam"
+    agar na f.barmadar("email") ya na f["email"].shamil("@")
+        bast khata_ha, "email"
+    agar na f.barmadar("payam") ya tule(f["payam"].jabeja()) < 5
+        bast khata_ha, "payam"
+    agar tule(khata_ha) > 0
+        bargard json_pasokh(422, {"khata": "lotfan in ha ra dorost konid", "field_ha": khata_ha})
+    hame = payam_ha()
+    bast hame, {"naam": f["naam"].jabeja(), "email": f["email"].jabeja(), "payam": f["payam"].jabeja()}
+    pooshe poshe_dade
+    benevis parvande_payam, json_benevis(hame)
+    bargard json_pasokh(201, {"ok": dorost, "tedad": tule(hame)})
+
+funct pasokh(darakht)
+    path = darakht["path"]
+    agar path == "/api/kar-ha"
+        bargard json_pasokh(200, kar_ha)
+    agar path == "/api/tamas" va darakht["method"] == "POST"
+        bargard zakhire_payam(darakht)
+    agar path.barmigefth("/api/")
+        bargard json_pasokh(404, {"khata": "nist"})
+    bargard parvande_pasokh("safhe", path)
+
+port = adad_karda(mohit("PORT") ?? "8080")
+
+funct bargoz()
+    chap_khat "Negar Studio: " + serva_khod()
+
+serva_bgo(port, pasokh, bargoz)

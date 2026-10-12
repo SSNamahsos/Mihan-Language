@@ -1,0 +1,123 @@
+#khoroji
+#| The site's arithmetic is right: 42
+#| The site is up at http://127.0.0.1:*
+
+funct safhe_sharit()
+    bargard por([
+        "<!doctype html>",
+        "<html lang='fa'>",
+        "<head>",
+        "<meta charset='utf-8'>",
+        "<meta name='viewport' content='width=device-width, initial-scale=1'>",
+        "<title>Mihan — a website</title>",
+        "<style>",
+        "  :root { --bg: #101216; --fg: #e9e7e4; --dim: #9aa0a6; --acc: #4ade80; }",
+        "  * { box-sizing: border-box; }",
+        "  body { margin: 0; font-family: system-ui, sans-serif;",
+        "         background: var(--bg); color: var(--fg); line-height: 1.6; }",
+        "  main { max-width: 46rem; margin: 0 auto; padding: 3rem 1.25rem 5rem; }",
+        "  h1 { font-size: 2.25rem; margin: 0 0 .25rem; }",
+        "  .tag { color: var(--acc); font-family: ui-monospace, monospace; font-size: .95rem; }",
+        "  h2 { margin-top: 2.5rem; border-bottom: 1px solid #22262e; padding-bottom: .3rem; }",
+        "  code { background: #1a1e25; padding: .1rem .35rem; border-radius: 4px;",
+        "         font-family: ui-monospace, monospace; font-size: .92em; }",
+        "  pre { background: #1a1e25; padding: 1rem; border-radius: 8px; overflow-x: auto; }",
+        "  .nav { display: flex; gap: 1rem; margin-bottom: 2rem; }",
+        "  .nav a { color: var(--dim); text-decoration: none; }",
+        "  .nav a:hover { color: var(--fg); }",
+        "  .card { border: 1px solid #22262e; border-radius: 10px; padding: 1rem 1.15rem;",
+        "          margin: .75rem 0; }",
+        "  .card b { color: var(--acc); }",
+        "  footer { margin-top: 3rem; color: var(--dim); font-size: .9rem; }",
+        "</style>",
+        "</head>",
+        "<body><main>",
+        "<div class='nav'>",
+        "  <a href='/'>khane</a>",
+        "  <a href='/zaban'>zaban</a>",
+        "  <a href='/nast'>nast</a>",
+        "</div>"
+    ], "\n")
+
+funct safhe_payan(rast)
+    bargard safhe_sharit() + por([
+        "<h1>khane-ye Mihan</h1>",
+        "<p class='tag'>a website written in Mihan, with nothing else beside it</p>",
+        "",
+        "<h2>What was asked</h2>",
+        "<div class='card'><b>" + darakht_yek("matn") + "</b></div>",
+        "",
+        "<h2>What it answered</h2>",
+        "<p>It is running, and it is the same program that is doing the answering.</p>",
+        "",
+        "<h2>Try</h2>",
+        "<p>Ask for <a href='/zaban'>/zaban</a> to see another page, or</p>",
+        "<p>ask for <a href='/nast'>/nast</a> to see what a missing page says.</p>",
+        "",
+        "<footer>Every word of this page was built by the program serving it.</footer>",
+        "</main></body></html>"
+    ], "\n")
+
+funct darakht_yek(what)
+    bargard what
+
+funct safhe_zaban()
+    bargard safhe_sharit() + por([
+        "<h1>zaban</h1>",
+        "<p class='tag'>the words a program is written with</p>",
+        "",
+        "<h2>A program</h2>",
+        "<pre>funct jam(a, b)\n    bargard a * b\n\nchap_khat jam(6, 7)</pre>",
+        "",
+        "<h2>What it prints</h2>",
+        "<div class='card'><b>42</b></div>",
+        "",
+        "<h2>Why it reads like that</h2>",
+        "<p><code>funct</code> is a function, <code>bargard</code> gives a value back, and",
+        "<code>chap_khat</code> writes a line. A reader who speaks the language the",
+        "program is written in does not have to learn a second one to read it.</p>",
+        "",
+        "<footer>Every word of this page was built by the program serving it.</footer>",
+        "</main></body></html>"
+    ], "\n")
+
+funct safhe_nast()
+    bargard safhe_sharit() + por([
+        "<h1>nast</h1>",
+        "<p class='tag'>there is no page here</p>",
+        "<div class='card'>The program was asked for a page it does not have, and",
+        "said so. It did not fall over, because a website has links in it and some",
+        "of them are old.</div>",
+        "<p><a href='/'>back to the beginning</a></p>",
+        "<footer>Every word of this page was built by the program serving it.</footer>",
+        "</main></body></html>"
+    ], "\n")
+
+funct safhe_baras(path)
+    agar path == "/"
+        bargard safhe_payan("")
+    agar path == "/zaban"
+        bargard safhe_zaban()
+    agar path == "/nast"
+        bargard safhe_nast()
+    bargard hich
+
+funct pasokh(darakht)
+    matn = safhe_baras(darakht["path"])
+    agar matn == hich
+        bargard { "vaziat": 404, "matn": safhe_nast() }
+    bargard {
+        "vaziat": 200,
+        "matn": matn,
+        "sarlawah": { "Content-Type": "text/html; charset=utf-8" }
+    }
+
+funct jam(a, b)
+    bargard a * b
+
+chap_khat $"The site's arithmetic is right: {jam(6, 7)}"
+
+funct bargoz()
+    chap_khat $"The site is up at {serva_khod()}"
+
+serva_bgo(0, pasokh, bargoz)

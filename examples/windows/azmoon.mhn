@@ -1,0 +1,23 @@
+#khoroji
+#| 0
+#| 1
+#| 2
+#| 1
+#| 0
+#| 0
+
+biar "shomar.mhn"
+
+shomar = 0
+
+chap_khat shomar
+shomar = enjam(shomar, "ziad")
+chap_khat shomar
+shomar = enjam(shomar, "ziad")
+chap_khat shomar
+shomar = enjam(shomar, "kam")
+chap_khat shomar
+shomar = enjam(shomar, "sefr")
+chap_khat shomar
+shomar = enjam(shomar, "hich")
+chap_khat shomar

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel — Store admin</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <aside class="side">
+    <div class="logo"><span>◆</span> Panel</div>
+    <a class="on" href="#">▦ Overview</a>
+    <a href="#orders">☰ Orders</a>
+    <a href="#products">▤ Products</a>
+    <div class="side-foot">Backend: <b>Mihan</b><br><small>dade/*.json</small></div>
+  </aside>
+  <main>
+    <header class="head">
+      <div><h1>Overview</h1><p>Last 14 days · Mehr 1405</p></div>
+      <div class="me"><span class="avatar">NA</span><div><b>Namahsos</b><small>Admin</small></div></div>
+    </header>
+
+    <section class="kpis" id="kpis"></section>
+
+    <section class="two">
+      <div class="panel">
+        <div class="panel-head"><h2>Revenue per day</h2><span class="tag">toman</span></div>
+        <svg id="chart" viewBox="0 0 700 260" preserveAspectRatio="none"></svg>
+        <div class="xlabels" id="xlabels"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2>Best sellers</h2></div>
+        <ol class="best" id="best"></ol>
+        <div class="panel-head" style="margin-top:18px"><h2>By category</h2></div>
+        <div id="cats"></div>
+      </div>
+    </section>
+
+    <section class="panel" id="orders">
+      <div class="panel-head"><h2>Latest orders</h2></div>
+      <table class="tbl"><thead><tr><th>#</th><th>Customer</th><th>Product</th><th>Day</th><th>Amount</th><th>Status</th></tr></thead><tbody id="orderRows"></tbody></table>
+    </section>
+
+    <section class="panel" id="products">
+      <div class="panel-head"><h2>Products</h2><span class="tag" id="low"></span></div>
+      <form id="add" class="add">
+        <input name="naam" placeholder="Product name"><input name="daste" placeholder="Category">
+        <input name="gheymat" type="number" placeholder="Price"><input name="mojudi" type="number" placeholder="Stock">
+        <button>Add product</button><span id="addMsg" class="msg"></span>
+      </form>
+      <table class="tbl"><thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th></th></tr></thead><tbody id="productRows"></tbody></table>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

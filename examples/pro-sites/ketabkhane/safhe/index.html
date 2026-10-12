@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ketabkhane Ruz — Persian books, delivered</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><span class="mark">K</span><div><b>Ketabkhane Ruz</b><small>Persian books, delivered</small></div></div>
+    <div class="search"><input id="q" placeholder="Search title or author…" autocomplete="off"></div>
+    <button class="cart-btn" id="openCart">🛒 Cart <span id="count">0</span></button>
+  </header>
+
+  <section class="banner">
+    <div>
+      <h1>Autumn reading list</h1>
+      <p>Classics, poetry and new releases — free delivery on orders over 500,000 toman.</p>
+    </div>
+    <div class="banner-books" aria-hidden="true"><i style="--c:#7c2d12"></i><i style="--c:#164e63"></i><i style="--c:#4338ca"></i></div>
+  </section>
+
+  <main>
+    <div class="chips" id="chips"></div>
+    <div class="grid" id="grid"></div>
+    <p class="empty" id="empty" hidden>No books match your search.</p>
+  </main>
+
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head"><h2>Your cart</h2><button class="x" id="closeCart">✕</button></div>
+    <div id="lines" class="lines"></div>
+    <div class="sum"><span>Subtotal</span><b id="subtotal">0</b></div>
+    <form id="checkout" class="checkout">
+      <input name="naam" placeholder="Full name">
+      <textarea name="address" rows="2" placeholder="Delivery address"></textarea>
+      <button class="buy" type="submit">Place order</button>
+      <p id="msg" class="msg"></p>
+    </form>
+  </aside>
+  <div class="shade" id="shade"></div>
+  <footer>Ketabkhane Ruz · the shop’s backend is a Mihan program (catalogue, stock and orders)</footer>
+  <script src="/app.js"></script>
+</body>
+</html>

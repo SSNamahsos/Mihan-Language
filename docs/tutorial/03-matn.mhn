@@ -1,0 +1,42 @@
+#khoroji
+#| salam Mihan!
+#| salam Mihan chetori
+#| 5
+#| SALAM
+#| ["a", "b", "c"]
+#| salam
+#| salam Mihan
+#| dorost
+#| dorost
+#| 5
+#| dorost
+#| 3
+#| 5
+#| dorost
+
+naam = "Mihan"
+
+chap_khat $"salam {naam}!"
+chap_khat $"salam {naam} chetori"
+
+chap_khat tule "Mihan"
+
+chap_khat "salam".gooshband()
+chap_khat "a,b,c".tab(",")
+chap_khat "  salam  ".jabeja()
+
+chap_khat "salam " + naam
+
+chap_khat "salam dosta".shamil("dost")
+
+chap_khat barmigefth("Mihan", "Mi")
+
+chap_khat tule "Mihan"
+chap_khat (tule "Mihan") == 5
+chap_khat tule [1, 2, 3]
+
+chap_khat "Mihan".tule
+
+funct hamej_darad(a, b) -> bool
+    bargard barmadar(a, b)
+chap_khat hamej_darad([1, 2, 3], 2)

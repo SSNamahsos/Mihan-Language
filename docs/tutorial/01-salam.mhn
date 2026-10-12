@@ -1,0 +1,6 @@
+#khoroji: "salam, donya!\nMiyan 2 + 2 = 4 ast.\n"
+
+
+chap "salam, donya!\n"
+
+chap $"Miyan 2 + 2 = {2 + 2} ast.\n"

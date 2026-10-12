@@ -1,0 +1,37 @@
+#khoroji
+#| Sara
+#| 25
+#| 5
+#| 6
+#| I am Sara and I am 25
+#| Ostad says 5
+
+darghan Ostad
+    naam
+    sen
+    kiloh = 0
+    funct __sakht__(naam, sen)
+        khod.naam = naam
+        khod.sen = sen
+    funct barkhordan()
+        chap_khat khod.naam
+    funct kiloh_se()
+        chap_khat khod.kiloh
+    funct vectoor()
+        chap_khat goosh((khod.kiloh ** 2 + 3 ** 2) ** 0.5)
+    funct jashoor()
+        chap_khat $"I am {khod.naam} and I am {khod.sen}"
+o = Ostad("Sara", 25)
+chap_khat o.naam
+chap_khat o.sen
+o.kiloh = 5
+chap_khat o.kiloh
+o.vectoor()
+o.jashoor()
+
+darghan Ostad_Baftshenas < Ostad>
+    funct reshte()
+        chap_khat $"Ostad says {khod.kiloh}"
+b = Ostad_Baftshenas("Ali", 30)
+b.kiloh = 5
+b.reshte()

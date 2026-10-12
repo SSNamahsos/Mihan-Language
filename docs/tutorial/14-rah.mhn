@@ -1,0 +1,20 @@
+#khoroji
+#| 200
+#| dorost
+#| dorost
+#| dorost
+
+funct khane(darakht)
+    bargard amudi([
+        navar([peyvand("khane", "/"), peyvand("foroosh", "/foroosh")]),
+        onvan("salam", {"rang": "meshki", "khat_dor": 20}),
+        dokme("bekhar", "bekhar")
+    ])
+
+javab = rah({"path": "/", "method": "GET", "matn": ""}, [
+    {"path": "/", "onvan": "khane", "tabe": khane}
+])
+chap_khat javab["vaziat"]
+chap_khat "salam" dar javab["matn"]
+chap_khat "border-radius:20px" dar javab["matn"]
+chap_khat "data-kar=\"bekhar\"" dar javab["matn"]

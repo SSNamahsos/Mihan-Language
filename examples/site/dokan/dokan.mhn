@@ -1,0 +1,26 @@
+#khoroji
+#| dokan: the page is a file, the list is JSON
+
+kala = [
+    {"nam": "nan", "gheymat": 2},
+    {"nam": "shir", "gheymat": 5}
+]
+
+funct api(darakht)
+    agar darakht["method"] == "POST"
+        yek = json_bekhan(darakht["matn"])
+        kala = bast(kala, yek)
+        bargard yek
+    bargard kala
+
+funct pasokh(darakht)
+    agar darakht["path"].barmigefth("/api/")
+        bargard {
+            "vaziat": 200,
+            "matn": json_benevis(api(darakht)),
+            "sarlawah": {"Content-Type": "application/json"}
+        }
+    bargard parvande_pasokh("safhe", darakht["path"])
+
+chap_khat "dokan: the page is a file, the list is JSON"
+serva_bgo(0, pasokh)

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Negar Studio — Design &amp; Development</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="nav">
+    <a class="logo" href="#"><span class="dot"></span>Negar<span class="muted">studio</span></a>
+    <nav>
+      <a href="#khadamat">Services</a>
+      <a href="#kar-ha">Work</a>
+      <a href="#tamas">Contact</a>
+      <a class="btn btn-sm" href="#tamas">Start a project</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <span class="pill">● Booking projects for winter 2026</span>
+      <h1>We design brands &amp; build <span class="grad">digital products</span> people love.</h1>
+      <p class="lead">Negar is a small studio from Tehran. Strategy, identity, websites and apps — made by one team, end to end.</p>
+      <div class="cta">
+        <a class="btn" href="#tamas">Get a free quote →</a>
+        <a class="btn btn-ghost" href="#kar-ha">See our work</a>
+      </div>
+      <div class="stats">
+        <div><b>120+</b><span>projects shipped</span></div>
+        <div><b>9 yrs</b><span>in business</span></div>
+        <div><b>4.9★</b><span>client rating</span></div>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+      <div class="glass">
+        <div class="glass-top"><i></i><i></i><i></i></div>
+        <div class="bar w80"></div><div class="bar w60"></div>
+        <div class="tiles"><div></div><div></div><div></div></div>
+        <div class="bar w40"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="khadamat" class="section">
+    <h2>What we do</h2>
+    <div class="grid3">
+      <article class="card"><div class="icon">✦</div><h3>Brand identity</h3><p>Logos, type, colour and a voice that makes you recognisable everywhere.</p></article>
+      <article class="card"><div class="icon">◐</div><h3>Websites</h3><p>Fast, accessible sites with a CMS your team actually enjoys using.</p></article>
+      <article class="card"><div class="icon">▣</div><h3>Product design</h3><p>Research, UX and UI for web and mobile apps, from idea to launch.</p></article>
+    </div>
+  </section>
+
+  <section id="kar-ha" class="section">
+    <div class="row-between"><h2>Selected work</h2><div class="filters" id="filters"></div></div>
+    <div class="grid3" id="work"></div>
+  </section>
+
+  <section id="tamas" class="section contact">
+    <div>
+      <h2>Let’s talk</h2>
+      <p class="lead">Tell us about your project. We reply within one working day.</p>
+      <ul class="facts"><li>hello@negar.studio</li><li>+98 21 0000 0000</li><li>Valiasr St., Tehran</li></ul>
+    </div>
+    <form id="form" class="card form" novalidate>
+      <label>Name<input name="naam" placeholder="Your name"></label>
+      <label>Email<input name="email" type="email" placeholder="you@company.com"></label>
+      <label>Project<textarea name="payam" rows="4" placeholder="What are you building?"></textarea></label>
+      <button class="btn" type="submit">Send message</button>
+      <p id="status" class="status"></p>
+    </form>
+  </section>
+
+  <footer>© 2026 Negar Studio · Built with <b>Mihan</b> — the backend is a Mihan program.</footer>
+  <script src="/app.js"></script>
+</body>
+</html>

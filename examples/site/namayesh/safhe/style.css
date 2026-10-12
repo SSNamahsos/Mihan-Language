@@ -1,0 +1,41 @@
+:root { --a: #6c5ce7; --b: #00b894; --c: #fd79a8; --bg: #0f1020; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; font-family: system-ui, sans-serif; color: #eef;
+       background: linear-gradient(120deg, #0f1020, #23194a, #0f2a3a); background-size: 300% 300%;
+       animation: sky 12s ease infinite; }
+@keyframes sky { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+header { text-align: center; padding: 28px 16px 8px; }
+.logo { width: 74px; height: 74px; margin: 0 auto 12px; border-radius: 22px; display: grid; place-items: center;
+        background: conic-gradient(var(--a), var(--b), var(--c), var(--a)); animation: spin 6s linear infinite; }
+.logo span { animation: spin 6s linear infinite reverse; font: 800 34px system-ui; }
+@keyframes spin { to { transform: rotate(360deg); } }
+h1 { margin: 0; font-size: 2rem; animation: rise .8s ease both; }
+h1 em { color: var(--c); font-style: normal; }
+.sub { opacity: .7; animation: rise .8s .2s ease both; }
+@keyframes rise { from { opacity: 0; transform: translateY(16px); } }
+main { max-width: 560px; margin: 0 auto; padding: 0 14px 30px; display: grid; gap: 14px; }
+.card { background: #ffffff12; border: 1px solid #ffffff22; border-radius: 16px; padding: 14px; backdrop-filter: blur(6px);
+        animation: rise .7s .3s ease both; }
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.tile { padding: 14px 0; text-align: center; border-radius: 12px; font-weight: 700; background: var(--a);
+        transition: transform .25s, box-shadow .25s; animation: bob 2.4s ease-in-out infinite; }
+.tile:hover { transform: scale(1.08); box-shadow: 0 8px 20px #0006; }
+.t2 { background: var(--b); animation-delay: .3s; } .t3 { background: #e17055; animation-delay: .6s; } .t4 { background: var(--c); animation-delay: .9s; }
+@keyframes bob { 50% { translate: 0 -6px; } }
+h2 { margin: 0 0 10px; font-size: 1.1rem; }
+.dot::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--b); margin: 0 4px 0 8px;
+               animation: pulse 1.2s ease infinite; }
+@keyframes pulse { 50% { opacity: .2; transform: scale(1.6); } }
+form { display: flex; gap: 8px; }
+input { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid #ffffff33; background: #0006; color: #fff; font: inherit; }
+button { padding: 9px 14px; border: 0; border-radius: 10px; background: var(--a); color: #fff; font: inherit; cursor: pointer;
+         transition: transform .15s, background .3s; }
+button:active { transform: scale(.94); }
+button.ghost { background: #ffffff22; }
+ul { list-style: none; padding: 0; margin: 12px 0; }
+li { padding: 9px 12px; margin: 6px 0; background: #ffffff14; border-radius: 10px; animation: slide .4s ease both; }
+@keyframes slide { from { opacity: 0; transform: translateX(-24px); } }
+.row { display: flex; gap: 8px; flex-wrap: wrap; }
+.bar { height: 10px; border-radius: 6px; background: #ffffff1a; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--a), var(--c)); transition: width .6s ease; }
+#where { opacity: .7; font-size: .9rem; }

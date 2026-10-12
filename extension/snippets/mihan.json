@@ -1,0 +1,79 @@
+{
+  "Mihan: a JSON API server": {
+    "prefix": "m-api",
+    "description": "A backend that answers /api/... with JSON and serves files from safhe/",
+    "body": [
+      "${1:dadeh} = []",
+      "",
+      "funct api(darakht)",
+      "    agar darakht[\"method\"] == \"POST\"",
+      "        yek = json_bekhan(darakht[\"matn\"])",
+      "        bast ${1:dadeh}, yek",
+      "        bargard yek",
+      "    bargard ${1:dadeh}",
+      "",
+      "funct pasokh(darakht)",
+      "    agar darakht[\"path\"].barmigefth(\"/api/\")",
+      "        bargard {",
+      "            \"vaziat\": 200,",
+      "            \"matn\": json_benevis(api(darakht)),",
+      "            \"sarlawah\": {\"Content-Type\": \"application/json\"}",
+      "        }",
+      "    bargard parvande_pasokh(\"safhe\", darakht[\"path\"])",
+      "",
+      "funct bargoz()",
+      "    chap_khat \\$\"server: {serva_khod()}\"",
+      "",
+      "serva_bgo(${2:8080}, pasokh, bargoz)"
+    ]
+  },
+  "Mihan: an HTML page": {
+    "prefix": "m-page",
+    "description": "A funct that answers with an HTML page",
+    "body": [
+      "funct pasokh(darakht)",
+      "    bargard {",
+      "        \"vaziat\": 200,",
+      "        \"matn\": \"<!doctype html><meta charset='utf-8'><h1>${1:salam}</h1>\",",
+      "        \"sarlawah\": {\"Content-Type\": \"text/html; charset=utf-8\"}",
+      "    }",
+      "",
+      "serva_bgo(${2:8080}, pasokh)"
+    ]
+  },
+  "Mihan: a Windows app window": {
+    "prefix": "m-window",
+    "description": "A program that opens a window of its own (WebView2)",
+    "body": [
+      "funct pasokh(darakht)",
+      "    bargard {\"vaziat\": 200, \"matn\": \"<h1>${1:salam}</h1>\", \"sarlawah\": {\"Content-Type\": \"text/html; charset=utf-8\"}}",
+      "",
+      "funct bargoz()",
+      "    baza_bgo(serva_khod(), ${2:480}, ${3:640})",
+      "",
+      "serva_bgo(0, pasokh, bargoz)"
+    ]
+  },
+  "Mihan: a script that reads its arguments": {
+    "prefix": "m-script",
+    "description": "A command-line script",
+    "body": [
+      "agar tule(arghoman()) == 0",
+      "    chap_khat \"estefade: mihan run ${TM_FILENAME} <esm>\"",
+      "    khoroj 1",
+      "",
+      "naam = arghoman(0)",
+      "chap_khat \\$\"salam {naam}!\"",
+      "$0"
+    ]
+  },
+  "Mihan: expected output block": {
+    "prefix": "m-khoroji",
+    "description": "Say what this file prints, so `mihan test` can check it",
+    "body": [
+      "#khoroji",
+      "#| ${1:salam}",
+      "$0"
+    ]
+  }
+}

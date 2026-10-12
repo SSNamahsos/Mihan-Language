@@ -1,0 +1,8 @@
+d = {}
+har i az 0 ta 300000
+    k = "k" + (i % 1000)
+    d[k] = d.begir(k, 0) + i
+xs = []
+har i az 0 ta 300000
+    bast xs, (i * 7919) % 100003
+chap_khat tule(d), " ", taghib(xs)[1000]

@@ -1,0 +1,22 @@
+#khoroji
+#| Mihan
+#| 2
+#| {"nam":"Mihan","adad":2}
+#| dorost
+#| [1, 2.5, ghalat, hich]
+#| [true,false,null]
+#| safhe/index.html
+#| ghalat
+
+d = json_bekhan("{\"nam\": \"Mihan\", \"adad\": 2}")
+chap_khat d["nam"]
+chap_khat d["adad"]
+chap_khat json_benevis(d)
+
+chap_khat json_bekhan("true")
+
+chap_khat json_bekhan("[1, 2.5, false, null]")
+chap_khat json_benevis([dorost, ghalat, hich])
+
+chap_khat masir("safhe", "index.html")
+chap_khat masir_hast("this-file-is-not-there")

@@ -1,0 +1,57 @@
+#khoroji
+#| barname: a site of pieces
+#| http://127.0.0.1:*
+
+sefaresh = 0
+
+funct menu()
+    bargard navar([
+        peyvand("khane", "/"),
+        peyvand("foroosh", "/foroosh"),
+        peyvand("darbare", "/darbare")
+    ])
+
+funct safhe_khane(darakht)
+    bargard amudi([
+        menu(),
+        karte([
+            onvan("khane"),
+            band("se site, yek barname. foroosh ra baz kon va bekhar ra bezan.")
+        ], {"pas_zamine": "#101216", "rang": "sefid", "khat_dor": 20, "fasele": 28})
+    ], {"fasele": 24})
+
+funct safhe_foroosh(darakht)
+    bargard amudi([
+        menu(),
+        onvan2("foroosh"),
+        jadval(["kal", "gheymat"], [["nan", "2"], ["shir", "5"]]),
+        ofoghi([
+            dokme("bekhar", "bekhar", {"pas_zamine": "sabz", "rang": "meshki", "khat_dor": 20, "fasele": 10}),
+            band("sefaresh: " + sefaresh)
+        ])
+    ], {"fasele": 24, "pas_zamine": "#101216", "rang": "sefid"})
+
+funct safhe_darbare(darakht)
+    bargard amudi([
+        menu(),
+        karte([
+            onvan2("darbare"),
+            band("in safhe az jabe va rang sakhte shod, na az html.")
+        ])
+    ], {"fasele": 24})
+
+funct pasokh(darakht)
+    agar darakht["method"] == "POST"
+        f = form_bekhan(darakht["matn"])
+        agar f.barmadar("kar") va f["kar"] == "bekhar"
+            sefaresh = sefaresh + 1
+    bargard rah(darakht, [
+        {"path": "/", "onvan": "khane", "tabe": safhe_khane},
+        {"path": "/foroosh", "onvan": "foroosh", "tabe": safhe_foroosh},
+        {"path": "/darbare", "onvan": "darbare", "tabe": safhe_darbare}
+    ])
+
+chap_khat "barname: a site of pieces"
+funct bargoz()
+    chap_khat serva_khod()
+serva_bgo(0, pasokh, bargoz)

@@ -1,0 +1,8 @@
+#khoroji
+#| 40
+#| 80
+
+funct jam(a, b)
+    bargard a * b
+har i az 1 ta 3
+    chap_khat jam(i, 40)

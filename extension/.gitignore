@@ -1,0 +1,11 @@
+# Build output.
+out/
+node_modules/
+*.vsix
+
+# Editor leftovers.
+.DS_Store
+Thumbs.db
+
+# The bundled server, copied in at package time.
+server/

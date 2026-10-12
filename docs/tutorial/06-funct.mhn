@@ -1,0 +1,33 @@
+#khoroji
+#| 7
+#| salam Sara!
+#| 400
+#| 7
+#| 25
+#| 15
+#| ghalat
+#| ghalat
+#| dorost
+
+funct jam(a, b) -> arz
+    bargard a + b
+chap_khat jam(3, 4)
+
+funct salam_kon(naam = "doust")
+    chap_khat $"salam {naam}!"
+salam_kon("Sara")
+
+funct rang(n) -> arz
+    bargard n * 100
+chap_khat rang(4)
+bargozhtar = funct(x) -> x > 3
+chap_khat jam(3, 4)
+dohan = funct(x) -> x * 5
+chap_khat dohan(5)
+
+funct jam_kol(a, b) -> arz
+    bargard a + b
+chap_khat kamil([1, 2, 3, 4, 5], jam_kol)
+chap_khat hamej([1, 2, 3], bargozhtar)
+chap_khat kamej([1, 2, 3], bargozhtar)
+chap_khat hamej([1, 2, 3], funct(x) -> x < 4)

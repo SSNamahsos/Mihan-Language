@@ -1,0 +1,48 @@
+#khoroji
+#| peyda nashod
+#| dar gayefte: manfi
+#| 7
+#| giry
+#| nazir
+#| ok
+#| after
+
+funct ketab(name)
+    agar name == ""
+        bargard khata("peyda nashod")
+    bargard khata("hamast")
+
+e = ketab("")
+chap_khat e.message
+
+funct risky(n)
+    agar n < 0
+        portab khata("manfi", n)
+    chap_khat "ok"
+
+koshish
+    risky(-1)
+giroft khata e
+    chap_khat $"dar gayefte: {e.message}"
+
+koshish
+    portab khata("bad", 7)
+giroft khata e
+    chap_khat e.data
+
+funct f()
+    portab khata("x")
+
+koshish
+    f()
+giroft khata e
+    chap_khat "giry"
+nemigir
+    chap_khat "nazir"
+
+koshish
+    risky(1)
+giroft khata e
+    chap_khat "not reached"
+nemigir
+    chap_khat "after"

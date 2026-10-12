@@ -1,0 +1,14 @@
+darghan Hesab
+    mojudi = 0
+
+    funct variz(m)
+        khod.mojudi += m
+
+h = Hesab()
+har i az 0 ta 1000000
+    h.variz(i % 7)
+dobar = funct(x) -> x * 2
+s = 0
+har i az 0 ta 300000
+    s += dobar(i)
+chap_khat h.mojudi, " ", s

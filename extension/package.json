@@ -1,0 +1,132 @@
+{
+  "name": "mihan",
+  "displayName": "Mihan",
+  "description": "Mihan — a programming language that reads the way Persian is spoken. Autocomplete for keywords, builtins and your own names, signature help, hover docs, mistakes, go-to-definition and formatting. By Mihani Circle.",
+  "version": "0.7.1",
+  "publisher": "MihaniCircle",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Formatters"
+  ],
+  "keywords": [
+    "mihan",
+    "mhn",
+    "persian",
+    "finglish"
+  ],
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#101216",
+    "theme": "dark"
+  },
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:mihan"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "mihan",
+        "aliases": [
+          "Mihan",
+          "mihan"
+        ],
+        "extensions": [
+          ".mhn"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "mihan",
+        "scopeName": "source.mihan",
+        "path": "./syntaxes/mihan.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "title": "Mihan",
+      "properties": {
+        "mihan.path": {
+          "type": "string",
+          "default": "mihan",
+          "markdownDescription": "Where the `mihan` command is. Leave this as `mihan` if `mihan install` has put it on your path; otherwise give the whole path to `mihan.exe`.",
+          "scope": "machine-overridable"
+        },
+        "mihan.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "markdownDescription": "Write everything sent to and from the language server into the Mihan output panel. Turn this on when something is not working and you want to see what was asked.",
+          "scope": "window"
+        }
+      }
+    },
+    "configurationDefaults": {
+      "[mihan]": {
+        "editor.quickSuggestions": {
+          "other": true,
+          "comments": false,
+          "strings": false
+        },
+        "editor.acceptSuggestionOnEnter": "on",
+        "editor.snippetSuggestions": "top",
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "editor.formatOnSave": true,
+        "editor.wordBasedSuggestions": "off"
+      }
+    },
+    "commands": [
+      {
+        "command": "mihan.restartLanguageServer",
+        "title": "Mihan: Restart the language server",
+        "category": "Mihan"
+      },
+      {
+        "command": "mihan.showOutput",
+        "title": "Mihan: Show the language server's messages",
+        "category": "Mihan"
+      },
+      {
+        "command": "mihan.newProgram",
+        "title": "Mihan: Start a new program",
+        "category": "Mihan"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "mihan",
+        "path": "./snippets/mihan.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.4.0",
+    "@vscode/vsce": "^3.2.0"
+  },
+  "author": {
+    "name": "Mihani Circle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SSNamahsos/Mihan-Language"
+  }
+}

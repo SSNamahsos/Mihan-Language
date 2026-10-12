@@ -1,0 +1,16 @@
+#khoroji
+#| dorost
+#| dorost
+#| dorost
+
+s = safhe_kon("khane", {
+    "gone": "jabe",
+    "rang": "black",
+    "khat_dor": 20,
+    "matn": "salam"
+})
+chap_khat "color:black" dar s
+chap_khat "border-radius:20px" dar s
+
+t = safhe_kon({"rang": "meshki", "khat_dor": "20px", "matn": "salam"})
+chap_khat "color:black" dar t

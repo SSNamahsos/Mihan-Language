@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The wrapper that mihan build (os android) puts around a program.
+     mihan rewrites the two placeholder strings (package and label) per app. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.mihan.placeholder.app.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    android:versionCode="1"
+    android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="34" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <application
+        android:label="MihanAppLabelPlaceholder.................................."
+        android:extractNativeLibs="true"
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true">
+        <activity
+            android:name="org.mihan.runner.MainActivity"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|keyboard|uiMode"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

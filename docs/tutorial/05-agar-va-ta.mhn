@@ -1,0 +1,39 @@
+#khoroji
+#| aval
+#| baleghi
+#| 0123
+#| 3 ta raste
+#| 0
+#| 2
+#| 3
+#|
+#| majeb
+#| majeb
+
+naam = "Mihan"
+agar naam == "Mihan"
+    chap_khat "aval"
+warna
+    chap_khat "doom"
+sen = 20
+agar sen >= 18
+    chap_khat "baleghi"
+warna
+    agar sen >= 10
+        chap_khat "nojavan"
+    warna
+        chap_khat "kudak"
+har i az 0 ta 4
+    chap i
+chap_khat ""
+har i az 0 ta 10
+    agar i > 2
+        shek
+chap_khat "3 ta raste"
+har i az 0 ta 4
+    agar i == 1
+        edame
+    chap_khat i
+chap_khat ""
+har i az 0 ta 4 ke i % 2 == 0
+    chap_khat "majeb"

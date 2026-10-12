@@ -1,0 +1,5 @@
+funct fib(n)
+    agar n < 2
+        bargard n
+    bargard fib(n - 1) + fib(n - 2)
+chap_khat fib(30)

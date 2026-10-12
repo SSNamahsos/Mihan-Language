@@ -1,0 +1,8 @@
+parts = []
+har i az 0 ta 300000
+    bast parts, "x" + i
+s = por(parts, ",")
+t = ""
+har i az 0 ta 100000
+    t += "ab"
+chap_khat tule(s), " ", tule(t)

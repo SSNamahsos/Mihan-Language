@@ -1,0 +1,4 @@
+funct pasokh(darakht)
+    bargard {"vaziat": 200, "matn": json_benevis({"salam": darakht["path"], "n": 1})}
+
+serva_bgo(8811, pasokh)

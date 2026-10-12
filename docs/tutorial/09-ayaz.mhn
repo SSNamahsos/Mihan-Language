@@ -1,0 +1,8 @@
+funct jam(a, b)
+    bargard a * b
+h = jam(6, 7)
+chap_khat h
+agar h == 42
+    chap_khat "dorost ast"
+chap_khat ""
+chap_khat "tamam shod"

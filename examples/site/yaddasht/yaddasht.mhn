@@ -1,0 +1,42 @@
+#khoroji
+#| yaddasht: notes kept in a file
+
+ja = mohit("MIHAN_YADDASHT")
+agar ja == hich
+    pooshe_temp = mohit("TEMP")
+    agar pooshe_temp == hich
+        pooshe_temp = mohit("TMP")
+    agar pooshe_temp == hich
+        pooshe_temp = "."
+    ja = masir(pooshe_temp, "mihan-site-yaddasht.json")
+
+yaddasht = []
+agar masir_hast(ja)
+    koshish
+        yaddasht = json_bekhan(bekhan(ja))
+    giroft khata e
+        yaddasht = []
+
+funct zakhire()
+    benevis ja, json_benevis(yaddasht)
+
+funct pasokh(darakht)
+    agar darakht["path"] == "/api/yaddasht" va darakht["method"] == "POST"
+        yek = json_bekhan(darakht["matn"])
+        yaddasht = bast(yaddasht, yek)
+        zakhire()
+        bargard {
+            "vaziat": 200,
+            "matn": json_benevis(yaddasht),
+            "sarlawah": { "Content-Type": "application/json" }
+        }
+    agar darakht["path"] == "/api/yaddasht"
+        bargard {
+            "vaziat": 200,
+            "matn": json_benevis(yaddasht),
+            "sarlawah": { "Content-Type": "application/json" }
+        }
+    bargard parvande_pasokh("safhe", darakht["path"])
+
+chap_khat "yaddasht: notes kept in a file"
+serva_bgo(0, pasokh)

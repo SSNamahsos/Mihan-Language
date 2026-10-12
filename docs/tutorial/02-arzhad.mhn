@@ -1,0 +1,35 @@
+#khoroji
+#| 7
+#| 3.5
+#| 3
+#| 1024
+#| 1
+#| -4
+#| dorost
+#| ghalat
+#| hich
+#| 0
+#| 0.0
+
+
+x = 7
+chap_khat x
+
+chap_khat 7 / 2
+chap_khat 7 ghesmat 2
+
+chap_khat 2 ** 10
+
+chap_khat 7 % 3
+
+chap_khat -2 ** 2
+
+chap_khat dorost
+chap_khat ghalat
+
+chap_khat hich
+
+arz shomar
+kasr d
+chap_khat shomar
+chap_khat d

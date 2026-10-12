@@ -1,0 +1,101 @@
+#khoroji
+#| Ketabkhane Ruz: http://127.0.0.1:*
+
+biar "db.mhn"
+
+ketab_ha = jadval_bekhan("ketab", [
+    {"id": 1, "onvan": "Boof-e Koor", "nevisande": "Sadegh Hedayat", "daste": "Roman", "gheymat": 185000, "mojudi": 12, "rang": "#1e293b", "emtiaz": 4.8},
+    {"id": 2, "onvan": "Kelidar", "nevisande": "Mahmoud Dowlatabadi", "daste": "Roman", "gheymat": 640000, "mojudi": 4, "rang": "#7c2d12", "emtiaz": 4.7},
+    {"id": 3, "onvan": "Shahnameh", "nevisande": "Ferdowsi", "daste": "Sher", "gheymat": 920000, "mojudi": 6, "rang": "#713f12", "emtiaz": 4.9},
+    {"id": 4, "onvan": "Divan-e Hafez", "nevisande": "Hafez", "daste": "Sher", "gheymat": 350000, "mojudi": 20, "rang": "#164e63", "emtiaz": 4.9},
+    {"id": 5, "onvan": "Golestan", "nevisande": "Saadi", "daste": "Sher", "gheymat": 290000, "mojudi": 15, "rang": "#14532d", "emtiaz": 4.8},
+    {"id": 6, "onvan": "Savushun", "nevisande": "Simin Daneshvar", "daste": "Roman", "gheymat": 260000, "mojudi": 9, "rang": "#581c87", "emtiaz": 4.6},
+    {"id": 7, "onvan": "Amoozesh-e Mihan", "nevisande": "Mihani Circle", "daste": "Barname-nevisi", "gheymat": 150000, "mojudi": 50, "rang": "#4338ca", "emtiaz": 5.0},
+    {"id": 8, "onvan": "Algoritm be zaban-e sade", "nevisande": "Reza Karimi", "daste": "Barname-nevisi", "gheymat": 420000, "mojudi": 7, "rang": "#0f766e", "emtiaz": 4.5},
+    {"id": 9, "onvan": "Tarikh-e Bayhaqi", "nevisande": "Abolfazl Bayhaqi", "daste": "Tarikh", "gheymat": 510000, "mojudi": 3, "rang": "#78350f", "emtiaz": 4.4},
+    {"id": 10, "onvan": "Mashq-e Shab", "nevisande": "Neda Ahmadi", "daste": "Kudak", "gheymat": 120000, "mojudi": 25, "rang": "#be185d", "emtiaz": 4.3},
+    {"id": 11, "onvan": "Ghessehaye Shahr", "nevisande": "Omid Rahimi", "daste": "Kudak", "gheymat": 98000, "mojudi": 0, "rang": "#b45309", "emtiaz": 4.1},
+    {"id": 12, "onvan": "Iran-e Bastan", "nevisande": "Hasan Pirnia", "daste": "Tarikh", "gheymat": 380000, "mojudi": 8, "rang": "#334155", "emtiaz": 4.6}
+])
+sefaresh_ha = jadval_bekhan("sefaresh", [])
+
+funct json_pasokh(vaziat, dade)
+    bargard {
+        "vaziat": vaziat,
+        "matn": json_benevis(dade),
+        "sarlawah": {"Content-Type": "application/json; charset=utf-8"}
+    }
+
+funct jostojoo(sorok)
+    q = sorok.begir("q", "").jabeja().kiawtar()
+    daste = sorok.begir("daste", "")
+    javab = []
+    har k dar ketab_ha
+        agar daste != "" va k["daste"] != daste
+            edame
+        agar q != "" va na (k["onvan"].kiawtar().shamil(q) ya k["nevisande"].kiawtar().shamil(q))
+            edame
+        bast javab, k
+    bargard javab
+
+funct daste_ha()
+    bargard taghib(tabdil_kol(setare(tabdil_kol(ketab_ha, funct(k) -> k["daste"])), funct(x) -> x))
+
+funct sabt_sefaresh(matn_)
+    koshish
+        f = json_bekhan(matn_)
+    giroft khata e
+        bargard json_pasokh(400, {"khata": "JSON-e dorost befrestid"})
+    agar na dict_hast(f)
+        bargard json_pasokh(400, {"khata": "JSON-e dorost befrestid"})
+    naam = f.begir("naam", "").jabeja()
+    address = f.begir("address", "").jabeja()
+    aghlam = f.begir("aghlam", [])
+    agar tule(naam) < 2 ya tule(address) < 5
+        bargard json_pasokh(422, {"khata": "naam va address ra kamel konid"})
+    agar tule(aghlam) == 0
+        bargard json_pasokh(422, {"khata": "sabad khali ast"})
+    satr_ha = []
+    jam = 0
+    har a dar aghlam
+        k = peyda(ketab_ha, a.begir("id"))
+        tedad = a.begir("tedad", 0)
+        agar k == hich ya tedad < 1
+            bargard json_pasokh(422, {"khata": "ghalam-e na-motabar"})
+        agar tedad > k["mojudi"]
+            bargard json_pasokh(409, {"khata": $"az «{k["onvan"]}» faghat {k["mojudi"]} ta mojud ast"})
+        bast satr_ha, {"id": k["id"], "onvan": k["onvan"], "tedad": tedad, "gheymat": k["gheymat"]}
+        jam += tedad * k["gheymat"]
+    har s dar satr_ha
+        k = peyda(ketab_ha, s["id"])
+        k["mojudi"] -= s["tedad"]
+    ersal = 0
+    agar jam < 500000
+        ersal = 45000
+    sefaresh = {"id": id_badi(sefaresh_ha), "naam": naam, "address": address, "aghlam": satr_ha, "jam": jam, "ersal": ersal, "kol": jam + ersal, "vaziat": "jadid"}
+    bast sefaresh_ha, sefaresh
+    jadval_benevis("ketab", ketab_ha)
+    jadval_benevis("sefaresh", sefaresh_ha)
+    bargard json_pasokh(201, sefaresh)
+
+funct pasokh(darakht)
+    path = darakht["path"]
+    agar path == "/api/ketab"
+        bargard json_pasokh(200, jostojoo(darakht["sorok"]))
+    agar path.barmigefth("/api/ketab/")
+        k = peyda(ketab_ha, adad_ya(path.tab("/")[-1], 0))
+        agar k == hich
+            bargard json_pasokh(404, {"khata": "ketab peyda nashod"})
+        bargard json_pasokh(200, k)
+    agar path == "/api/daste-ha"
+        bargard json_pasokh(200, daste_ha())
+    agar path == "/api/sefaresh" va darakht["method"] == "POST"
+        bargard sabt_sefaresh(darakht["matn"])
+    agar path.barmigefth("/api/")
+        bargard json_pasokh(404, {"khata": "nist"})
+    bargard parvande_pasokh("safhe", path)
+
+funct bargoz()
+    chap_khat "Ketabkhane Ruz: " + serva_khod()
+
+serva_bgo(adad_karda(mohit("PORT") ?? "8081"), pasokh, bargoz)

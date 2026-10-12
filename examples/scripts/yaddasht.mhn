@@ -1,0 +1,30 @@
+#barghoman: salam donya
+#khoroji
+#| yaddasht: salam donya
+#| dobare: salam donya
+#| ["a.txt"]
+
+ja_pooshe = mohit("TEMP")
+agar ja_pooshe == hich
+    ja_pooshe = mohit("TMP")
+agar ja_pooshe == hich
+    ja_pooshe = "."
+
+ja = masir(ja_pooshe, "mihan-yaddasht.txt")
+agar masir_hast(ja)
+    hazf ja
+benevis ja, por(arghoman(), " ")
+chap_khat "yaddasht: " + bekhan(ja)
+chap_khat "dobare: " + bekhan(ja)
+hazf ja
+
+daftar = masir(ja_pooshe, "mihan-yaddasht-" + goosh(hast_rand(1000000000)))
+pooshe daftar
+yek = masir(daftar, "a.txt")
+benevis yek, "yek"
+chap_khat fehrest(daftar)
+koshish
+    hazf yek
+    hazf daftar
+giroft khata e
+    gone = e.message

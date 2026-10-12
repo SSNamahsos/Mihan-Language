@@ -1,0 +1,18 @@
+#khoroji
+#| hesab: a page, and the arithmetic behind it
+
+funct hesab(a, b)
+    bargard { "jam": a + b, "zarb": a * b, "kam": a - b }
+
+funct pasokh(darakht)
+    agar darakht["path"] == "/api/hesab"
+        d = json_bekhan(darakht["matn"])
+        bargard {
+            "vaziat": 200,
+            "matn": json_benevis(hesab(d["a"], d["b"])),
+            "sarlawah": { "Content-Type": "application/json" }
+        }
+    bargard parvande_pasokh("safhe", darakht["path"])
+
+chap_khat "hesab: a page, and the arithmetic behind it"
+serva_bgo(0, pasokh)

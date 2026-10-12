@@ -1,0 +1,16 @@
+#khoroji
+#| 200
+#| {"salam":"Mihan"}
+#| safhe/index.html
+
+funct pasokh(naam)
+    bargard {
+        "vaziat": 200,
+        "matn": json_benevis({"salam": naam}),
+        "sarlawah": { "Content-Type": "application/json" }
+    }
+
+javab = pasokh("Mihan")
+chap_khat javab["vaziat"]
+chap_khat javab["matn"]
+chap_khat masir("safhe", "index.html")

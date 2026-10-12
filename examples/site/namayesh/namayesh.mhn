@@ -1,0 +1,34 @@
+#khoroji
+#| namayesh: an animated page with an API and live events
+
+peygham_ha = [{"id": 1, "matn": "salam az Mihan"}]
+badi = 2
+
+funct peygham(darakht)
+    agar darakht["method"] == "POST"
+        x = json_bekhan(darakht["matn"])
+        m = x.begir("matn", "")
+        agar m == ""
+            bargard json_pasokh({"khata": "matn khali ast"}, 400)
+        yek = {"id": badi, "matn": m}
+        badi = badi + 1
+        peygham_ha = bast(peygham_ha, yek)
+        rooydad_ferest("peygham", yek)
+        bargard json_pasokh(yek, 201)
+    agar darakht["method"] == "DELETE"
+        peygham_ha = []
+        rooydad_ferest("peygham", {"pak": dorost})
+        bargard {"vaziat": 204, "matn": ""}
+    bargard json_pasokh({"peygham_ha": peygham_ha, "android": android_hast()})
+
+funct parvande(darakht)
+    bargard parvande_pasokh("safhe", darakht["path"])
+
+funct pasokh(darakht)
+    bargard rah(darakht, [
+        {"path": "/api/peygham", "tabe": peygham},
+        {"path": "*", "tabe": parvande},
+    ])
+
+chap_khat "namayesh: an animated page with an API and live events"
+serva_bgo(0, pasokh)

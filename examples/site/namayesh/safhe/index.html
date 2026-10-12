@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mihan showcase</title>
+<link rel="stylesheet" href="style.css">
+<script src="/_mihan/mihan.js"></script>
+</head>
+<body>
+<header>
+  <div class="logo"><span>M</span></div>
+  <h1>Mihan <em>showcase</em></h1>
+  <p class="sub">CSS animation · JavaScript · JSON API · live events</p>
+</header>
+<main>
+  <section class="card cards">
+    <div class="tile t1">GET</div><div class="tile t2">POST</div><div class="tile t3">PUT</div><div class="tile t4">DELETE</div>
+  </section>
+  <section class="card">
+    <h2>Messages <small id="live" class="dot">live</small></h2>
+    <form id="form"><input id="matn" placeholder="write something" autocomplete="off"><button>send</button></form>
+    <ul id="list"></ul>
+    <div class="row"><button id="toast">toast</button><button id="buzz">vibrate</button><button id="share">share</button><button id="clear" class="ghost">clear</button></div>
+  </section>
+  <section class="card"><div class="bar"><i id="fill"></i></div><p id="where"></p></section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+
+shomar = 0
+
+funct ziad(n)
+    bargard n + 1
+
+funct kam(n)
+    bargard n - 1
+
+funct sefr(n)
+    bargard 0
+
+funct enjam(n, kar)
+    agar kar == "ziad"
+        bargard ziad(n)
+    agar kar == "kam"
+        bargard kam(n)
+    agar kar == "sefr"
+        bargard sefr(n)
+    bargard n

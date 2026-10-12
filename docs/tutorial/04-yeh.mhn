@@ -1,0 +1,32 @@
+#khoroji
+#| [1, 2, 3]
+#| 3
+#| 1
+#| [2, 3]
+#| [1, 2, 3, 4]
+#| [1, 2, 3, 4, 5]
+#| [3, 4, 5, 6]
+#| [2, 4, 6]
+#| {"a": 1, "b": 2}
+#| 1
+#| ["a", "b"]
+#| {1, 2, 3}
+#| dorost
+
+xs = [1, 2, 3]
+chap_khat xs
+chap_khat tule xs
+chap_khat xs[0]
+chap_khat xs[1:]
+bast xs, 4
+chap_khat xs
+chap_khat taghib([3, 1, 2, 5, 4])
+chap_khat filter([1, 2, 3, 4, 5, 6], funct(x) -> x > 2)
+chap_khat tabdil_kol([1, 2, 3], funct(x) -> x * 2)
+d = {"a": 1, "b": 2}
+chap_khat d
+chap_khat d["a"]
+chap_khat dast(d)
+s = {1, 2, 2, 3}
+chap_khat s
+chap_khat 2 dar s

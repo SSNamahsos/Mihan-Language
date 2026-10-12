@@ -1,0 +1,4 @@
+s = 0
+har i az 0 ta 5000000
+    s += i
+chap_khat s

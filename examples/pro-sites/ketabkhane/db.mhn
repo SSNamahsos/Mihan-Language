@@ -1,0 +1,28 @@
+
+poshe_db = masir(poshe_barname(), "dade")
+
+funct jadval_bekhan(naam, aval)
+    parvande = masir(poshe_db, naam + ".json")
+    agar masir_hast(parvande)
+        bargard json_bekhan(bekhan(parvande))
+    jadval_benevis(naam, aval)
+    bargard aval
+
+funct jadval_benevis(naam, satr_ha)
+    pooshe poshe_db
+    benevis masir(poshe_db, naam + ".json"), json_benevis(satr_ha)
+
+funct peyda(satr_ha, id)
+    har s dar satr_ha
+        agar s["id"] == id
+            bargard s
+    bargard hich
+
+funct id_badi(satr_ha)
+    bishtar = 0
+    har s dar satr_ha
+        bishtar = balia(bishtar, s["id"])
+    bargard bishtar + 1
+
+funct adad_ya(matn_, pishfarz_)
+    bargard adad_ya_hich(matn_) ?? pishfarz_

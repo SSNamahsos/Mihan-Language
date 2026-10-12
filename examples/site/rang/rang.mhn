@@ -1,0 +1,53 @@
+#khoroji
+#| rang: a page written in Mihan
+#| http://127.0.0.1:*
+
+funct karte(naam)
+    bargard {
+        "gone": "jabe",
+        "pas_zamine": "#1a1e25",
+        "rang": "sefid",
+        "khat_dor": 20,
+        "fasele": 24,
+        "pahna": 420,
+        "darun": [
+            {"gone": "onvan", "matn": "salam " + naam, "andaze": 32},
+            {"gone": "band", "matn": "in safhe ba rang va khat_dor neveshte shod", "rang": "khakestari"}
+        ]
+    }
+
+funct safhe(naam)
+    bargard safhe_kon("rang", {
+        "gone": "jabe",
+        "pas_zamine": "#101216",
+        "rang": "sefid",
+        "fasele": 48,
+        "darun": [
+            karte(naam),
+            {
+                "gone": "form",
+                "be": "/",
+                "ravesh": "ferest",
+                "nemayesh": "radif",
+                "fasele_khane": 8,
+                "fasele_birun": 24,
+                "darun": [
+                    {"gone": "vorudi", "nam": "naam", "jaye": "naam", "khat_dor": 8, "fasele": 8, "pas_zamine": "sefid", "rang": "meshki"},
+                    {"gone": "dokme", "matn": "befarma", "khat_dor": 20, "pas_zamine": "sabz", "rang": "meshki", "fasele": 10}
+                ]
+            }
+        ]
+    })
+
+funct pasokh(darakht)
+    naam = "doost"
+    agar darakht["method"] == "POST"
+        f = form_bekhan(darakht["matn"])
+        agar f.barmadar("naam") va f["naam"] != ""
+            naam = f["naam"]
+    bargard { "vaziat": 200, "matn": safhe(naam) }
+
+chap_khat "rang: a page written in Mihan"
+funct bargoz()
+    chap_khat serva_khod()
+serva_bgo(0, pasokh, bargoz)

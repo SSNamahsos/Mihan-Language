@@ -1,0 +1,47 @@
+
+biar "shomar.mhn"
+
+shomar = 0
+
+funct safhe()
+    bargard por([
+        "<!doctype html>",
+        "<html lang='fa'>",
+        "<head>",
+        "<meta charset='utf-8'>",
+        "<title>Mihan</title>",
+        "<style>",
+        "  body { font-family: sans-serif; display: grid; place-items: center;",
+        "         height: 100vh; margin: 0; background: #14161a; color: #e8e6e3; }",
+        "  h1 { font-size: 5rem; margin: 0 0 1rem; }",
+        "  button { font-size: 1.1rem; padding: .6rem 1.2rem; margin: .3rem;",
+        "           border: 0; border-radius: 6px; background: #4a7; color: #fff; cursor: pointer; }",
+        "  button.sefr { background: #a44; }",
+        "</style>",
+        "</head>",
+        "<body>",
+        "  <h1>" + shomar + "</h1>",
+        "  <button onclick=\"go('ziad')\">ziad shod</button>",
+        "  <button onclick=\"go('kam')\">kam shod</button>",
+        "  <button class='sefr' onclick=\"go('sefr')\">sefr 0</button>",
+        "  <script>",
+        "  function go(kar) {",
+        "    fetch('/?kar=' + kar).then(r => r.text()).then(t => {",
+        "      document.open(); document.write(t); document.close();",
+        "    })",
+        "  }",
+        "</script>",
+        "</body>",
+        "</html>"
+    ], "\n")
+
+funct pasokh(darakht)
+    agar darakht["sorok"].barmadar("kar")
+        shomar = enjam(shomar, darakht["sorok"]["kar"])
+    bargard { "vaziat": 200, "matn": safhe() }
+
+funct bargoz()
+    chap_khat $"This program is serving at {serva_khod()}"
+    baza_bgo(serva_khod(), 520, 420)
+
+serva_bgo(0, pasokh, bargoz)

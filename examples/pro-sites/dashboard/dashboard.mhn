@@ -1,0 +1,165 @@
+#khoroji
+#| Panel: http://127.0.0.1:*
+
+biar "db.mhn"
+
+kala_ha = jadval_bekhan("kala", [
+    {"id": 1, "naam": "Hedphone Bisim", "daste": "Sooti", "gheymat": 3200000, "mojudi": 18},
+    {"id": 2, "naam": "Saat-e Hooshmand", "daste": "Pooshidani", "gheymat": 5400000, "mojudi": 7},
+    {"id": 3, "naam": "Keyboard-e Mekaniki", "daste": "Computer", "gheymat": 2900000, "mojudi": 24},
+    {"id": 4, "naam": "Mouse-e Bisim", "daste": "Computer", "gheymat": 950000, "mojudi": 41},
+    {"id": 5, "naam": "Speaker-e Jibi", "daste": "Sooti", "gheymat": 1750000, "mojudi": 3},
+    {"id": 6, "naam": "Powerbank 20000", "daste": "Lavazem", "gheymat": 1200000, "mojudi": 33},
+    {"id": 7, "naam": "Kabl-e USB-C", "daste": "Lavazem", "gheymat": 240000, "mojudi": 120},
+    {"id": 8, "naam": "Monitor 27 inch", "daste": "Computer", "gheymat": 14500000, "mojudi": 5}
+])
+
+ruz_ha = ["01 Mehr", "02 Mehr", "03 Mehr", "04 Mehr", "05 Mehr", "06 Mehr", "07 Mehr", "08 Mehr", "09 Mehr", "10 Mehr", "11 Mehr", "12 Mehr", "13 Mehr", "14 Mehr"]
+moshtari_ha = ["Sara Ahmadi", "Ali Rezaei", "Neda Karimi", "Omid Moradi", "Mina Hosseini", "Reza Jafari", "Leila Sadeghi", "Hamed Nouri"]
+vaziat_ha = ["tahvil shod", "ersal shod", "dar hal-e amade sazi", "jadid"]
+
+funct nemoone_sefaresh_ha()
+    javab = []
+    har i az 0 ta 64
+        ruz = i * 14 ghesmat 64
+        k = kala_ha[(i * 5 + ruz) % tule(kala_ha)]
+        tedad = 1 + (i * 7) % 3
+        vaziat = vaziat_ha[0]
+        agar ruz >= 12
+            vaziat = vaziat_ha[(i % 3) + 1]
+        bast javab, {
+            "id": 1001 + i,
+            "moshtari": moshtari_ha[(i * 3) % tule(moshtari_ha)],
+            "ruz": ruz_ha[ruz],
+            "kala_id": k["id"],
+            "kala": k["naam"],
+            "tedad": tedad,
+            "mablagh": tedad * k["gheymat"],
+            "vaziat": vaziat
+        }
+    bargard javab
+
+sefaresh_ha = jadval_bekhan("sefaresh", nemoone_sefaresh_ha())
+
+funct json_pasokh(vaziat, dade)
+    bargard {
+        "vaziat": vaziat,
+        "matn": json_benevis(dade),
+        "sarlawah": {"Content-Type": "application/json; charset=utf-8"}
+    }
+
+funct amar()
+    dar_amad = 0
+    har s dar sefaresh_ha
+        dar_amad += s["mablagh"]
+    har_ruz = {}
+    har r dar ruz_ha
+        har_ruz[r] = 0
+    har s dar sefaresh_ha
+        har_ruz[s["ruz"]] += s["mablagh"]
+    foroosh = {}
+    har s dar sefaresh_ha
+        foroosh[s["kala"]] = foroosh.begir(s["kala"], 0) + s["tedad"]
+    behtarin = taghib(tabdil_kol(dast(foroosh), funct(n) -> [0 - foroosh[n], n]))
+    top = tabdil_kol(behtarin[0:5], funct(p) -> {"naam": p[1], "tedad": 0 - p[0]})
+    daste = {}
+    har s dar sefaresh_ha
+        k = peyda(kala_ha, s["kala_id"])
+        d = "hazf shode"
+        agar k != hich
+            d = k["daste"]
+        daste[d] = daste.begir(d, 0) + s["mablagh"]
+    kam = filter(kala_ha, funct(k) -> k["mojudi"] < 6)
+    bargard {
+        "dar_amad": dar_amad,
+        "sefaresh": tule(sefaresh_ha),
+        "miangin": dar_amad ghesmat balia(tule(sefaresh_ha), 1),
+        "moshtari": tule(setare(tabdil_kol(sefaresh_ha, funct(s) -> s["moshtari"]))),
+        "ruz_ha": tabdil_kol(ruz_ha, funct(r) -> {"ruz": r, "mablagh": har_ruz[r]}),
+        "behtarin": top,
+        "daste_ha": tabdil_kol(dast(daste), funct(n) -> {"naam": n, "mablagh": daste[n]}),
+        "mojudi_kam": kam
+    }
+
+funct khandan_json(matn_)
+    koshish
+        f = json_bekhan(matn_)
+        agar dict_hast(f)
+            bargard f
+    giroft khata e
+        bargard hich
+    bargard hich
+
+funct kala_dorost(f)
+    agar tule(f.begir("naam", "").jabeja()) < 2
+        bargard "naam kootah ast"
+    agar na adad_hast(f.begir("gheymat", hich)) ya f["gheymat"] <= 0
+        bargard "gheymat bayad adad-e mosbat bashad"
+    agar na adad_hast(f.begir("mojudi", hich)) ya f["mojudi"] < 0
+        bargard "mojudi bayad adad bashad"
+    bargard ""
+
+funct api_kala(darakht)
+    method = darakht["method"]
+    tekke_ha = darakht["path"].tab("/")
+    id = 0
+    agar tule(tekke_ha) > 3
+        id = adad_ya(tekke_ha[3], -1)
+    agar id == 0 va method == "GET"
+        bargard json_pasokh(200, kala_ha)
+    agar id == 0 va method == "POST"
+        f = khandan_json(darakht["matn"])
+        agar f == hich
+            bargard json_pasokh(400, {"khata": "JSON-e dorost befrestid"})
+        dalil = kala_dorost(f)
+        agar dalil != ""
+            bargard json_pasokh(422, {"khata": dalil})
+        k = {"id": id_badi(kala_ha), "naam": f["naam"].jabeja(), "daste": f.begir("daste", "Sayer"), "gheymat": f["gheymat"], "mojudi": f["mojudi"]}
+        bast kala_ha, k
+        jadval_benevis("kala", kala_ha)
+        bargard json_pasokh(201, k)
+    k = peyda(kala_ha, id)
+    agar k == hich
+        bargard json_pasokh(404, {"khata": "kala peyda nashod"})
+    agar method == "PUT"
+        f = khandan_json(darakht["matn"])
+        agar f == hich
+            bargard json_pasokh(400, {"khata": "JSON-e dorost befrestid"})
+        jadid = {"naam": f.begir("naam", k["naam"]), "daste": f.begir("daste", k["daste"]), "gheymat": f.begir("gheymat", k["gheymat"]), "mojudi": f.begir("mojudi", k["mojudi"])}
+        dalil = kala_dorost(jadid)
+        agar dalil != ""
+            bargard json_pasokh(422, {"khata": dalil})
+        har n dar dast(jadid)
+            k[n] = jadid[n]
+        jadval_benevis("kala", kala_ha)
+        bargard json_pasokh(200, k)
+    agar method == "DELETE"
+        kala_ha = filter(kala_ha, funct(x) -> x["id"] != id)
+        jadval_benevis("kala", kala_ha)
+        bargard json_pasokh(200, {"ok": dorost})
+    bargard json_pasokh(200, k)
+
+funct pasokh(darakht)
+    path = darakht["path"]
+    agar path == "/api/amar"
+        bargard json_pasokh(200, amar())
+    agar path == "/api/sefaresh-ha"
+        bargard json_pasokh(200, forogh(sefaresh_ha)[0:12])
+    agar path.barmigefth("/api/sefaresh/") va darakht["method"] == "POST"
+        s = peyda(sefaresh_ha, adad_ya(path.tab("/")[-1], 0))
+        f = khandan_json(darakht["matn"])
+        agar s == hich ya f == hich
+            bargard json_pasokh(404, {"khata": "sefaresh peyda nashod"})
+        s["vaziat"] = f.begir("vaziat", s["vaziat"])
+        jadval_benevis("sefaresh", sefaresh_ha)
+        bargard json_pasokh(200, s)
+    agar path == "/api/kala" ya path.barmigefth("/api/kala/")
+        bargard api_kala(darakht)
+    agar path.barmigefth("/api/")
+        bargard json_pasokh(404, {"khata": "nist"})
+    bargard parvande_pasokh("safhe", path)
+
+funct bargoz()
+    chap_khat "Panel: " + serva_khod()
+
+serva_bgo(adad_karda(mohit("PORT") ?? "8082"), pasokh, bargoz)

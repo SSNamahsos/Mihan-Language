@@ -1,0 +1,6 @@
+rows = []
+har i az 0 ta 50000
+    bast rows, {"id": i, "nam": "kar" + i, "dorost": i % 2 == 0, "vazn": i * 0.5}
+matn_ = json_benevis(rows)
+back = json_bekhan(matn_)
+chap_khat tule(matn_), " ", tule(back)
