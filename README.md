@@ -23,14 +23,15 @@ That is a whole program. There is no `main`, no class, and nothing to set up.
 |---|---|
 | [mihan.exe](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan.exe) | Windows (64-bit) |
 | [mihan-linux-amd64](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan-linux-amd64) | Linux (64-bit) |
-| [mihan-0.7.1.vsix](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan-0.7.1.vsix) | VS Code extension |
+| [mihan-0.7.2.vsix](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan-0.7.2.vsix) | VS Code extension |
+- VS Code store: [Mihan Language on the Marketplace](https://marketplace.visualstudio.com/items?itemName=MihaniCircle.mihan-language) (or search "Mihan Language" in VS Code Extensions)
 
 1. Put `mihan.exe` in a folder that is on your `PATH` (or run `mihan.exe install`,
    which does it for you). On Linux, rename the file to `mihan`, run
    `chmod +x mihan`, and move it into a folder on your `PATH`.
 2. Open a new terminal and run `mihan version`.
 3. Install the VS Code extension: *Extensions → … → Install from VSIX*, or
-   `code --install-extension mihan-0.7.1.vsix`.
+   `code --install-extension mihan-0.7.2.vsix`.
 
 ## Why it looks the way it looks
 
