@@ -2,7 +2,7 @@
   "name": "mihan-language",
   "displayName": "Mihan Language",
   "description": "Mihan — a programming language that reads the way Persian is spoken. Autocomplete for keywords, builtins and your own names, signature help, hover docs, mistakes, go-to-definition and formatting. By Mihani Circle.",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "publisher": "MihaniCircle",
   "license": "MIT",
   "engines": {

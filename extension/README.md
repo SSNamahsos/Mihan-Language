@@ -90,46 +90,10 @@ Two things worth knowing while you learn:
 
 ## Installing
 
-1. Install the language itself, which puts `mihan` and `mihan-ls` on your path:
+1. Install the extension from the store: [Mihan Language on the VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=MihaniCircle.mihan-language), or search **Mihan Language** in the Extensions panel of VS Code.
+2. Open a file ending in `.mhn`. Type `def` and press Enter. A function appears, with the name selected.
 
-   ```
-   cd path/to/mihan
-   mihan install
-   ```
-
-2. Open this repository in VS Code and press F5 (**Mihan: extension**). A second
-   window opens with the extension running. It uses `bin\mihan.exe` if you have
-   built it, and otherwise the `mihan` from step one.
-
-3. Open a file ending in `.mhn`. Type `def` and press Enter. A function appears,
-   with the name selected.
-
-## Publishing it
-
-The extension ships as a `.vsix`, the file both the VS Code Marketplace and
-"Install from VSIX" take. It is published as **Mihani Circle**: the publisher id
-in `package.json` is `mihani-circle`, a placeholder until the real publisher is
-created.
-
-1. Build Windows `mihan.exe` (`.\build.ps1`, or on any machine
-   `GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o extension/server/mihan.exe ./cmd/mihan`).
-   A copy in `extension/server/` is bundled into the `.vsix`, so the extension works
-   on Windows before `mihan install`. The order it looks in is: the `mihan.path`
-   setting, `bin\mihan.exe` of this repository, `mihan` on the PATH, then the
-   bundled copy.
-2. Create the publisher at https://marketplace.visualstudio.com/manage (sign in
-   with a Microsoft account) with the id `mihani-circle` and display name
-   `Mihani Circle`. If that id is taken, change `publisher` in `package.json`.
-3. From `extension/`:
-
-   ```
-   npm install
-   npx vsce package
-   ```
-
-   That writes `mihan-0.7.1.vsix`. `npx vsce login mihani-circle` (with a
-   personal access token from Azure DevOps) and `npx vsce publish` send it to the
-   marketplace.
+The extension already includes Mihan for Windows, so it works right away. To run programs from a terminal, download `mihan.exe` from the [Mihan Language releases](https://github.com/SSNamahsos/Mihan-Language/releases/latest) and run `mihan.exe install`.
 
 ## What the editor gets, and where it comes from
 
