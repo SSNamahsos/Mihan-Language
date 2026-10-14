@@ -23,14 +23,14 @@ func fnRequest(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	raw, ok := args[0].(rt.Str)
 	if !ok {
 		return nil, in.faultAt(node, "E4330",
-			"نشانی باید متن باشد",
+			"neshani bayad matn bashe",
 			"the address has to be text, not %s", rt.TypeName(args[0]))
 	}
 	addr := strings.TrimSpace(string(raw))
 	u, err := url.Parse(addr)
 	if err != nil || u.Host == "" || (u.Scheme != "http" && u.Scheme != "https") {
 		return nil, in.faultAt(node, "E4331",
-			"darkhast فقط نشانیِ http و https را می‌خواند",
+			"darkhast faghat neshani-ye http va https ro mikhoone",
 			"darkhast only speaks http and https")
 	}
 	method := "GET"
@@ -40,7 +40,7 @@ func fnRequest(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 		d, ok := args[1].(*rt.Dict)
 		if !ok {
 			return nil, in.faultAt(node, "E4332",
-				"گزینه‌های darkhast باید یک dict باشد",
+				"gozine-haye darkhast bayad yek dict bashe",
 				"the options to darkhast have to be a dict, not %s", rt.TypeName(args[1]))
 		}
 		if v, found := d.Get(rt.Str("method")); found && v != nil {
@@ -48,7 +48,7 @@ func fnRequest(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 				s, ok := v.(rt.Str)
 				if !ok {
 					return nil, in.faultAt(node, "E4332",
-						"method باید متن باشد",
+						"method bayad matn bashe",
 						"method has to be text, not %s", rt.TypeName(v))
 				}
 				method = strings.ToUpper(string(s))
@@ -59,7 +59,7 @@ func fnRequest(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 				s, ok := v.(rt.Str)
 				if !ok {
 					return nil, in.faultAt(node, "E4332",
-						"matn باید متن باشد",
+						"matn bayad matn bashe",
 						"matn has to be text, not %s", rt.TypeName(v))
 				}
 				body = string(s)
@@ -70,7 +70,7 @@ func fnRequest(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 				hd, ok := v.(*rt.Dict)
 				if !ok {
 					return nil, in.faultAt(node, "E4332",
-						"sarlawah باید یک dict باشد",
+						"sarlawah bayad yek dict bashe",
 						"sarlawah has to be a dict, not %s", rt.TypeName(v))
 				}
 				for _, key := range hd.Keys() {
@@ -82,7 +82,7 @@ func fnRequest(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 					s, ok := val.(rt.Str)
 					if !ok {
 						return nil, in.faultAt(node, "E4332",
-							"مقدارِ سرآیند باید متن باشد",
+							"meghdar-e sarayand bayad matn bashe",
 							"a header's value has to be text, not %s", rt.TypeName(val))
 					}
 					headers[name] = string(s)
@@ -94,7 +94,7 @@ func fnRequest(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	case "GET", "POST", "PUT", "PATCH", "DELETE", "HEAD":
 	default:
 		return nil, in.faultAt(node, "E4331",
-			"این method را نمی‌شناسم",
+			"in method ro nemishnasam",
 			"darkhast does not know the method %s", method)
 	}
 
@@ -107,7 +107,7 @@ func fnRequest(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	req, err := http.NewRequestWithContext(ctx, method, addr, reader)
 	if err != nil {
 		return nil, in.faultAt(node, "E4333",
-			"این درخواست ساخته نشد",
+			"in darkhast sakhte nashod",
 			"the request could not be made: %v", err)
 	}
 	for k, v := range headers {
@@ -117,24 +117,24 @@ func fnRequest(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	whileWaiting(func() { resp, err = http.DefaultClient.Do(req) })
 	if err != nil {
 		return nil, in.faultAt(node, "E4333",
-			"پاسخی نیامد",
+			"javabi nayoumad",
 			"no answer came back: %v", err)
 	}
 	defer resp.Body.Close()
 	got, err := io.ReadAll(io.LimitReader(resp.Body, maxBodyBytes+1))
 	if err != nil {
 		return nil, in.faultAt(node, "E4333",
-			"پاسخ خوانده نشد",
+			"javab khoonde nashod",
 			"the answer could not be read: %v", err)
 	}
 	if len(got) > maxBodyBytes {
 		return nil, in.faultAt(node, "E4304",
-			"پاسخ بزرگ‌تر از آن است که یک‌جا خوانده شود",
+			"javab bozorgtar az oone ke yekja khoonde beshe",
 			"the answer is too large to read at once")
 	}
 	if !utf8.Valid(got) {
 		return nil, in.faultAt(node, "E4303",
-			"پاسخ متن نیست",
+			"javab matn nist",
 			"the answer is not text")
 	}
 	h := rt.NewDict()

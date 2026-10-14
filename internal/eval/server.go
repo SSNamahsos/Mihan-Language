@@ -78,14 +78,14 @@ func fnServeStart(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) 
 		n, ok := toInt(args[0])
 		if !ok {
 			return rt.Nil, in.faultAt(node, "E4280",
-				"شمارهٔ درگاه باید عددِ درست باشد",
+				"shomare-ye dargah bayad adad-e kamel bashe",
 				"the port has to be a whole number, not %s", rt.TypeName(args[0]))
 		}
 		port = int(n)
 	}
 	if tabe == nil {
 		return rt.Nil, in.faultAt(node, "E4281",
-			"سِروَر به یک تابعِ پاسخ‌گو نیاز دارد",
+			"server yek funct-e javabgoo lazem dare",
 			"a server needs a funct to answer with, and none was given")
 	}
 
@@ -95,7 +95,7 @@ func fnServeStart(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) 
 	ln, err := net.Listen("tcp", fmt.Sprintf("127.0.0.1:%d", port))
 	if err != nil {
 		return rt.Nil, in.faultAt(node, "E4282",
-			"نتوانستم روی این درگاه گوش بدهم: "+err.Error(),
+			"natoonestam roye in dargah goosh bedam: "+err.Error(),
 			"could not listen on that port: %v", err)
 	}
 	s.ln = ln
@@ -109,7 +109,7 @@ func fnServeStart(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) 
 		theServer.mu.Unlock()
 		ln.Close()
 		return rt.Nil, in.faultAt(node, "E4283",
-			"یک سِروَر هم‌اکنون کار می‌کند",
+			"yek server alan dare kar mikone",
 			"a server is already running on port %d", portOf(theServer.s.addr))
 	}
 	theServer.s = s
@@ -349,13 +349,13 @@ func fnServeStop(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 func fnOpenWindow(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	if len(args) < 1 {
 		return rt.Nil, in.faultAt(node, "E4290",
-			"باز کردن پنجره یک نشانی می‌خواهد",
+			"baz kardan-e panjere yek neshani mikhad",
 			"opening a window needs an address")
 	}
 	target, ok := args[0].(rt.Str)
 	if !ok {
 		return rt.Nil, in.faultAt(node, "E4291",
-			"نشانی باید متن باشد",
+			"neshani bayad matn bashe",
 			"the address has to be text, not %s", rt.TypeName(args[0]))
 	}
 	addr := string(target)
@@ -384,7 +384,7 @@ func fnOpenWindow(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) 
 
 		if err := os.WriteFile(f, []byte(addr), 0o644); err != nil {
 			return rt.Nil, in.faultAt(node, "E4292",
-				"نتوانستم پنجره را باز کنم: "+err.Error(),
+				"natoonestam panjere ro baz konam: "+err.Error(),
 				"could not open the window: %v", err)
 		}
 		return rt.Nil, nil
@@ -399,7 +399,7 @@ func fnOpenWindow(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) 
 	cmd.Stderr = nil
 	if err := cmd.Start(); err != nil {
 		return rt.Nil, in.faultAt(node, "E4292",
-			"نتوانستم پنجره را باز کنم: "+err.Error(),
+			"natoonestam panjere ro baz konam: "+err.Error(),
 			"could not open the window: %v", err)
 	}
 

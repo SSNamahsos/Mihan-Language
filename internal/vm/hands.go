@@ -242,7 +242,7 @@ func (m *Machine) missing(op ir.Op, line int32) error {
 		name = strconv.Itoa(int(op))
 	}
 	return &fault{code: "E5900", line: line,
-		fa: "این ماشین هنوز «" + name + "» را بلد نیست",
+		fa: "in mashin hanooz '" + name + "' ro balad nist",
 		en: "this machine does not do " + name + " yet"}
 }
 

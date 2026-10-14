@@ -184,7 +184,7 @@ func TestSlicingTheWrongThingIsRefused(t *testing.T) {
 		if err == nil {
 			t.Fatalf("the machine sliced something unsliceable and said nothing:\n%s", src)
 		}
-		if !strings.Contains(err.Error(), "slice") {
+		if !strings.Contains(err.Error(), "bresh") {
 			t.Errorf("the mistake should say a slice was refused, and it said: %v", err)
 		}
 	}
@@ -348,7 +348,7 @@ func TestUnfinishedWorkIsNamed(t *testing.T) {
 	if err == nil {
 		t.Fatal("an operation the machine cannot do was not refused")
 	}
-	if !strings.Contains(err.Error(), "this machine does not do") {
+	if !strings.Contains(err.Error(), "in mashin hanooz") {
 		t.Errorf("the refusal did not name what it cannot do: %v", err)
 	}
 	if !strings.Contains(err.Error(), "Self") {

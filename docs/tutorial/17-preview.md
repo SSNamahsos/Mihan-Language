@@ -90,3 +90,5 @@ WebView, so a page that needs a very new browser feature may still look
 different on an old phone. Everything Mihan itself does — the program, the
 server, the bridge, the back and lifecycle rules — is the same code that the
 APK runs. Before you share an APK, try it once on a real phone.
+
+**Next:** [Lesson 18 — Reference and more tools](18-marja.md)

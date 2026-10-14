@@ -235,7 +235,7 @@ func (l *lowerer) buildFunc(name string, kind FuncKind, params []*ast.Param, bod
 
 	if l.depth > 64 {
 		l.bag.Add(diag.Errorf("E6001", span,
-			"تابع در خودش تعریف شده و هیچ‌وقت تمام نمی‌شود",
+			"funct too khodesh tarif shode va hich vaght tamoom nemishe",
 			"this funct is written inside itself without end"))
 		return l.p.AddFunc(&Func{Name: name, Kind: kind, Code: []Instr{{Op: OpReturnNil, Line: 1}}})
 	}

@@ -5,7 +5,7 @@
 ## 8.1 When Mihan finds a mistake
 
 If a program does something impossible, Mihan stops and says where and why — in
-Persian and in English, with a code you can search for:
+Finglish, with a code you can search for:
 
 ```mihan fails
 x = 10
@@ -13,9 +13,8 @@ chap_khat x / 0
 ```
 
 ```output
-error: E4133
-  نمی‌شود بر صفر تقسیم کرد
-  division by zero has no answer
+khata: E4133
+  nemishe bar sefr taghsim kard
    2 | chap_khat x / 0
                  ^
 ```
@@ -34,7 +33,7 @@ chap_khat "barname edame dad"
 ```
 
 ```output
-khata: division by zero has no answer
+khata: nemishe bar sefr taghsim kard
 barname edame dad
 ```
 

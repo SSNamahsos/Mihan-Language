@@ -86,8 +86,7 @@ func runtimeDiag(in *eval.Interp, err error, src []byte) []*diag.Diagnostic {
 		return []*diag.Diagnostic{{
 			Severity: diag.Error,
 			Code:     "E5000",
-			FA:       "برنامه با اشکال متوقف شد",
-			EN:       "the program stopped: " + err.Error(),
+			FA:       "barname ba eshkal motevaghef shod: " + err.Error(),
 		}}
 	}
 	pos := diag.Pos{}
@@ -100,7 +99,7 @@ func runtimeDiag(in *eval.Interp, err error, src []byte) []*diag.Diagnostic {
 	d := &diag.Diagnostic{
 		Severity: diag.Error,
 		Code:     "E5001",
-		FA:       "برنامه در همین‌جا ایستاد",
+		FA:       "barname hamin ja istad",
 		Span:     diag.Span{Start: pos, End: pos},
 	}
 
@@ -109,7 +108,7 @@ func runtimeDiag(in *eval.Interp, err error, src []byte) []*diag.Diagnostic {
 	}
 	if ev, ok := p.Value.(*rt.ErrorValue); ok {
 		d.EN = string(ev.Message)
-
+		d.FA = string(ev.Message)
 		if ev.FA != "" {
 			d.FA = ev.FA
 		}
@@ -219,10 +218,10 @@ func CountBySeverity(ds []*diag.Diagnostic) string {
 	}
 	switch {
 	case errs == 0 && warns == 0:
-		return "۰ اشکال / no problems"
+		return "0 eshkal"
 	case errs == 0:
-		return fmt.Sprintf("%d هشدار / %d warnings", warns, warns)
+		return fmt.Sprintf("%d hoshdar", warns)
 	default:
-		return fmt.Sprintf("%d اشکال / %d errors", errs, errs)
+		return fmt.Sprintf("%d eshkal", errs)
 	}
 }

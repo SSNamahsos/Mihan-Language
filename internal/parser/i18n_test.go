@@ -79,10 +79,10 @@ func TestEveryTokenKindHasAPersianDescription(t *testing.T) {
 	}
 	src := string(data)
 	for _, kind := range []struct{ name, method string }{
-		{"EOF", "return \"پایان پرونده\""},
-		{"NEWLINE", "return \"پایان سطر\""},
-		{"INDENT", "return \"بلوکِ تورفتگی\""},
-		{"DEDENT", "return \"پایانِ بلوکِ تورفتگی\""},
+		{"EOF", "return \"payan-e parvande\""},
+		{"NEWLINE", "return \"payan-e khat\""},
+		{"INDENT", "return \"block-e torafteghi\""},
+		{"DEDENT", "return \"payan-e block-e torafteghi\""},
 	} {
 		if !contains2(src, kind.method) {
 			t.Errorf("DescribeFarsi has no Persian word for %s", kind.name)

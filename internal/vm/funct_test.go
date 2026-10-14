@@ -124,7 +124,7 @@ har shoma dar [jam]
 	if err == nil {
 		t.Fatal("the machine ran a function it had lost the instructions for, which it must not do")
 	}
-	if !strings.Contains(err.Error(), "call") {
+	if !strings.Contains(err.Error(), "seda zad") {
 		t.Errorf("the machine should have said the value cannot be called, and said: %v", err)
 	}
 }

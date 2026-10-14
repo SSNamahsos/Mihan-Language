@@ -153,8 +153,8 @@ var builtins = []builtinDef{
 		Doc: "json_benevis x — JSON text for a value", Fn: fnJSONWrite},
 	{Name: "parvande_pasokh", Alias: "sendfile", MinArgs: 2, MaxArgs: 2, Result: "dict",
 		Doc: "parvande_pasokh \"safhe\", path — the answer that sends one file from a folder", Fn: fnSendFile},
-	{Name: "safhe_kon", Alias: "page", MinArgs: 1, MaxArgs: 2, Result: "matn",
-		Doc: "safhe_kon \"onvan\", jabe — a page from Mihan words such as rang and khat_dor", Fn: fnPage},
+	{Name: "safhe_kon", Alias: "page", MinArgs: 1, MaxArgs: 3, Result: "matn",
+		Doc: "safhe_kon \"onvan\", jabe, sabk? — a page from Mihan words such as rang and gooshe_gerd", Fn: fnPage},
 	{Name: "form_bekhan", Alias: "readform", MinArgs: 1, MaxArgs: 1, Result: "dict",
 		Doc: "form_bekhan matn — the fields a form sent, as a dict", Fn: fnFormRead},
 	{Name: "jabe", Alias: "box", MinArgs: 0, MaxArgs: -1, Result: "dict",
@@ -191,6 +191,10 @@ var builtins = []builtinDef{
 		Doc: "jalase darakht — this visitor's own dict, kept between requests (a cookie)", Fn: fnSession},
 	{Name: "json_pasokh", Alias: "json_answer", MinArgs: 1, MaxArgs: 2, Result: "dict",
 		Doc: "json_pasokh x, vaziat — an answer whose body is x as JSON", Fn: fnJSONAnswer},
+	{Name: "sabk", Alias: "css", MinArgs: 1, MaxArgs: 1, Result: "matn",
+		Doc: "sabk {\"onvan\": {\"rang\": \"ghermez\"}} — CSS text from Finglish style words, with @harekat and @kochak_tar", Fn: fnStyle},
+	{Name: "sabk_khat", Alias: "inline_style", MinArgs: 1, MaxArgs: 1, Result: "matn",
+		Doc: "sabk_khat {\"rang\": \"abi\"} — one style=\"...\" text from Finglish style words", Fn: fnStyleInline},
 	{Name: "qaleb", Alias: "template", MinArgs: 2, MaxArgs: 2, Result: "matn",
 		Doc: "qaleb matn, dict — {{nam}} filled in (made safe), {{{nam}}} as it is", Fn: fnTemplate},
 	{Name: "html_amn", Alias: "html_escape", MinArgs: 1, MaxArgs: 1, Result: "matn",
@@ -246,7 +250,7 @@ var builtins = []builtinDef{
 	{Name: "gozaresh", MinArgs: 1, MaxArgs: 1, Result: "bool",
 		Doc: "gozaresh x — did this class promise the given methods", Fn: fnSatisfies},
 	{Name: "rang_ya_khata", MinArgs: 0, MaxArgs: -1, Result: "list",
-		Doc: "rang_ya_khata(a, b) — the numbers a, a+1, ... as a list", Fn: fnSeq},
+		Doc: "rang_ya_khata(a, b, gam?) — the numbers a, a+1, ... up to b as a list", Fn: fnSeq},
 
 	{Name: "ghesmat", Alias: "floordiv", MinArgs: 2, MaxArgs: 2, Result: "any",
 		Doc: "ghesmat a, b  /  floordiv a, b — divide, dropping the remainder", Fn: fnFloorDiv},
@@ -276,7 +280,7 @@ func fnStringMethod(name string) func(*Interp, []rt.Value, ast.Node) (rt.Value, 
 		s, ok := args[0].(rt.Str)
 		if !ok {
 			return nil, in.faultAt(nil, "E4250",
-				fmt.Sprintf("%s فقط روی matn کار می‌کند", name),
+				fmt.Sprintf("%s faghat roye matn kar mikone", name),
 				"%s works on matn only, not on %s", name, rt.TypeName(args[0]))
 		}
 		return in.strMethod(s, name, args[1:])
@@ -412,12 +416,12 @@ func (in *Interp) checkArity(node ast.Node, d *builtinDef) error {
 	}
 	if n < d.MinArgs {
 		return in.faultAt(node, "E4200",
-			fmt.Sprintf("«%s» دست‌کم %d چیز می‌خواهد ولی %d دادی", d.Name, d.MinArgs, n),
+			fmt.Sprintf("'%s' dast-e kam %d chiz mikhad vali %d dadi", d.Name, d.MinArgs, n),
 			"%s needs at least %d values and you gave %d", d.Name, d.MinArgs, n)
 	}
 	if d.MaxArgs >= 0 && n > d.MaxArgs {
 		return in.faultAt(node, "E4201",
-			fmt.Sprintf("«%s» بیش از %d چیز نمی‌گیرد ولی %d دادی", d.Name, d.MaxArgs, n),
+			fmt.Sprintf("'%s' bishtar az %d chiz nemigire vali %d dadi", d.Name, d.MaxArgs, n),
 			"%s takes at most %d values and you gave %d", d.Name, d.MaxArgs, n)
 	}
 	return nil
@@ -494,14 +498,14 @@ func ExitCode(err error) (int, bool) {
 
 func fnReserved(in *Interp, _ []rt.Value, node ast.Node) (rt.Value, error) {
 	return nil, in.faultAt(node, "E4202",
-		"این یک ساختار است، نه تابع", "this word starts a structure, it is not a funct you can call")
+		"in yek sakhtar ast, na funct", "this word starts a structure, it is not a funct you can call")
 }
 
 func num1(in *Interp, args []rt.Value, node ast.Node, what string) (float64, error) {
 	f, ok := toFloat(args[0])
 	if !ok {
 		return 0, in.faultAt(node, "E4210",
-			fmt.Sprintf("%s فقط با عدد کار می‌کند", what),
+			fmt.Sprintf("%s faghat ba adad kar mikone", what),
 			"%s only works on numbers, not %s", what, rt.TypeName(args[0]))
 	}
 	return f, nil
@@ -560,7 +564,7 @@ func fnSqrt(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	}
 	if f < 0 {
 		return nil, in.faultAt(node, "E4211",
-			"ریشه دومِ عدد منفی جوابِ واقعی ندارد", "the square root of a negative number is not a real number")
+			"rishe-ye dovom-e adad-e manfi javab-e vaghei nadare", "the square root of a negative number is not a real number")
 	}
 	return rt.Float(math.Sqrt(f)), nil
 }
@@ -584,7 +588,7 @@ func fnLog(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	}
 	if f <= 0 {
 		return nil, in.faultAt(node, "E4212",
-			"لگاریتمِ صفر یا منفی جوابی ندارد", "the logarithm of zero or a negative number has no answer")
+			"logaritm-e sefr ya adad-e manfi javab nadare", "the logarithm of zero or a negative number has no answer")
 	}
 	return rt.Float(math.Log(f)), nil
 }
@@ -694,7 +698,7 @@ func fnExists(_ *Interp, args []rt.Value, _ ast.Node) (rt.Value, error) {
 func fnHash(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	if _, ok := rt.HashKey(args[0]); !ok {
 		return nil, in.faultAt(node, "E4213",
-			fmt.Sprintf("از %s نمی‌شود banafsh گرفت", rt.TypeName(args[0])),
+			fmt.Sprintf("az %s nemishe hash gereft", rt.TypeName(args[0])),
 			"a %s cannot be hashed; only numbers, matn, bool and hich can", rt.TypeName(args[0]))
 	}
 	h, _ := rt.HashKey(args[0])
@@ -711,7 +715,7 @@ func fnFormat(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	shape, ok := args[1].(rt.Str)
 	if !ok {
 		return nil, in.faultAt(node, "E4214",
-			"قالبِ katoos باید matn باشد", "the shape given to katoos has to be matn")
+			"ghaleb-e katoos bayad matn bashe", "the shape given to katoos has to be matn")
 	}
 	if i, ok := args[0].(rt.Int); ok {
 		return rt.Str(fmt.Sprintf(string(shape), int64(i))), nil
@@ -737,7 +741,7 @@ func fnLen(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 		return rt.Int(len(rangeItems(*t))), nil
 	}
 	return nil, in.faultAt(node, "E4220",
-		fmt.Sprintf("tule را نمی‌شود از %s گرفت", rt.TypeName(args[0])),
+		fmt.Sprintf("tule-ye %s ro nemishe gereft", rt.TypeName(args[0])),
 		"you cannot ask the length of a %s", rt.TypeName(args[0]))
 }
 
@@ -747,7 +751,7 @@ func fnRange(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 		v, ok := toInt(a)
 		if !ok {
 			return nil, in.faultAt(node, "E4221",
-				"سرِ rang باید عددِ کامل باشد", "every end of a rang must be a whole number")
+				"sar-e rang bayad adad-e kamel bashe", "every end of a rang must be a whole number")
 		}
 		nums[i] = v
 	}
@@ -761,7 +765,7 @@ func fnRange(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 		step := nums[2]
 		if step == 0 {
 			return nil, in.faultAt(node, "E4222",
-				"گامِ صفر جلو نمی‌رود", "a step of zero never moves, so the rang would never end")
+				"gam-e sefr jelo nemire", "a step of zero never moves, so the rang would never end")
 		}
 		return &rt.StepRange{Lo: nums[0], Hi: nums[1], Step: step}, nil
 	}
@@ -769,18 +773,18 @@ func fnRange(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 }
 
 func fnSeq(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
-	if len(args) == 0 {
+	if len(args) == 0 || len(args) > 3 {
 		return rt.NewList(), nil
 	}
-	n, ok := toInt(args[0])
-	if !ok || n < 0 {
-		return rt.NewList(), nil
+	r, err := fnRange(in, args, node)
+	if err != nil {
+		return nil, err
 	}
-	out := make([]rt.Value, 0, n)
-	for i := rt.Int(0); i < n; i++ {
-		out = append(out, i)
+	items, err := in.itemsOf(node, r)
+	if err != nil {
+		return nil, err
 	}
-	return rt.NewList(out...), nil
+	return rt.NewList(items...), nil
 }
 
 func fnEnumerate(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
@@ -838,7 +842,7 @@ func fnPush(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	l, ok := args[0].(*rt.List)
 	if !ok {
 		return nil, in.faultAt(node, "E4223",
-			fmt.Sprintf("bast فقط روی list کار می‌کند، نه %s", rt.TypeName(args[0])),
+			fmt.Sprintf("bast faghat roye list kar mikone, na %s", rt.TypeName(args[0])),
 			"bast works on a list, not on a %s", rt.TypeName(args[0]))
 	}
 	l.Items = append(l.Items, args[1])
@@ -849,12 +853,12 @@ func fnPop(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	l, ok := args[0].(*rt.List)
 	if !ok {
 		return nil, in.faultAt(node, "E4224",
-			fmt.Sprintf("bardavar فقط روی list کار می‌کند، نه %s", rt.TypeName(args[0])),
+			fmt.Sprintf("bardavar faghat roye list kar mikone, na %s", rt.TypeName(args[0])),
 			"bardavar works on a list, not on a %s", rt.TypeName(args[0]))
 	}
 	if len(l.Items) == 0 {
 		return rt.Nil, in.faultAt(node, "E4225",
-			"این list خالی است", "this list is empty, so there is nothing to take off it")
+			"in list khali ast", "this list is empty, so there is nothing to take off it")
 	}
 	last := l.Items[len(l.Items)-1]
 	l.Items = l.Items[:len(l.Items)-1]
@@ -865,12 +869,12 @@ func fnInsert(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	l, ok := args[0].(*rt.List)
 	if !ok {
 		return nil, in.faultAt(node, "E4226",
-			"biya فقط روی list کار می‌کند", "biya works on a list only")
+			"biya faghat roye list kar mikone", "biya works on a list only")
 	}
 	at, ok := toInt(args[1])
 	if !ok {
 		return nil, in.faultAt(node, "E4227",
-			"جای biya باید عدد باشد", "the position for biya must be a whole number")
+			"ja-ye biya bayad adad bashe", "the position for biya must be a whole number")
 	}
 	idx := int(at)
 	if idx < 0 {
@@ -907,7 +911,7 @@ func fnContains(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 		sub, ok := args[1].(rt.Str)
 		if !ok {
 			return nil, in.faultAt(node, "E4241",
-				"در یک متن فقط متن را می‌شود جست",
+				"too ye matn faghat mishe matn jost",
 				"barmadar on a text looks for a text, not %s", rt.TypeName(args[1]))
 		}
 		return rt.Bool(strings.Contains(string(s), string(sub))), nil
@@ -967,12 +971,12 @@ func fnSplit(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	s, ok := args[0].(rt.Str)
 	if !ok {
 		return nil, in.faultAt(node, "E4228",
-			"tab فقط روی matn کار می‌کند", "tab works on matn only")
+			"tab faghat roye matn kar mikone", "tab works on matn only")
 	}
 	sep, ok := args[1].(rt.Str)
 	if !ok {
 		return nil, in.faultAt(node, "E4229",
-			"جداکننده باید matn باشد", "the separator must be matn")
+			"jodakonande bayad matn bashe", "the separator must be matn")
 	}
 	parts := strings.Split(string(s), string(sep))
 	out := make([]rt.Value, len(parts))
@@ -1000,7 +1004,7 @@ func fnKeys(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	d, ok := args[0].(*rt.Dict)
 	if !ok {
 		return nil, in.faultAt(node, "E4230",
-			"dast فقط روی dict کار می‌کند", "dast works on a dict only")
+			"dast faghat roye dict kar mikone", "dast works on a dict only")
 	}
 	out := make([]rt.Value, 0, d.Len())
 	out = append(out, d.Keys()...)
@@ -1011,7 +1015,7 @@ func fnValues(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	d, ok := args[0].(*rt.Dict)
 	if !ok {
 		return nil, in.faultAt(node, "E4231",
-			"meghdar فقط روی dict کار می‌کند", "meghdar works on a dict only")
+			"meghdar faghat roye dict kar mikone", "meghdar works on a dict only")
 	}
 	out := make([]rt.Value, 0, d.Len())
 	for _, k := range d.Keys() {
@@ -1068,7 +1072,7 @@ func fnReduce(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 			return args[2], nil
 		}
 		return nil, in.faultAt(node, "E4232",
-			"kamil روی list خالی چیزی برای جمع کردن ندارد",
+			"kamil roye list-e khali chizi baraye jam kardan nadare",
 			"kamil has nothing to fold because the list is empty; give it a starting value")
 	}
 	acc := items[0]
@@ -1111,7 +1115,7 @@ func fnCast(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	typeName, ok := args[1].(rt.Str)
 	if !ok {
 		return nil, in.faultAt(node, "E4233",
-			"نوعِ tabdil باید matn باشد", "the type given to tabdil must be matn")
+			"no-e tabdil bayad matn bashe", "the type given to tabdil must be matn")
 	}
 	return in.convertTo(node, args[0], string(typeName))
 }
@@ -1189,7 +1193,7 @@ func (in *Interp) itemsOf(node ast.Node, v rt.Value) ([]rt.Value, error) {
 		return stepRangeItems(*t), nil
 	}
 	return nil, in.faultAt(node, "E4240",
-		fmt.Sprintf("از %s نمی‌شود فهرست ساخت", rt.TypeName(v)),
+		fmt.Sprintf("az %s nemishe list sakht", rt.TypeName(v)),
 		"you cannot walk a %s item by item", rt.TypeName(v))
 }
 

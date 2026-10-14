@@ -38,7 +38,7 @@ func TestIntegerOverflowIsAMistake(t *testing.T) {
 		"chap_khat 4294967296 * 4294967296\n",
 		"chap_khat 2 ** 64\n",
 	} {
-		checkFail(t, src, "64 bits")
+		checkFail(t, src, "64 biti")
 	}
 	check(t, "chap_khat 2 ** 62\n", "4611686018427387904\n")
 }

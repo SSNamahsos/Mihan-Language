@@ -1,3 +1,32 @@
+# Mihan extension 0.7.8 — Finglish CSS
+
+* 111 Finglish style words (`rang`, `zamine`, `gooshe_gerd`, `hashie`, `fasele_dakheli`, `fasele_birooni`, `pahna`, `ertefa`, `ghalam`, `andaze_matn`, `vazn_matn`, `tarazbandi`, `nemayesh`, `jahat`, `chidman`, `hamtarazi`, `sotun_ha`, `mogheiyat`, `laye`, `sarriz`, `saye`, `shafafiat`, `enteghal`, `tabdil`, `harekat`, `nashangar`, ...) and Finglish values (`siah`, `sefid`, `ghermez`, `markaz`, `por`, `hich`, `makhfi`, `charkhesh()`, `bozorgi()`, ...). English CSS names keep working.
+* `sabk {...}` builds a style sheet (selectors with piece names, `:rooye`, `@harekat`, `@kochak_tar`, `@kam_harekat`); `sabk_khat {...}` builds one style text; `safhe_kon` takes a sheet as its third argument; pieces take `kelas` and `shenase`.
+* Autocomplete offers style words and values (with colours) inside dict strings; style keys are highlighted.
+* Error messages are Finglish only. `rang_ya_khata(a, b)` now counts from a up to b.
+
+# Mihan extension 0.7.6 — Run and F5
+
+* F5 / Ctrl+F5 run the open .mhn file through a built-in `mihan` debugger type (no launch.json needed); output goes to the Debug Console, programs that read input (khanak) run in a terminal, sites get `--open`.
+* Run button (play) in the editor title, plus editor and explorer menu entries: `Mihan: Run this file` runs it in a terminal named Mihan.
+* launch.json snippets: run this file, program with input, website.
+
+# Mihan extension 0.7.5 — smarter autocomplete
+
+* After `.` the list depends on the value in front: matn, list and dict methods
+  (Finglish and English names), the fields and methods of your own darghan
+  (including `khod.` and base classes), and the names of a `biar "x.mhn" as m` module.
+  Chains such as `esm.tab(",").` follow the result type.
+* Inside a funct, parameters and locals come first, then globals, then snippets,
+  builtins and keywords. Names from imported files are offered too.
+* Every builtin and keyword has a Persian and English description and its own kind.
+* Block snippets with tab stops: agar, agar…warna, warna agar, har…dar, har…az…ta,
+  ta, funct, darghan (with __sakht__), koshish, koshish…nemigir, biar.
+* Nothing is offered inside text or notes; block keywords only at the start of a line.
+* Signature help for builtins (named parameters), user functs, methods,
+  module functs and constructors, across several lines.
+* Editor defaults tuned for Tab/Enter acceptance.
+
 # Mihan 0.7.1 — changes
 
 * **Fix:** `barmadar(matn, x)` now looks for a piece of text:

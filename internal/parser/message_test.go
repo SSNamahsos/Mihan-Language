@@ -14,9 +14,9 @@ func TestEachHalfOfAMessageIsInItsOwnLanguage(t *testing.T) {
 		fa   string
 		en   string
 	}{
-		{"darghan N\n  x = 1\n  chap kard()\n", "E2001", "کلیدواژهٔ «chap»", "keyword \"chap\""},
-		{"xs = [3, 1, 2\n", "E2001", "«]» بسته", "a closing bracket"},
-		{"2 + * 3\n", "E2023", "«*»", "\"*\""},
+		{"darghan N\n  x = 1\n  chap kard()\n", "E2001", "kalame-ye kelidi-ye 'chap'", "keyword \"chap\""},
+		{"xs = [3, 1, 2\n", "E2001", "']' baste", "a closing bracket"},
+		{"2 + * 3\n", "E2023", "'*'", "\"*\""},
 	}
 	for _, c := range cases {
 		bag := &diag.Bag{}

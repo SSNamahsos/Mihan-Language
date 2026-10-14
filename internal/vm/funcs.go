@@ -3,7 +3,7 @@ package vm
 func (m *Machine) defineFunc(name, fn int32) (Value, *fault) {
 	if int(fn) < 0 || int(fn) >= len(m.fns) {
 		return Nil(), &fault{code: "E4002",
-			fa: "دستورهای این تابع پیدا نشد",
+			fa: "dastoor-haye in funct peyda nashod",
 			en: "the instructions for this function were not found"}
 	}
 	f := m.fns[fn]
@@ -16,7 +16,7 @@ func (m *Machine) defineFunc(name, fn int32) (Value, *fault) {
 		cell := m.capture(n)
 		if cell == nil {
 			return Nil(), &fault{code: "E4003",
-				fa: "این تابع نامی را می‌خواهد که بیرون از آن پیدا نمی‌شود: " + m.nameText(n),
+				fa: "in funct esmi ro mikhad ke biroon azash peyda nemishe: " + m.nameText(n),
 				en: "this function wants a name that is not in sight: " + m.nameText(n)}
 		}
 		cl.upvals[i] = cell
@@ -27,7 +27,7 @@ func (m *Machine) defineFunc(name, fn int32) (Value, *fault) {
 func (m *Machine) makeFunc(fn int32) (Value, *fault) {
 	if int(fn) < 0 || int(fn) >= len(m.fns) {
 		return Nil(), &fault{code: "E4002",
-			fa: "دستورهای این تابع پیدا نشد",
+			fa: "dastoor-haye in funct peyda nashod",
 			en: "the instructions for this function were not found"}
 	}
 	f := m.fns[fn]
@@ -40,7 +40,7 @@ func (m *Machine) makeFunc(fn int32) (Value, *fault) {
 		cell := m.capture(n)
 		if cell == nil {
 			return Nil(), &fault{code: "E4003",
-				fa: "این تابع نامی را می‌خواهد که بیرون از آن پیدا نمی‌شود: " + m.nameText(n),
+				fa: "in funct esmi ro mikhad ke biroon azash peyda nemishe: " + m.nameText(n),
 				en: "this function wants a name that is not in sight: " + m.nameText(n)}
 		}
 		cl.upvals[i] = cell
@@ -92,12 +92,12 @@ func (f *frame) cellAt(slot int32, m *Machine) *Value {
 func (m *Machine) enterFunc(f *funcVal, args []Value) (Value, *fault, error) {
 	if len(m.frames) >= maxDepth {
 		return Nil(), nil, m.bad(0,
-			"فراخوانی‌ها خیلی عمیق شده‌اند؛ شاید تابعی بازگشتی بی‌پایان است",
+			"seda zadan-ha kheyli amigh shodan; shayad yek funct-e bazgashti bi-payan ast",
 			"the calls have gone too deep, perhaps a recursive function never ends")
 	}
 	if f.ir == nil {
 		return Nil(), nil, m.bad(0,
-			"این تابع هنوز دستوری ندارد",
+			"in funct hanooz dastoori nadare",
 			"this function has no instructions")
 	}
 
@@ -130,7 +130,7 @@ func (f *frame) cellOf(slot int32) *Value {
 func (m *Machine) callGo(f *funcVal, args []Value) (Value, *fault, error) {
 	if f == nil || f.ir == nil {
 		return Nil(), nil, m.bad(0,
-			"این تابع دستوری ندارد که اجرا شود",
+			"in funct dastoori baraye ejra nadare",
 			"this function has no instructions to run")
 	}
 

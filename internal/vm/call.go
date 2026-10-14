@@ -109,22 +109,22 @@ func toNum(v rt.Value) float64 {
 
 func arity(want, got int) error {
 	return &fault{code: "E4120",
-		fa: "این کار " + faNum(want) + " ورودی می‌خواهد، اما " + faNum(got) + " داده شد",
+		fa: "in kar " + faNum(want) + " vorudi mikhad, amma " + faNum(got) + " dade shod",
 		en: "this takes " + strconv.Itoa(want) + " arguments but was given " + strconv.Itoa(got)}
 }
 
 func faNum(n int) string {
 	switch n {
 	case 0:
-		return "هیچ"
+		return "hich"
 	case 1:
-		return "یک"
+		return "yek"
 	case 2:
-		return "دو"
+		return "do"
 	case 3:
-		return "سه"
+		return "se"
 	case 4:
-		return "چهار"
+		return "chahar"
 	}
 	return strconv.Itoa(n)
 }
@@ -132,7 +132,7 @@ func faNum(n int) string {
 func (m *Machine) call(argc int) (Value, bool, *fault, error) {
 	if len(m.stack) < argc+1 {
 		return Nil(), false, nil, m.bad(0,
-			"این فراخوانی آنچه می‌خواهد را روی پشته پیدا نکرد",
+			"in seda zadan chizi ke mikhast ro roye poshte peyda nakard",
 			"this call did not find what it needed")
 	}
 	args := m.popN(argc)
@@ -150,7 +150,7 @@ func (m *Machine) call(argc int) (Value, bool, *fault, error) {
 		v, found, err := m.hostInterp().RunBuiltin(callee.s, toRTs(args), nil)
 		if !found {
 			return Nil(), false, nil, m.bad(0,
-				"این کار را کسی ننوشته است",
+				"in kar ro kasi nanevashte",
 				"nothing implements "+callee.s)
 		}
 		if err != nil {
@@ -178,7 +178,7 @@ func (m *Machine) call(argc int) (Value, bool, *fault, error) {
 		return v, false, f, err
 	}
 	return Nil(), false, nil, m.bad(0,
-		"این را نمی‌شود صدا زد",
+		"in ro nemishe seda zad",
 		"this is not something that can be called")
 }
 
@@ -188,7 +188,7 @@ func (m *Machine) callMethod(name string, recv Value, args []Value) (Value, bool
 		return v, entered, fc, err
 	}
 	return Nil(), false, nil, m.bad(0,
-		"روی این چیز، متدی به نام «"+name+"» نیست",
+		"roye in chiz, method-i be esm-e '"+name+"' nist",
 		"there is no method called "+name+" on this")
 }
 
@@ -267,7 +267,7 @@ func init() {
 		}
 		s, ok := args[0].(rt.Str)
 		if !ok {
-			return rt.Nil, m.bad(0, "این متن نیست", "that is not a text")
+			return rt.Nil, m.bad(0, "in matn nist", "that is not a text")
 		}
 		return rt.Int(int64(rt.RuneCount(string(s)))), nil
 	}
@@ -277,7 +277,7 @@ func init() {
 		}
 		l, ok := args[0].(*rt.List)
 		if !ok {
-			return rt.Nil, m.bad(0, "این فهرست نیست", "that is not a list")
+			return rt.Nil, m.bad(0, "in list nist", "that is not a list")
 		}
 		return rt.Int(int64(len(l.Items))), nil
 	}

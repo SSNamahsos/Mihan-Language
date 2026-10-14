@@ -141,38 +141,38 @@ func (p *Parser) expect(k token.Kind, what string) (token.Token, bool) {
 		return p.advance(), true
 	}
 	p.errfArgs("E2001",
-		"اینجا «%s» را می‌خواستم، ولی %s آمد", []any{farsi(what), p.cur().DescribeFarsi()},
+		"inja '%s' ro mikhastam, vali %s oumad", []any{farsi(what), p.cur().DescribeFarsi()},
 		"I expected %s here, but found %s", []any{what, p.cur().Describe()})
 	return p.cur(), false
 }
 
 var farsiPhrases = map[string]string{
-	"the modul name":                        "نامِ ماژول",
-	"the barname":                           "نامِ پرونده",
-	"an opening brace":                      "«{» گشوده",
-	"a closing brace":                       "«}» بسته",
-	"the end of the indented block":         "پایانِ بلوکِ تورفتگی",
-	"the end of the indented body":          "پایانِ بدنهٔ تورفتگی",
-	"the end of the list of type names":     "پایانِ فهرستِ نامِ نوع‌ها",
-	"the end of the type parameters":        "پایانِ پارامترهای نوع",
-	"a closing parenthesis":                 "«)» بسته",
-	"the module path":                       "راهِ ماژول",
-	"a short name for the module":           "نامی کوتاه برای ماژول",
-	"the name of the dastoor":               "نامِ دستور",
-	"the name of the darghan":               "نامِ دایره",
-	"the end of the list of base names":     "پایانِ فهرستِ نامِ پایه‌ها",
-	"the name of the sakht":                 "نامِ ساخت",
-	"the name of the shenase":               "نامِ شناسه",
-	"a closing bracket":                     "«]» بسته",
-	"a } to close the ${":                   "«}» برای بستنِ «${",
-	"a colon between the key and the value": "«:» میان کلید و مقدار",
+	"the modul name":                        "esm-e modul",
+	"the barname":                           "esm-e parvande",
+	"an opening brace":                      "'{' baz",
+	"a closing brace":                       "'}' baste",
+	"the end of the indented block":         "payan-e block-e torafteghi",
+	"the end of the indented body":          "payan-e badane-ye torafteghi",
+	"the end of the list of type names":     "payan-e list-e esm-e no-ha",
+	"the end of the type parameters":        "payan-e parametr-haye no",
+	"a closing parenthesis":                 "')' baste",
+	"the module path":                       "rah-e modul",
+	"a short name for the module":           "esm-e kootah baraye modul",
+	"the name of the dastoor":               "esm-e dastoor",
+	"the name of the darghan":               "esm-e darghan",
+	"the end of the list of base names":     "payan-e list-e esm-e paye-ha",
+	"the name of the sakht":                 "esm-e sakht",
+	"the name of the shenase":               "esm-e shenase",
+	"a closing bracket":                     "']' baste",
+	"a } to close the ${":                   "'}' baraye bastan-e '${",
+	"a colon between the key and the value": "':' beyn-e kelid va meghdar",
 }
 
 func farsi(what string) string {
 	if f, ok := farsiPhrases[what]; ok {
 		return f
 	}
-	return "این را"
+	return "in ro"
 }
 
 func (p *Parser) start() diag.Pos { return p.cur().Start() }
@@ -264,7 +264,7 @@ func (p *Parser) parseStatement() ast.Stmt {
 	p.depth++
 	defer func() { p.depth-- }()
 	if p.depth > maxDepth {
-		return p.errStmt("E2002", "این برنامه خیلی عمیق شده است", "this program nests too deeply to read")
+		return p.errStmt("E2002", "in barname kheyli amigh shode", "this program nests too deeply to read")
 	}
 
 	switch p.cur().Kind {
@@ -330,15 +330,15 @@ func (p *Parser) parseModified() ast.Stmt {
 		return p.parseStructDecl(&m)
 	}
 	if m.osta {
-		p.errf("E2003", "`osta` فقط روی تابع، darghan یا sakht می‌نشیند",
+		p.errf("E2003", "`osta` faghat roye funct, darghan ya sakht mishine",
 			"osta only belongs on a funct, darghan or sakht")
 	}
 	if m.mahram {
-		p.errf("E2003", "`mahram` فقط روی تابع، darghan یا sakht می‌نشیند",
+		p.errf("E2003", "`mahram` faghat roye funct, darghan ya sakht mishine",
 			"mahram only belongs on a funct, darghan or sakht")
 	}
 	if m.baza {
-		p.errf("E2003", "`baza` فقط روی تابع، darghan یا sakht می‌نشیند",
+		p.errf("E2003", "`baza` faghat roye funct, darghan ya sakht mishine",
 			"baza only belongs on a funct, darghan or sakht")
 	}
 	st := p.parseSimpleStatement()
@@ -347,7 +347,7 @@ func (p *Parser) parseModified() ast.Stmt {
 		return vd
 	}
 	if m.sabit {
-		p.errf("E2004", "`sabit` پیش از نامی می‌آید که مقدار می‌گیرد",
+		p.errf("E2004", "`sabit` ghabl az esmi miad ke meghdar migire",
 			"sabit has to sit in front of a name that is being given a value")
 	}
 	_ = start
@@ -579,13 +579,13 @@ func (p *Parser) atKindIsAssign() bool { return p.cur().Kind.IsAssignment() }
 func (p *Parser) finishAssign(x ast.Expr, start diag.Pos) ast.Stmt {
 	op := p.advance()
 	if g, ok := x.(*ast.Group); ok {
-		p.note(p.cur(), "E2005", "نمی‌شود به چند جعبه هم‌زمان مقدار داد",
+		p.note(p.cur(), "E2005", "nemishe be chand jabe ham-zaman meghdar dad",
 			"you cannot assign to a group of values like this")
 		_ = g
 	}
 	if !assignable(x) {
 		p.bag.Add(diag.Errorf("E2006", x.Span(),
-			"«%s» جایی نیست که بشود به آن مقدار داد", "you cannot assign to %s",
+			"'%s' jaei nist ke beshe behesh meghdar dad", "you cannot assign to %s",
 			describeTarget(x)).WithFile(p.file))
 	}
 
@@ -654,7 +654,7 @@ func (p *Parser) tryParseTypedDecl(start diag.Pos) ast.Stmt {
 	if !isSoftName(p.cur()) {
 
 		if p.startsExpression() || p.atAny(token.NEWLINE, ";", token.EOF, "}", token.DEDENT) {
-			p.errf("E2025", "بعد از نام نوع باید یک نام بیاید",
+			p.errf("E2025", "bad az esm-e no bayad yek esm biad",
 				"after the type %s I need a name to give that type to", typeName)
 		}
 		p.pos = save
@@ -711,13 +711,13 @@ func (p *Parser) tryParseNameList(start diag.Pos) ast.Stmt {
 	values := unpackValues(rhs)
 	if values == nil {
 		p.errAt(p.at_(p.pos-1), "E2007",
-			"برای چند نام باید به همان تعداد مقدار بدهی",
+			"baraye chand esm bayad be hamoon tedad meghdar bedi",
 			"naming %d things needs %d values on the right", len(names), len(names))
 		return nil
 	}
 	if len(values) != len(names) {
 		p.errAt(p.at_(p.pos-1), "E2008",
-			"تعداد نام‌ها با تعداد مقدارها یکی نیست",
+			"tedad-e esm-ha ba tedad-e meghdar-ha yeki nist",
 			"you named %d things but supplied %d values", len(names), len(values))
 	}
 	var out multiDecl
@@ -788,7 +788,7 @@ func (p *Parser) parseFor() ast.Stmt {
 	start := p.start()
 	p.advance()
 	if !p.at(token.IDENT) {
-		p.errf("E2010", "پس از `har` باید یک نام بیاید", "a for loop needs a name for the current item")
+		p.errf("E2010", "bad az `har` bayad yek esm biad", "a for loop needs a name for the current item")
 		return &ast.ForStmt{Loc: p.finish(start), Body: p.parseBlock()}
 	}
 	name := p.advance()
@@ -797,7 +797,7 @@ func (p *Parser) parseFor() ast.Stmt {
 		p.advance()
 		lo := p.parseExpression()
 		if !p.at("ta") {
-			p.errf("E2009", "پس از `az` باید `ta` بیاید", "after az I need ta to say where the range ends")
+			p.errf("E2009", "bad az `az` bayad `ta` biad", "after az I need ta to say where the range ends")
 			return nil
 		}
 		p.advance()
@@ -832,7 +832,7 @@ func (p *Parser) parseFor() ast.Stmt {
 			Iter: iter, Filter: filter, Body: body,
 		}
 	}
-	p.errf("E2010", "پس از نام حلقه یک `az` یا `dar` بیاور",
+	p.errf("E2010", "bad az esm-e halghe yek `az` ya `dar` biar",
 		"a for loop needs az for a range or dar to walk a collection")
 	return nil
 }
@@ -922,7 +922,7 @@ func (p *Parser) parseIndentedBlock() *ast.Block {
 	}
 	p.advance()
 	if !p.at(token.INDENT) {
-		p.errf("E2011", "بدنه باید یک خط جلوتر و تورفته بنشیند",
+		p.errf("E2011", "badane bayad yek khat paeen-tar va torafte bashe",
 			"this block has no body; put its statements on the next line, indented")
 		return &ast.Block{Loc: p.finish(start)}
 	}
@@ -949,7 +949,7 @@ func (p *Parser) parseFuncDecl(m *mods) ast.Stmt {
 	}
 
 	if !isSoftName(p.cur()) {
-		p.errf("E2026", "پس از funct باید یک نام بیاید", "a funct needs a name after it")
+		p.errf("E2026", "bad az funct bayad yek esm biad", "a funct needs a name after it")
 	}
 	p.generics = generics
 	nameTok := p.advance()
@@ -981,7 +981,7 @@ func (p *Parser) parseFuncDecl(m *mods) ast.Stmt {
 
 func (p *Parser) parseParams() []*ast.Param {
 	if !p.at("(") {
-		p.errf("E2012", "پس از نام تابع باید `(` بیاید", "a funct needs a parameter list in parentheses")
+		p.errf("E2012", "bad az esm-e funct bayad `(` biad", "a funct needs a parameter list in parentheses")
 		return nil
 	}
 	p.advance()
@@ -994,7 +994,7 @@ func (p *Parser) parseParams() []*ast.Param {
 			typeFirst = p.advance().Lit
 		}
 		if !isSoftName(p.cur()) {
-			p.errf("E2013", "هر پارامتر باید اسم داشته باشد", "every parameter needs a name, not just a type")
+			p.errf("E2013", "har parametr bayad esm dashte bashe", "every parameter needs a name, not just a type")
 			break
 		}
 		t := p.advance()
@@ -1027,7 +1027,7 @@ func (p *Parser) parseResultType() string {
 	switch {
 	case p.at(token.IDENT), p.at(token.INT), p.at(token.FLOAT), p.at(token.STRING),
 		p.cur().Kind.IsOperator(), p.cur().Kind == "(", p.cur().Kind == "[":
-		p.errf("E2027", "بعد از `->` باید نام نوع بیاید",
+		p.errf("E2027", "bad az `->` bayad esm-e no biad",
 			"`->` is followed by the type a funct gives back, not the value; use bargard inside the body to send a value back")
 	}
 	return p.parseTypeName()
@@ -1052,7 +1052,7 @@ func (p *Parser) parseTypeName() string {
 
 		b = append(b, []rune(canonical(t.Lit))...)
 	} else {
-		p.errf("E2014", "اینجا نام نوع لازم است", "I need a type name here")
+		p.errf("E2014", "inja esm-e no lazem ast", "I need a type name here")
 		return ""
 	}
 	if p.at("<") {
@@ -1173,9 +1173,9 @@ func (p *Parser) parseStructDecl(m *mods) ast.Stmt {
 
 	for _, meth := range s.Methods {
 		p.bag.Add(diag.New("E2015", meth.Span(),
-			"ساخت جای متد ندارد؛ برای این کار `darghan` بنویس",
+			"sakht ja-ye method nadare; baraye in kar `darghan` benevis",
 			fmt.Sprintf("a sakht cannot hold the method %q; write a darghan instead", meth.Name)).
-			WithNote("a sakht is for values that are just data, like a point or a date").
+			WithNote("sakht baraye meghdar-haei ast ke faghat dade-and, mesl-e yek noghte ya yek tarikh").
 			WithFile(p.file))
 	}
 	s.Loc = p.finish(start)
@@ -1199,7 +1199,7 @@ func (p *Parser) collectClassBody(body *ast.Block, what string) ([]*ast.FieldDec
 			methods = append(methods, v)
 		default:
 			p.bag.Add(diag.New("E2019", st.Span(),
-				fmt.Sprintf("داخل %s فقط فیلد و متد می‌آید", what),
+				fmt.Sprintf("dakhel-e %s faghat field va method miad", what),
 				fmt.Sprintf("a %s body holds only fields and methods, not %s", what, st.NodeKind())).WithFile(p.file))
 		}
 	}
@@ -1220,7 +1220,7 @@ func (p *Parser) parseEnumDecl() ast.Stmt {
 			ev, ok := st.(*ast.EnumValue)
 			if !ok {
 				p.bag.Add(diag.New("E2016", st.Span(),
-					"داخل `shenase` فقط نام مقدارها می‌آید",
+					"dakhel-e `shenase` faghat esm-e meghdar-ha miad",
 					fmt.Sprintf("a shenase body holds only named values, not %s", st.NodeKind())).WithFile(p.file))
 				continue
 			}
@@ -1246,7 +1246,7 @@ func (p *Parser) parseClassBody() *ast.Block {
 	}
 	p.advance()
 	if !p.at(token.INDENT) {
-		p.errf("E2017", "بدنه خالی است", "this declaration has no body; indent its members")
+		p.errf("E2017", "badane khali ast", "this declaration has no body; indent its members")
 		return &ast.Block{Loc: p.finish(start)}
 	}
 	p.advance()
@@ -1287,7 +1287,7 @@ func (p *Parser) parseClassMember() ast.Stmt {
 	}
 
 	if !p.at(token.IDENT) {
-		p.errf("E2018", "اینجا فقط فیلد یا متد می‌آید", "only fields and methods can go here")
+		p.errf("E2018", "inja faghat field ya method miad", "only fields and methods can go here")
 		return nil
 	}
 	nameTok := p.advance()
@@ -1298,7 +1298,7 @@ func (p *Parser) parseClassMember() ast.Stmt {
 		p.skipSeps()
 		for !p.at(")") && !p.at(token.EOF) {
 			if !p.at(token.IDENT) {
-				p.errf("E2013", "هر پارامتر باید اسم داشته باشد", "every parameter needs a name, not just a type")
+				p.errf("E2013", "har parametr bayad esm dashte bashe", "every parameter needs a name, not just a type")
 				break
 			}
 			t := p.advance()
@@ -1369,7 +1369,7 @@ func (p *Parser) assignAsExpr(x ast.Expr, start diag.Pos) ast.Expr {
 	op := p.advance()
 	if !assignable(x) {
 		p.bag.Add(diag.Errorf("E2006", x.Span(),
-			"«%s» جایی نیست که بشود به آن مقدار داد", "you cannot assign to %s",
+			"'%s' jaei nist ke beshe behesh meghdar dad", "you cannot assign to %s",
 			describeTarget(x)).WithFile(p.file))
 	}
 	return &ast.Assign{Loc: p.finish(start), Op: op.Kind, Target: x, Value: p.parseExpression()}
@@ -1584,7 +1584,7 @@ func (p *Parser) parseIndexOrSlice(x ast.Expr) ast.Expr {
 
 func (p *Parser) parseMember(x ast.Expr) (ast.Expr, bool) {
 	if !p.at(token.IDENT) && !p.cur().Kind.IsKeyword() {
-		p.errf("E2020", "پس از نقطه یک نام لازم است", "a field or method name must follow the dot")
+		p.errf("E2020", "bad az noghte yek esm lazem ast", "a field or method name must follow the dot")
 		return x, false
 	}
 	nameTok := p.advance()
@@ -1618,7 +1618,7 @@ func (p *Parser) parsePrimary() ast.Expr {
 		if err != nil {
 			u, uerr := strconv.ParseUint(t.Text, 10, 64)
 			if uerr != nil {
-				p.errf("E2021", "عدد %s از اندازه arz بزرگ‌تر است", "%s is larger than arz can hold", t.Text)
+				p.errf("E2021", "adad-e %s az andaze-ye arz bozorgtar ast", "%s is larger than arz can hold", t.Text)
 				n = 0
 			} else {
 				n = int64(u)
@@ -1676,7 +1676,7 @@ func (p *Parser) parsePrimary() ast.Expr {
 		cond := p.parseExpression()
 		then := p.parseExpression()
 		if !p.at("warna") {
-			p.errf("E2022", "پس از شرطِ `agar` باید `warna` بیاید",
+			p.errf("E2022", "bad az shart-e `agar` bayad `warna` biad",
 				"a one-line agar needs a warna in the middle: agar cond then warna otherwise")
 			return &ast.ErrorExpr{Loc: ast.SpanOf(start, p.prevEnd()), Message: "missing warna"}
 		}
@@ -1710,7 +1710,7 @@ func (p *Parser) parsePrimary() ast.Expr {
 		}
 	}
 	p.errfArgs("E2023",
-		"%s اینجا نمی‌تواند بنشیند", []any{t.DescribeFarsi()},
+		"%s inja nemitoone beshine", []any{t.DescribeFarsi()},
 		"%s cannot be used where a value is expected", []any{t.Describe()})
 	p.advance()
 	return &ast.ErrorExpr{Loc: ast.SpanOf(start, p.prevEnd()), Message: t.DescribeFarsi(), English: t.Describe()}
@@ -1734,10 +1734,10 @@ func (p *Parser) parseInterp(t token.Token) ast.Expr {
 
 			q := p.advance()
 			p.bag.Add(diag.Errorf("E2024", ast.SpanOf(q.Span().Start, q.EndPos()),
-				"داخل «${}» هیچ عبارتی نیست", "there is no expression between ${ and }").WithFile(p.file))
+				"dakhel-e '${}' hich ebarati nist", "there is no expression between ${ and }").WithFile(p.file))
 			lit.Segs = append(lit.Segs, ast.InterpSeg{Loc: ast.SpanOf(q.Span().Start, q.EndPos()), Expr: nil})
 		case token.EOF:
-			p.errf("E1005", "رشته بسته نشد", "this string is never closed")
+			p.errf("E1005", "matn baste nashod", "this string is never closed")
 			return lit
 		default:
 			sp := p.start()
@@ -1777,7 +1777,7 @@ func (p *Parser) parseListComp(start diag.Pos, elem ast.Expr) ast.Expr {
 	p.advance()
 	c := &ast.ListComp{Elem: elem}
 	if !p.at(token.IDENT) {
-		p.errf("E2010", "پس از `har` باید یک نام بیاید", "a for loop needs a name for the current item")
+		p.errf("E2010", "bad az `har` bayad yek esm biad", "a for loop needs a name for the current item")
 		return c
 	}
 	name := p.advance()
@@ -1791,7 +1791,7 @@ func (p *Parser) parseListComp(start diag.Pos, elem ast.Expr) ast.Expr {
 		p.advance()
 		lo := p.parseExpression()
 		if !p.at("ta") {
-			p.errf("E2009", "پس از `az` باید `ta` بیاید", "after az I need ta to say where the range ends")
+			p.errf("E2009", "bad az `az` bayad `ta` biad", "after az I need ta to say where the range ends")
 			return c
 		}
 		p.advance()
@@ -1799,7 +1799,7 @@ func (p *Parser) parseListComp(start diag.Pos, elem ast.Expr) ast.Expr {
 		inclusive := p.accept("+")
 		c.Iter = &ast.RangeExpr{Loc: p.finish(rs), Lo: lo, Hi: hi, Inclusive: inclusive}
 	default:
-		p.errf("E2028", "در فهرست‌سازی پس از نام باید `dar` یا `az` بیاید",
+		p.errf("E2028", "dar list-sazi bad az esm bayad `dar` ya `az` biad",
 			"in [x har x dar xs] the name must be followed by dar or az")
 		return c
 	}

@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
+import { registerRun } from './run';
 
 let trace: vscode.OutputChannel;
 
@@ -19,6 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('mihan.showOutput', () => trace.show(true)),
     vscode.commands.registerCommand('mihan.newProgram', () => newProgram()),
   );
+  registerRun(context, () => mihanCommand(context));
 
 }
 
@@ -190,7 +192,7 @@ class MihanClient {
           });
           return toCompletions(r);
         },
-      }, '.', '(', ',', ' '));
+      }, '.'));
 
     add(
       vscode.languages.registerDocumentFormattingEditProvider('mihan', {
@@ -429,6 +431,8 @@ function toCompletions(r: any): vscode.CompletionItem[] {
       item.insertText = it.insertText;
     }
     if (it.sortText) item.sortText = it.sortText;
+    if (Array.isArray(it.commitCharacters)) item.commitCharacters = it.commitCharacters;
+    if (it.command && it.command.command) item.command = { title: it.command.title || '', command: it.command.command };
     if (it.documentation?.value) {
       item.documentation = new vscode.MarkdownString(it.documentation.value);
     }
@@ -437,19 +441,8 @@ function toCompletions(r: any): vscode.CompletionItem[] {
 }
 
 function toCompletionKind(kind: number): vscode.CompletionItemKind {
-  const k = vscode.CompletionItemKind;
-  switch (kind) {
-    case 1: return k.Text;
-    case 2: return k.Method;
-    case 3: return k.Function;
-    case 5: return k.Field;
-    case 6: return k.Variable;
-    case 7: return k.Class;
-    case 14: return k.Keyword;
-    case 15: return k.Snippet;
-    case 21: return k.Constant;
-    default: return k.Text;
-  }
+  if (typeof kind === 'number' && kind >= 1 && kind <= 25) return (kind - 1) as vscode.CompletionItemKind;
+  return vscode.CompletionItemKind.Text;
 }
 
 function toSymbol(s: any, uri: vscode.Uri): vscode.DocumentSymbol {

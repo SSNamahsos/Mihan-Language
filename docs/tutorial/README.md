@@ -28,6 +28,7 @@ if any output differs, so the course cannot drift from the language.)
 | 15 | [On an Android phone](15-android.md) | `mihan build --os android`, an APK |
 | 16 | [A real web API](16-web-api.md) | routes with `:id`, methods, CORS, cookies, `jalase`, uploads, `qaleb`, live events |
 | 17 | [Trying an Android app](17-preview.md) | `mihan preview --android`, `mihan.toast/vibrate/share/onBack` |
+| 18 | [Reference and more tools](18-marja.md) | every built-in word, maths, type checks |
 
 The short `NN-*.mhn` files in this folder are the original one-page reference
 programs; they are run by `mihan test` and complement the lessons.

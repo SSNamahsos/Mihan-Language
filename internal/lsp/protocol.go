@@ -122,6 +122,8 @@ type ServerCapabilities struct {
 type CompletionOptions struct {
 	TriggerCharacters []string `json:"triggerCharacters,omitempty"`
 	ResolveProvider   bool     `json:"resolveProvider"`
+
+	AllCommitCharacters []string `json:"allCommitCharacters,omitempty"`
 }
 
 type CompletionItemKind int
@@ -159,6 +161,10 @@ type CompletionItem struct {
 	FilterText string `json:"filterText,omitempty"`
 
 	SortText string `json:"sortText,omitempty"`
+
+	CommitCharacters []string `json:"commitCharacters,omitempty"`
+
+	Command *Command `json:"command,omitempty"`
 }
 
 type CompletionList struct {
@@ -196,4 +202,16 @@ type SymbolInformation struct {
 	Location Location   `json:"location"`
 
 	ContainerName string `json:"containerName,omitempty"`
+}
+
+const (
+	KindModule        CompletionItemKind = 9
+	KindProperty      CompletionItemKind = 10
+	KindEnum          CompletionItemKind = 13
+	KindTypeParameter CompletionItemKind = 25
+)
+
+type Command struct {
+	Title   string `json:"title"`
+	Command string `json:"command"`
 }

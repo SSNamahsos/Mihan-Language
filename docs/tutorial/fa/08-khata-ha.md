@@ -6,7 +6,7 @@
 
 ## ۸.۱ وقتی میهن یک اشتباه پیدا می‌کند
 
-اگر برنامه کار غیرممکنی بکند، میهن متوقف می‌شود و می‌گوید کجا و چرا؛ به فارسی و انگلیسی،
+اگر برنامه کار غیرممکنی بکند، میهن متوقف می‌شود و می‌گوید کجا و چرا؛ به فینگلیش،
 همراه با کدی که می‌توانید جست‌وجویش کنید:
 
 </div>
@@ -17,9 +17,8 @@ chap_khat x / 0
 ```
 
 ```output
-error: E4133
-  نمی‌شود بر صفر تقسیم کرد
-  division by zero has no answer
+khata: E4133
+  nemishe bar sefr taghsim kard
    2 | chap_khat x / 0
                  ^
 ```
@@ -42,7 +41,7 @@ chap_khat "barname edame dad"
 ```
 
 ```output
-khata: division by zero has no answer
+khata: nemishe bar sefr taghsim kard
 barname edame dad
 ```
 

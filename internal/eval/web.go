@@ -188,7 +188,7 @@ func fnSession(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	req, ok := args[0].(*rt.Dict)
 	if !ok {
 		return nil, in.faultAt(node, "E4360",
-			"jalase درخواست را می‌خواهد",
+			"jalase darkhast ro mikhad",
 			"jalase needs the request dict, not %s", rt.TypeName(args[0]))
 	}
 	id := ""
@@ -249,7 +249,7 @@ func fnJSONAnswer(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) 
 		n, ok := toInt(args[1])
 		if !ok {
 			return nil, in.faultAt(node, "E4361",
-				"وضعیت باید عدد باشد",
+				"vaziat bayad adad bashe",
 				"the status has to be a whole number, not %s", rt.TypeName(args[1]))
 		}
 		status = int64(n)
@@ -262,7 +262,7 @@ func fnTemplate(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	data, ok2 := args[1].(*rt.Dict)
 	if !ok || !ok2 {
 		return nil, in.faultAt(node, "E4362",
-			"qaleb یک متن و یک dict می‌خواهد",
+			"qaleb yek matn va yek dict mikhad",
 			"qaleb needs the template text and a dict of values")
 	}
 	s := string(src)
@@ -288,7 +288,7 @@ func fnTemplate(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 		v, found := lookupPath(data, name)
 		if !found {
 			return nil, in.faultAt(node, "E4363",
-				fmt.Sprintf("qaleb «%s» را ندارد", name),
+				fmt.Sprintf("qaleb '%s' ro nadare", name),
 				"the template asks for %s, which the dict does not have", name)
 		}
 		if raw {
@@ -419,7 +419,7 @@ func fnSendEvent(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	ch, ok := args[0].(rt.Str)
 	if !ok {
 		return nil, in.faultAt(node, "E4364",
-			"نام کانال باید متن باشد",
+			"esm-e kanal bayad matn bashe",
 			"the channel name has to be text, not %s", rt.TypeName(args[0]))
 	}
 	var data string

@@ -448,29 +448,29 @@ func TestErrorStopsUncaught(t *testing.T) {
 	checkFail(t, "portab khata(\"oops\")\n", "oops")
 
 	got := runFail(t, "har i az 0 ta 3\n    chap_khat 1 / (i - 1)\n")
-	if !strings.Contains(got, "division by zero") {
+	if !strings.Contains(got, "taghsim") {
 		t.Errorf("the message should name the problem, got %q", got)
 	}
 }
 
 func TestNamesThatAreNotThere(t *testing.T) {
 	checkFail(t, "chap_khat nada\n", "nada")
-	checkFail(t, "f(1)\n", "not a name I know")
-	checkFail(t, "darghan A\n    x = 1\n\na = A()\nchap_khat a.nope\n", "not a field or a method of")
-	checkFail(t, "x = 1\nchap_khat x.nope\n", "you cannot read a field from a arz")
+	checkFail(t, "f(1)\n", "hich ja nasakhtam")
+	checkFail(t, "darghan A\n    x = 1\n\na = A()\nchap_khat a.nope\n", "nist")
+	checkFail(t, "x = 1\nchap_khat x.nope\n", "az arz nemishe ozv khoond")
 }
 
 func TestMistakesAreNamed(t *testing.T) {
-	checkFail(t, "1 / 0\n", "division by zero")
-	checkFail(t, "ghesmat(1, 0)\n", "division by zero")
-	checkFail(t, "xs = [1]\nxs[5]\n", "outside a list")
-	checkFail(t, "\"abc\"[9]\n", "outside a matn")
-	checkFail(t, "d = {}\nd[\"nope\"]\n", "no nope in this dict")
+	checkFail(t, "1 / 0\n", "bar sefr taghsim")
+	checkFail(t, "ghesmat(1, 0)\n", "taghsim")
+	checkFail(t, "xs = [1]\nxs[5]\n", "dar list-i be boland-i")
+	checkFail(t, "\"abc\"[9]\n", "dar matn-i be boland-i")
+	checkFail(t, "d = {}\nd[\"nope\"]\n", "kelid-e 'nope' dar dict nist")
 	checkFail(t, "sabit x = 1\nx = 2\n", "sabit")
-	checkFail(t, "tule 5\n", "length of a arz")
+	checkFail(t, "tule 5\n", "tule-ye arz")
 	checkFail(t, "5 + \"a\" - 1\n", "")
-	checkFail(t, "har i dar 5\n    chap 1\n", "cannot be walked")
-	checkFail(t, "1 < \"a\"\n", "cannot be compared")
+	checkFail(t, "har i dar 5\n    chap 1\n", "too halghe charkhoond")
+	checkFail(t, "1 < \"a\"\n", "moghayese kard")
 }
 
 func TestKhorojiUnlocked(t *testing.T) {
@@ -552,13 +552,13 @@ func TestWalkEveryKindOfCollection(t *testing.T) {
 
 func TestMethodOnValueIsFoundByName(t *testing.T) {
 
-	checkFail(t, "xs = [1]\nxs.nope\n", "nothing called nope")
-	checkFail(t, "\"a\".nope()\n", "nothing called nope")
+	checkFail(t, "xs = [1]\nxs.nope\n", "chizi be esm-e 'nope' nist")
+	checkFail(t, "\"a\".nope()\n", "chizi be esm-e 'nope' nist")
 }
 
 func TestCallingANumberIsExplained(t *testing.T) {
 	got := runFail(t, "\"salam\".tule()\n")
-	if !strings.Contains(got, "not something to call") {
+	if !strings.Contains(got, "na funct-i ke beshe seda zad") {
 		t.Errorf("the message should say it is not something to call, got %q", got)
 	}
 }
@@ -641,7 +641,7 @@ func TestStepLimitStopsARunaway(t *testing.T) {
 	if err == nil {
 		t.Fatal("a loop that never ends should have been stopped")
 	}
-	if !strings.Contains(runFailText(t, err), "too long") {
+	if !strings.Contains(runFailText(t, err), "bish az had kar kard") {
 		t.Errorf("the message should say the program ran too long, got %q", err)
 	}
 }
@@ -659,7 +659,7 @@ func runFailText(t *testing.T, err error) string {
 }
 
 func TestDeepRecursionIsStoppedNotCrashed(t *testing.T) {
-	checkFail(t, "funct f()\n    f()\nf()\n", "deeper")
+	checkFail(t, "funct f()\n    f()\nf()\n", "bish az had hamdige ro seda zadan")
 }
 
 func TestNoNameIsCalledBeforeItIsGiven(t *testing.T) {

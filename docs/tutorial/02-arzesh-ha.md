@@ -114,17 +114,15 @@ chap_khat adad_karda("2.5")
 ```
 
 `adad_karda` reads a number from text and keeps it whole when it is whole. When
-the text is not a number at all, the program stops and says so, in Persian and
-English:
+the text is not a number at all, the program stops and says so, in Finglish:
 
 ```mihan fails
 chap_khat adad_karda("dah")
 ```
 
 ```output
-error: E4125
-  «dah» عدد نیست
-  dah is not a number
+khata: E4125
+  'dah' adad nist
    1 | chap_khat adad_karda("dah")
                  ^
 ```

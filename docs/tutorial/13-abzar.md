@@ -47,7 +47,7 @@ Lesson 14 shows `mihan build` in full.
 
 ## 13.3 VS Code
 
-Install the extension (`mihan-0.7.1.vsix`: *Extensions → … → Install from VSIX*).
+Install the extension (`mihan-0.7.8.vsix`: *Extensions → … → Install from VSIX*).
 Then, in any `.mhn` file you get:
 
 * **Autocomplete** for every keyword (Finglish and English), every builtin with
@@ -58,7 +58,7 @@ Then, in any `.mhn` file you get:
   `m-khoroji` write a complete server, page, window app, script or test block.
 * **Signature help**: type `(` after a function to see its parameters.
 * **Hover** over any word to see what it means.
-* **Mistakes** underlined as you type, in Persian and English.
+* **Mistakes** underlined as you type, in Finglish.
 * **Ctrl+click** to jump to where a name was made, and **format on save**.
 
 The extension contains `mihan.exe`, so it works even before you run

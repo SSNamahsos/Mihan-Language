@@ -231,7 +231,7 @@ func (v Value) ToRT() rt.Value {
 				m := fv.home
 				if m == nil {
 					return nil, &fault{code: "E5002",
-						fa: "این تابع دیگر به ماشینی که ساخته بود وصل نیست",
+						fa: "in funct dige be mashini ke sakhtesh vasl nist",
 						en: "this function is no longer connected to the machine it was made on"}
 				}
 				vs := make([]Value, len(args))

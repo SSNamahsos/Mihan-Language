@@ -17,13 +17,15 @@ chap $"Miyan 2 + 2 = {2 + 2} ast."
 
 That is a whole program. There is no `main`, no class, and nothing to set up.
 
+Documentation and an in-browser playground: **[docs.mihan.mihani-circle.ir](https://docs.mihan.mihani-circle.ir)**
+
 ## Download
 
 | File | For |
 |---|---|
 | [mihan.exe](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan.exe) | Windows (64-bit) |
 | [mihan-linux-amd64](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan-linux-amd64) | Linux (64-bit) |
-| [mihan-0.7.3.vsix](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan-0.7.3.vsix) | VS Code extension |
+| [mihan-0.7.8.vsix](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan-0.7.8.vsix) | VS Code extension |
 - VS Code store: [Mihan Language on the Marketplace](https://marketplace.visualstudio.com/items?itemName=MihaniCircle.mihan-language) (or search "Mihan Language" in VS Code Extensions)
 
 1. Put `mihan.exe` in a folder that is on your `PATH` (or run `mihan.exe install`,
@@ -31,7 +33,7 @@ That is a whole program. There is no `main`, no class, and nothing to set up.
    `chmod +x mihan`, and move it into a folder on your `PATH`.
 2. Open a new terminal and run `mihan version`.
 3. Install the VS Code extension: *Extensions → … → Install from VSIX*, or
-   `code --install-extension mihan-0.7.3.vsix`.
+   `code --install-extension mihan-0.7.8.vsix`.
 
 ## Why it looks the way it looks
 
@@ -158,7 +160,7 @@ Three habits make this much faster:
 
 ```
 > mihan repl
-Mihan 0.7.1
+Mihan 0.7.8
 
   baraye khorod: mihan > 2 + 2
   baraye khanodan: chap "salam"
@@ -278,15 +280,14 @@ salam  docs\tutorial\02-arzhad.mhn       kharch
 8/8 sabet. Mihan 0.6.0
 ```
 
-## Mistakes are written twice
+## Mistakes are written in Finglish
 
-Every message says what to do in Persian, and then says it again in English so a
-search engine or a C++ developer can find it:
+Every message says what went wrong in Finglish, the same Persian-in-Latin-letters
+the language itself uses, with a code a search engine can find:
 
 ```
-error: E4133
-  نمی‌شود بر صفر تقسیم کرد
-  division by zero has no answer
+khata: E4133
+  nemishe bar sefr taghsim kard
    4 | chap 10 / (x - 2)
        ^^^^^^^^^^^^^
 ```

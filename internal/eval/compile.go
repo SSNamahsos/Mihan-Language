@@ -525,7 +525,7 @@ func (c *compiler) forRange(s *ast.ForStmt) cstmt {
 		h, ok2 := toInt(hiV)
 		if !ok1 || !ok2 {
 			return cNone, fr.in.faultAt(s, "E4005",
-				"دو سرِ بازه باید عدد باشند", "both ends of a har range must be whole numbers")
+				"do sar-e baze bayad adad bashan", "both ends of a har range must be whole numbers")
 		}
 		step := rt.Int(1)
 		if l > h {
@@ -670,7 +670,7 @@ func (c *compiler) varDecl(s *ast.VarDecl) cstmt {
 	store := c.storeIdent(id, func(fr *frame, b *rt.Binding) error {
 		if b.Sabit && b.Used {
 			return fr.in.faultAt(s, "E4003",
-				"`"+s.Name+"` را با `sabit` ساخته‌اند و دیگر عوض نمی‌شود",
+				"`"+s.Name+"` ba `sabit` sakhte shode va dige avaz nemishe",
 				"%s was declared sabit and cannot be changed", s.Name)
 		}
 		return nil
@@ -888,7 +888,7 @@ func (c *compiler) expr(e ast.Expr) cexpr {
 			hiI, ok2 := toInt(h)
 			if !ok1 || !ok2 {
 				return nil, fr.in.faultAt(x, "E4103",
-					"دو سر بازه باید عدد باشند", "both ends of a range must be whole numbers")
+					"do sar-e baze bayad adad bashan", "both ends of a range must be whole numbers")
 			}
 			return &rt.Range{Lo: li, Hi: hiI, Inclusive: x.Inclusive}, nil
 		}
@@ -1050,7 +1050,7 @@ func (c *compiler) dict(x *ast.DictLit) cexpr {
 			}
 			if _, ok := rt.HashKey(k); !ok {
 				return nil, fr.in.faultAt(x.Entries[i].Key, "E4101",
-					"کلیدِ dict باید عدد، matn، bool یا hich باشد",
+					"kelid-e dict bayad adad, matn, bool ya hich bashe",
 					"a dict key has to be a number, matn, bool or hich, not %s", rt.TypeName(k))
 			}
 			d.Set(k, v)
@@ -1537,7 +1537,7 @@ func (c *compiler) member(x *ast.Member) cexpr {
 		case *rt.Function, *rt.BoundMethod, *rt.ClassValue:
 		default:
 			return nil, fr.in.faultAt(x, "E4154",
-				fmt.Sprintf("«%s» یک %s است، نه تابعی که صدا زدنی", x.Name, rt.TypeName(target)),
+				fmt.Sprintf("'%s' yek %s ast, na funct-i ke beshe seda zad", x.Name, rt.TypeName(target)),
 				"%s is a %s, not something to call; write %s without brackets", x.Name, rt.TypeName(target), x.Name)
 		}
 		return fr.in.callValue(x, target, nil, vs)
@@ -1546,7 +1546,7 @@ func (c *compiler) member(x *ast.Member) cexpr {
 
 func depthFault(in *Interp, x ast.Node) error {
 	return in.faultAt(x, "E4150",
-		"تابع‌ها بیش از حد همدیگر را صدا زدند و من ایستادم",
+		"funct-ha bish az had hamdige ro seda zadan va man istadam",
 		"the calls went on deeper than %d and I stopped, so this is probably a function that never ends", maxCallDepth)
 }
 
@@ -1629,7 +1629,7 @@ func (c *compiler) call(x *ast.Call) cexpr {
 				return in.callNative(x, fn, own)
 			}
 			return nil, in.faultAt(x, "E4151",
-				fmt.Sprintf("«%s» را هیچ‌جا نساخته‌ام", id.Name),
+				fmt.Sprintf("'%s' ro hich ja nasakhtam", id.Name),
 				"%s is not a name I know; it is not a variable, a funct, a darghan or a builtin", id.Name)
 		}
 

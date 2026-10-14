@@ -136,7 +136,7 @@ chap_khat adad_karda("2.5")
 <div dir="rtl">
 
 `adad_karda` یک عدد را از متن می‌خواند و اگر عدد صحیح باشد، صحیح نگهش می‌دارد. اگر متن
-اصلاً عدد نباشد، برنامه متوقف می‌شود و این را به فارسی و انگلیسی می‌گوید:
+اصلاً عدد نباشد، برنامه متوقف می‌شود و این را به فینگلیش می‌گوید:
 
 </div>
 
@@ -145,9 +145,8 @@ chap_khat adad_karda("dah")
 ```
 
 ```output
-error: E4125
-  «dah» عدد نیست
-  dah is not a number
+khata: E4125
+  'dah' adad nist
    1 | chap_khat adad_karda("dah")
                  ^
 ```

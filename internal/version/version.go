@@ -8,7 +8,7 @@ import (
 
 const Name = "Mihan"
 
-const Version = "0.7.1"
+const Version = "0.7.8"
 
 const Stage = "stage 1 — scripts, functions, classes and the standard library"
 

@@ -17,7 +17,7 @@ type fault struct {
 	threw *Value
 }
 
-func (e *fault) Error() string { return e.en }
+func (e *fault) Error() string { return e.fa }
 
 type kind struct {
 	verb  string
@@ -33,7 +33,7 @@ var (
 func wrongType(a Value, b Value, k kind) *fault {
 	return &fault{
 		code: "E4300",
-		fa:   "این کار را نمی‌شود کرد، چون یکی از این دو " + k.what + " نیست",
+		fa:   "in kar ro nemishe kard, chon yeki az in do " + k.what + " nist",
 		en:   "you cannot " + k.verb + " " + k.what + ": one of these is a " + a.TypeName() + " and the other is a " + b.TypeName(),
 	}
 }
@@ -98,7 +98,7 @@ func arith(op ir.Op, a, b Value) (Value, *fault) {
 		if bf == 0 {
 			return Nil(), &fault{
 				code: "E4301",
-				fa:   "نمی‌شود بر صفر تقسیم کرد",
+				fa:   "nemishe bar sefr taghsim kard",
 				en:   "you cannot divide by zero",
 			}
 		}
@@ -108,7 +108,7 @@ func arith(op ir.Op, a, b Value) (Value, *fault) {
 		if bf == 0 {
 			return Nil(), &fault{
 				code: "E4302",
-				fa:   "نمی‌شود بر صفر تقسیم کرد",
+				fa:   "nemishe bar sefr taghsim kard",
 				en:   "you cannot divide by zero",
 			}
 		}
@@ -118,7 +118,7 @@ func arith(op ir.Op, a, b Value) (Value, *fault) {
 			if int64(bf) == 0 {
 				return Nil(), &fault{
 					code: "E4303",
-					fa:   "نمی‌شود بر صفر باقی‌مانده گرفت",
+					fa:   "nemishe bar sefr baghimande gereft",
 					en:   "you cannot take the remainder of a division by zero",
 				}
 			}
@@ -133,7 +133,7 @@ func arith(op ir.Op, a, b Value) (Value, *fault) {
 		}
 		return Float(r), nil
 	}
-	return Nil(), &fault{code: "E4309", fa: "این حساب را نمی‌کنم", en: "I do not know this arithmetic"}
+	return Nil(), &fault{code: "E4309", fa: "in hesab ro nemikonam", en: "I do not know this arithmetic"}
 }
 
 func flooredMod(a, b int64) int64 {

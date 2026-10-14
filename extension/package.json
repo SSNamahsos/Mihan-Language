@@ -2,7 +2,7 @@
   "name": "mihan-language",
   "displayName": "Mihan Language",
   "description": "Mihan — a programming language that reads the way Persian is spoken. Autocomplete for keywords, builtins and your own names, signature help, hover docs, mistakes, go-to-definition and formatting. By Mihani Circle.",
-  "version": "0.7.3",
+  "version": "0.7.8",
   "publisher": "MihaniCircle",
   "license": "MIT",
   "engines": {
@@ -11,7 +11,8 @@
   "categories": [
     "Programming Languages",
     "Snippets",
-    "Formatters"
+    "Formatters",
+    "Debuggers"
   ],
   "keywords": [
     "mihan",
@@ -26,7 +27,10 @@
   },
   "main": "./out/extension.js",
   "activationEvents": [
-    "onLanguage:mihan"
+    "onLanguage:mihan",
+    "onDebugResolve:mihan",
+    "onDebugDynamicConfigurations:mihan",
+    "onCommand:mihan.runFile"
   ],
   "contributes": {
     "languages": [
@@ -79,11 +83,22 @@
           "strings": false
         },
         "editor.acceptSuggestionOnEnter": "on",
-        "editor.snippetSuggestions": "top",
+        "editor.snippetSuggestions": "inline",
         "editor.tabSize": 4,
         "editor.insertSpaces": true,
         "editor.formatOnSave": true,
-        "editor.wordBasedSuggestions": "off"
+        "editor.wordBasedSuggestions": "off",
+        "editor.quickSuggestionsDelay": 10,
+        "editor.suggestOnTriggerCharacters": true,
+        "editor.acceptSuggestionOnCommitCharacter": true,
+        "editor.tabCompletion": "on",
+        "editor.suggestSelection": "first",
+        "editor.suggest.insertMode": "replace",
+        "editor.suggest.localityBonus": true,
+        "editor.suggest.showWords": false,
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.suggest.preview": true,
+        "editor.parameterHints.enabled": true
       }
     },
     "commands": [
@@ -101,12 +116,154 @@
         "command": "mihan.newProgram",
         "title": "Mihan: Start a new program",
         "category": "Mihan"
+      },
+      {
+        "command": "mihan.runFile",
+        "title": "Mihan: Run this file",
+        "category": "Mihan",
+        "icon": "$(play)"
+      },
+      {
+        "command": "mihan.debugFile",
+        "title": "Mihan: Run in the Debug Console",
+        "category": "Mihan",
+        "icon": "$(debug-alt)"
       }
     ],
     "snippets": [
       {
         "language": "mihan",
         "path": "./snippets/mihan.json"
+      }
+    ],
+    "menus": {
+      "editor/title/run": [
+        {
+          "command": "mihan.runFile",
+          "when": "resourceLangId == mihan",
+          "group": "navigation@0"
+        },
+        {
+          "command": "mihan.debugFile",
+          "when": "resourceLangId == mihan",
+          "group": "navigation@1"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "mihan.runFile",
+          "when": "resourceLangId == mihan",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "mihan.runFile",
+          "when": "resourceLangId == mihan",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "mihan.runFile",
+          "when": "resourceLangId == mihan"
+        },
+        {
+          "command": "mihan.debugFile",
+          "when": "resourceLangId == mihan"
+        }
+      ]
+    },
+    "debuggers": [
+      {
+        "type": "mihan",
+        "label": "Mihan",
+        "languages": [
+          "mihan"
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program"
+            ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "The .mhn file to run.",
+                "default": "${file}"
+              },
+              "cwd": {
+                "type": "string",
+                "description": "The folder to run in.",
+                "default": "${workspaceFolder}"
+              },
+              "args": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Words passed to the program (arghoman).",
+                "default": []
+              },
+              "console": {
+                "type": "string",
+                "enum": [
+                  "debugConsole",
+                  "integratedTerminal"
+                ],
+                "description": "Where the program runs. integratedTerminal lets it read typed input (khanak). Chosen automatically when left out."
+              },
+              "openBrowser": {
+                "type": "boolean",
+                "description": "Open a site in the browser (mihan run --open). Chosen automatically for files that serve a site."
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "mihan",
+            "request": "launch",
+            "name": "Mihan: run this file",
+            "program": "${file}",
+            "cwd": "${workspaceFolder}"
+          }
+        ],
+        "configurationSnippets": [
+          {
+            "label": "Mihan: run this file",
+            "description": "Run the open .mhn file",
+            "body": {
+              "type": "mihan",
+              "request": "launch",
+              "name": "Mihan: run this file",
+              "program": "^\"\\${file}\"",
+              "cwd": "^\"\\${workspaceFolder}\""
+            }
+          },
+          {
+            "label": "Mihan: program with input",
+            "description": "Run in a terminal so khanak can read typed input",
+            "body": {
+              "type": "mihan",
+              "request": "launch",
+              "name": "Mihan: run with input",
+              "program": "^\"\\${file}\"",
+              "console": "integratedTerminal"
+            }
+          },
+          {
+            "label": "Mihan: website",
+            "description": "Run a site and open it in the browser",
+            "body": {
+              "type": "mihan",
+              "request": "launch",
+              "name": "Mihan: run the site",
+              "program": "^\"\\${file}\"",
+              "openBrowser": true
+            }
+          }
+        ]
       }
     ]
   },

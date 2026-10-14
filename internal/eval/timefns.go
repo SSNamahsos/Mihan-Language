@@ -38,7 +38,7 @@ func fnDate(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 		s, ok := args[0].(rt.Str)
 		if !ok {
 			return nil, in.faultAt(node, "E4127",
-				"الگوی تاریخ باید متن باشد، مثل \"YYYY-MM-DD\"",
+				"olgoo-ye tarikh bayad matn bashe, mesl-e \"YYYY-MM-DD\"",
 				"the date pattern must be text such as \"YYYY-MM-DD\", not a %s", rt.TypeName(args[0]))
 		}
 		pattern = string(s)
@@ -48,7 +48,7 @@ func fnDate(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 		f, ok := toFloat(args[1])
 		if !ok {
 			return nil, in.faultAt(node, "E4127",
-				"زمان باید عدد باشد (ثانیه از ۱۹۷۰، همان که zaman می‌دهد)",
+				"zaman bayad adad bashe (sanie az 1970, hamoon ke zaman mide)",
 				"the moment must be a number of seconds since 1970 (what zaman gives), not a %s", rt.TypeName(args[1]))
 		}
 		at = time.Unix(0, int64(f*1e9))
@@ -60,7 +60,7 @@ func fnSleep(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	f, ok := toFloat(args[0])
 	if !ok || f < 0 {
 		return nil, in.faultAt(node, "E4127",
-			"sabr یک عددِ ثانیه می‌خواهد",
+			"sabr yek adad-e sanie mikhad",
 			"sabr needs a number of seconds, not %s", rt.Show(args[0]))
 	}
 	if f > 0 {

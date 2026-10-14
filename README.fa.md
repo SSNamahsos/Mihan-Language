@@ -12,13 +12,15 @@ English: [README.md](README.md)
 پایتون، و سریع‌تر در شروع به کار، حلقه‌ها و HTTP؛ جدول پایین را ببینید)، و یک تازه‌کار می‌تواند
 با یک بار خواندن مستنداتش آن را یاد بگیرد.
 
+مستندات و زمین بازی در مرورگر: **[docs.mihan.mihani-circle.ir](https://docs.mihan.mihani-circle.ir)**
+
 ## دانلود
 
 | فایل | برای |
 |---|---|
 | [mihan.exe](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan.exe) | ویندوز (۶۴ بیتی) |
 | [mihan-linux-amd64](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan-linux-amd64) | لینوکس (۶۴ بیتی) |
-| [mihan-0.7.3.vsix](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan-0.7.3.vsix) | افزونه‌ی VS Code |
+| [mihan-0.7.8.vsix](https://github.com/SSNamahsos/Mihan-Language/releases/latest/download/mihan-0.7.8.vsix) | افزونه‌ی VS Code |
 - فروشگاه VS Code: [Mihan Language در Marketplace](https://marketplace.visualstudio.com/items?itemName=MihaniCircle.mihan-language) (یا در بخش Extensions عبارت "Mihan Language" را جستجو کنید)
 
 ۱. `mihan.exe` را در پوشه‌ای بگذارید که در `PATH` شماست (یا `mihan.exe install` را اجرا
@@ -26,7 +28,7 @@ English: [README.md](README.md)
    `chmod +x mihan` را اجرا کنید و آن را به پوشه‌ای در `PATH` منتقل کنید.
 ۲. یک ترمینال جدید باز کنید و `mihan version` را اجرا کنید.
 ۳. افزونه‌ی VS Code را نصب کنید: *Extensions → … → Install from VSIX*، یا
-   `code --install-extension mihan-0.7.3.vsix`.
+   `code --install-extension mihan-0.7.8.vsix`.
 
 </div>
 
@@ -171,7 +173,7 @@ cd CodeLanguage
 
 ```
 > mihan repl
-Mihan 0.7.1
+Mihan 0.7.8
 
   baraye khorod: mihan > 2 + 2
   baraye khanodan: chap "salam"
@@ -288,17 +290,15 @@ salam  docs\tutorial\02-arzhad.mhn       kharch
 
 <div dir="rtl">
 
-## اشتباه‌ها دو بار نوشته می‌شوند
+## اشتباه‌ها به فینگلیش نوشته می‌شوند
 
-هر پیام می‌گوید چه کار باید کرد، اول به فارسی و بعد دوباره به انگلیسی، تا یک موتور جست‌وجو یا
-یک برنامه‌نویس C++ هم بتواند پیدایش کند:
+هر پیام به فینگلیش، همان فارسی با حروف لاتین که خود زبان به کار می‌برد، می‌گوید چه اشتباهی رخ داده، همراه با یک کد قابل جست‌وجو:
 
 </div>
 
 ```
-error: E4133
-  نمی‌شود بر صفر تقسیم کرد
-  division by zero has no answer
+khata: E4133
+  nemishe bar sefr taghsim kard
    4 | chap 10 / (x - 2)
        ^^^^^^^^^^^^^
 ```

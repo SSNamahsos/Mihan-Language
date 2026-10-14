@@ -36,7 +36,7 @@ func fnWriteFile(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	text, ok := args[1].(rt.Str)
 	if !ok {
 		return nil, in.faultAt(node, "E4308",
-			"آنچه نوشته می‌شود باید متن باشد",
+			"chizi ke neveshte mishe bayad matn bashe",
 			"what is written has to be text, not %s", rt.TypeName(args[1]))
 	}
 	full := in.workPath(path)
@@ -44,17 +44,17 @@ func fnWriteFile(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	st, statErr := os.Stat(parent)
 	if statErr != nil || !st.IsDir() {
 		return nil, in.faultAt(node, "E4307",
-			"پوشه‌ای که پرونده باید در آن بنشیند نیست؛ pooshe آن را می‌سازد",
+			"pooshe-i ke parvande bayad toosh bashe nist; pooshe oon ro misaze",
 			"the folder this file would go in is not there; pooshe makes one")
 	}
 	if st, err := os.Stat(full); err == nil && st.IsDir() {
 		return nil, in.faultAt(node, "E4305",
-			"این یک پوشه است؛ benevis در پوشه نمی‌نویسد",
+			"in yek pooshe ast; benevis too pooshe nemineviseh",
 			"this is a folder; benevis writes a file")
 	}
 	if err := os.WriteFile(full, []byte(string(text)), 0o644); err != nil {
 		return nil, in.faultAt(node, "E4306",
-			"نتوانستم در پرونده بنویسم: "+err.Error(),
+			"natoonestam too parvande benevisam: "+err.Error(),
 			"could not write the file: %v", err)
 	}
 	return rt.Nil, nil
@@ -69,7 +69,7 @@ func fnListDir(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	entries, err := os.ReadDir(full)
 	if err != nil {
 		return nil, in.faultAt(node, "E4310",
-			"fehrest یک پوشه می‌خواهد و این یکی نیست",
+			"fehrest yek pooshe mikhad va in pooshe nist",
 			"fehrest needs a folder, and %s is not one", path)
 	}
 	names := make([]string, 0, len(entries))
@@ -93,20 +93,20 @@ func fnRemove(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	st, statErr := os.Stat(full)
 	if statErr != nil {
 		return nil, in.faultAt(node, "E4311",
-			"چیزی به نام «"+path+"» نیست که حذف شود",
+			"chizi be esm-e '"+path+"' nist ke hazf beshe",
 			"there is nothing named %s to remove", path)
 	}
 	if st.IsDir() {
 		entries, err := os.ReadDir(full)
 		if err != nil || len(entries) > 0 {
 			return nil, in.faultAt(node, "E4312",
-				"این پوشه هنوز چیزی در خود دارد و hazf آن را پاک نمی‌کند",
+				"in pooshe hanooz chizi too khodesh dare va hazf pakesh nemikone",
 				"this folder still has things in it, so hazf will not remove it")
 		}
 	}
 	if err := os.Remove(full); err != nil {
 		return nil, in.faultAt(node, "E4306",
-			"نتوانستم حذف کنم: "+err.Error(),
+			"natoonestam hazf konam: "+err.Error(),
 			"could not remove it: %v", err)
 	}
 	return rt.Nil, nil
@@ -120,12 +120,12 @@ func fnMkdir(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	full := in.workPath(path)
 	if st, err := os.Stat(full); err == nil && !st.IsDir() {
 		return nil, in.faultAt(node, "E4313",
-			"اینجا یک پرونده است، نه یک پوشه",
+			"inja yek parvande ast, na yek pooshe",
 			"there is already a file here, not a folder")
 	}
 	if err := os.MkdirAll(full, 0o755); err != nil {
 		return nil, in.faultAt(node, "E4314",
-			"نتوانستم پوشه را بسازم: "+err.Error(),
+			"natoonestam pooshe ro besazam: "+err.Error(),
 			"could not make the folder: %v", err)
 	}
 	return rt.Nil, nil
@@ -137,7 +137,7 @@ func fnJoinPath(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 		s, ok := a.(rt.Str)
 		if !ok {
 			return nil, in.faultAt(node, "E4300",
-				"هر بخش از مسیر باید متن باشد",
+				"har bakhsh az masir bayad matn bashe",
 				"every part of a path has to be text, not %s", rt.TypeName(a))
 		}
 		parts[i] = string(s)
@@ -158,7 +158,7 @@ func fnEnv(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	name, ok := args[0].(rt.Str)
 	if !ok {
 		return nil, in.faultAt(node, "E4300",
-			"نام متغیر باید متن باشد",
+			"esm-e moteghayer bayad matn bashe",
 			"the name has to be text, not %s", rt.TypeName(args[0]))
 	}
 	v, found := os.LookupEnv(string(name))
@@ -176,13 +176,13 @@ func fnSendFile(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	urlPath, ok := args[1].(rt.Str)
 	if !ok {
 		return nil, in.faultAt(node, "E4340",
-			"مسیر صفحه باید متن باشد",
+			"masir-e safhe bayad matn bashe",
 			"the page path has to be text, not %s", rt.TypeName(args[1]))
 	}
 	dir, found := in.findPageDir(root)
 	if !found {
 		return nil, in.faultAt(node, "E4341",
-			"پوشهٔ صفحه‌ها پیدا نشد: "+root,
+			"pooshe-ye safhe-ha peyda nashod: "+root,
 			"the folder of pages was not found: %s", root)
 	}
 	rel, ok := urlRel(string(urlPath))
@@ -217,7 +217,7 @@ func fnSendFile(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	}
 	if st.Size() > maxFileBytes {
 		return nil, in.faultAt(node, "E4304",
-			"این پرونده بزرگ‌تر از آن است که یک‌جا فرستاده شود",
+			"in parvande bozorgtar az oone ke yekja ferestade beshe",
 			"this file is too large to send at once")
 	}
 	body, err := os.ReadFile(target)
@@ -394,25 +394,25 @@ func (in *Interp) fileFault(node ast.Node, full string, err error) error {
 	prob, ok := err.(fileProblem)
 	if !ok {
 		return in.faultAt(node, "E4302",
-			"نتوانستم پرونده را بخوانم: "+err.Error(),
+			"natoonestam parvande ro bekhoonam: "+err.Error(),
 			"could not read the file: %v", err)
 	}
 	switch prob.kind {
 	case "missing":
 		return in.faultAt(node, "E4301",
-			"پرونده‌ای به این نام پیدا نشد",
+			"parvande-i be in esm peyda nashod",
 			"there is no file named %s", full)
 	case "dir":
 		return in.faultAt(node, "E4305",
-			"این یک پوشه است؛ fehrest نام‌های داخل آن را می‌دهد",
+			"in yek pooshe ast; fehrest esm-haye dakhelesh ro mide",
 			"this is a folder; fehrest lists what is inside it")
 	case "large":
 		return in.faultAt(node, "E4304",
-			"این پرونده بزرگ‌تر از آن است که یک‌جا خوانده شود",
+			"in parvande bozorgtar az oone ke yekja khoonde beshe",
 			"this file is too large to read at once")
 	case "text":
 		return in.faultAt(node, "E4303",
-			"این پرونده متن نیست",
+			"in parvande matn nist",
 			"this file is not text")
 	default:
 		msg := ""
@@ -420,7 +420,7 @@ func (in *Interp) fileFault(node ast.Node, full string, err error) error {
 			msg = prob.err.Error()
 		}
 		return in.faultAt(node, "E4302",
-			"نتوانستم پرونده را بخوانم: "+msg,
+			"natoonestam parvande ro bekhoonam: "+msg,
 			"could not read the file: %v", prob.err)
 	}
 }
@@ -428,18 +428,18 @@ func (in *Interp) fileFault(node ast.Node, full string, err error) error {
 func (in *Interp) needPath(node ast.Node, args []rt.Value, i int, word string) (string, error) {
 	if i >= len(args) {
 		return "", in.faultAt(node, "E4300",
-			word+" یک مسیر می‌خواهد",
+			word+" yek masir mikhad",
 			"%s needs a path", word)
 	}
 	s, ok := args[i].(rt.Str)
 	if !ok {
 		return "", in.faultAt(node, "E4300",
-			"مسیر باید متن باشد",
+			"masir bayad matn bashe",
 			"the path has to be text, not %s", rt.TypeName(args[i]))
 	}
 	if strings.TrimSpace(string(s)) == "" {
 		return "", in.faultAt(node, "E4300",
-			"مسیر خالی است",
+			"masir khali ast",
 			"the path is empty")
 	}
 	return string(s), nil

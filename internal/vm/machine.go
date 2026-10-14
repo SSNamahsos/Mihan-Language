@@ -121,7 +121,7 @@ func (m *Machine) hostInterp() *eval.Interp {
 func (m *Machine) Run() error {
 	if m.p == nil || m.p.Top == nil {
 		return &fault{code: "E5001",
-			fa: "این برنامه چیزی برای اجرا ندارد",
+			fa: "in barname chizi baraye ejra nadare",
 			en: "this program has nothing to run"}
 	}
 	m.f = &frame{fn: m.p.Top, slots: int32(len(m.slots))}
@@ -240,7 +240,7 @@ func (m *Machine) step() (done bool, err error) {
 	case ir.OpBitNot:
 		n, ok := m.pop().AsInt()
 		if !ok {
-			return false, m.bad(0, "این عدد نیست", "that is not a number")
+			return false, m.bad(0, "in adad nist", "that is not a number")
 		}
 		m.push(Int(^n))
 	case ir.OpNeg:
@@ -261,7 +261,7 @@ func (m *Machine) step() (done bool, err error) {
 		n := len(m.stack)
 		if n < 2 {
 			return false, m.bad(0,
-				"این حساب دو عدد می‌خواهد اما روی پشته این‌قدر عدد نبود",
+				"in hesab do adad mikhad amma roye poshte in ghadr adad nabood",
 				"this arithmetic needs two numbers but the stack did not have them")
 		}
 		v, fc := arith(in.Op, m.stack[n-2], m.stack[n-1])
@@ -275,7 +275,7 @@ func (m *Machine) step() (done bool, err error) {
 		n := len(m.stack)
 		if n < 2 {
 			return false, m.bad(0,
-				"این مقایسه دو مقدار می‌خواهد اما روی پشته این‌قدر مقدار نبود",
+				"in moghayese do meghdar mikhad amma roye poshte in ghadr meghdar nabood",
 				"this comparison needs two values but the stack did not have them")
 		}
 		v, fc := compareOp(in.Op, m.stack[n-2], m.stack[n-1])
@@ -446,7 +446,7 @@ func (m *Machine) setLocal(f *frame, slot int32, v Value) {
 
 func (m *Machine) throw(v Value) error {
 	return &fault{code: "E5001", threw: &v,
-		fa: "برنامه در همین‌جا ایستاد",
+		fa: "barname hamin ja istad",
 		en: "the program stopped here"}
 }
 
@@ -460,7 +460,7 @@ func (m *Machine) handle(err error) (bool, error) {
 		v = *fc.threw
 	} else {
 
-		v = FromRT(rt.NewPanic(rt.Str(fc.en)).Value)
+		v = FromRT(rt.NewPanic(rt.Str(fc.fa)).Value)
 	}
 	if caught, herr := m.unwind(v, fc); caught {
 		return true, herr
@@ -468,6 +468,7 @@ func (m *Machine) handle(err error) (bool, error) {
 
 	if ev, ok := v.p.(*rt.ErrorValue); ok {
 		fc.en = string(ev.Message)
+		fc.fa = string(ev.Message)
 	}
 	return false, fc
 }

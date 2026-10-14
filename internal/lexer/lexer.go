@@ -184,7 +184,7 @@ measured:
 		}
 		if got := l.indents[len(l.indents)-1]; got != width {
 			l.errf("E1002", p,
-				"تورفتگی %d با تورفتگی %d جور در نمی‌آید", "indentation of %d does not line up with %d",
+				"torafteghi-ye %d ba torafteghi-ye %d jur dar nemiad", "indentation of %d does not line up with %d",
 				width, got)
 		}
 	}
@@ -232,7 +232,7 @@ func (l *Lexer) scanToken() {
 	default:
 		p := l.pos()
 		bad := l.next()
-		l.errf("E1001", p, "نویسه %q شناخته نشد", "unrecognised character %q", string(bad))
+		l.errf("E1001", p, "harf-e %q shenakhte nashod", "unrecognised character %q", string(bad))
 	}
 }
 
@@ -338,7 +338,7 @@ func (l *Lexer) lexNumber() {
 	}
 	if !l.eof() && isIdentStart(l.peek()) {
 		l.errf("E1003", p,
-			"پس از عدد %s فاصله لازم است", "number %s needs a space before the name that follows it",
+			"bad az adad-e %s fasele lazem ast", "number %s needs a space before the name that follows it",
 			string(l.src[start:l.off]))
 	}
 	if isFloat {
@@ -361,7 +361,7 @@ func (l *Lexer) finishNumber(p diag.Pos, start int, k token.Kind) {
 		l.push(token.FLOAT, raw, strconv.FormatFloat(v, 'g', -1, 64), p)
 		return
 	}
-	l.errf("E1007", p, "عدد %s خوانده نشد", "%s is not a number I can read", raw)
+	l.errf("E1007", p, "adad-e %s khoonde nashod", "%s is not a number I can read", raw)
 	l.push(token.INT, raw, "0", p)
 }
 
@@ -371,7 +371,7 @@ func (l *Lexer) lexChar() {
 	var b strings.Builder
 	for {
 		if l.eof() || l.peek() == '\n' {
-			l.errf("E1004", p, "کاراکتر بسته نشد", "this character literal is never closed")
+			l.errf("E1004", p, "harf baste nashod", "this character literal is never closed")
 			break
 		}
 		if l.peek() == '\'' {
@@ -386,7 +386,7 @@ func (l *Lexer) lexChar() {
 	}
 	if rs := []rune(b.String()); len(rs) != 1 {
 		l.errf("E1004", p,
-			"یک کاراکتر باید داخل ' بنشیند", "a character literal holds exactly one character, not %d",
+			"yek harf bayad dakhel-e ' bashe", "a character literal holds exactly one character, not %d",
 			len(rs))
 	}
 	l.push(token.CHAR, string(l.src[p.Off:l.off]), b.String(), p)
@@ -416,7 +416,7 @@ func (l *Lexer) lexString(interp bool) {
 
 	for {
 		if l.eof() || (!raw && l.peek() == '\n') {
-			l.errf("E1005", p, "رشته بسته نشد", "this string is never closed")
+			l.errf("E1005", p, "matn baste nashod", "this string is never closed")
 			break
 		}
 		r := l.peek()
@@ -523,7 +523,7 @@ func (l *Lexer) lexHoleTokens() {
 			}
 		}
 	}
-	l.errf("E1008", l.pos(), "کران ${ بسته نشد", "this ${ was never closed")
+	l.errf("E1008", l.pos(), "${ baste nashod", "this ${ was never closed")
 }
 
 func (l *Lexer) lexIdentTokens() {
@@ -625,7 +625,7 @@ func (l *Lexer) lexOperator() bool {
 			if l.parenDepth > 0 {
 				l.parenDepth--
 			} else {
-				l.errf("E1006", p, "برای %q جفت پیدا نشد", "%q has no opening bracket here", sym)
+				l.errf("E1006", p, "baraye %q joft peyda nashod", "%q has no opening bracket here", sym)
 			}
 		case "{":
 			l.braceDepth++
@@ -635,7 +635,7 @@ func (l *Lexer) lexOperator() bool {
 				l.braceDepth--
 				l.bracePos = l.bracePos[:len(l.bracePos)-1]
 			} else {
-				l.errf("E1006", p, "برای %q جفت پیدا نشد", "%q has no opening bracket here", sym)
+				l.errf("E1006", p, "baraye %q joft peyda nashod", "%q has no opening bracket here", sym)
 			}
 		}
 		return true

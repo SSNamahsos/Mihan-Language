@@ -35,12 +35,12 @@ chap_khat bekhan("`+note+`")
 func TestAMissingFileIsNamed(t *testing.T) {
 	dir := t.TempDir()
 	note := mhnPath(t, filepath.Join(dir, "nist.txt"))
-	checkFail(t, `bekhan "`+note+`"`, "no file")
+	checkFail(t, `bekhan "`+note+`"`, "peyda nashod")
 }
 
 func TestAFolderIsNotReadAsText(t *testing.T) {
 	dir := mhnPath(t, t.TempDir())
-	checkFail(t, `bekhan "`+dir+`"`, "folder")
+	checkFail(t, `bekhan "`+dir+`"`, "pooshe")
 }
 
 func TestAFolderListsNamesInOrder(t *testing.T) {
@@ -65,7 +65,7 @@ func TestHazfWillNotEmptyAFolder(t *testing.T) {
 pooshe "`+folder+`"
 benevis "`+folder+`/a.txt", "a"
 hazf "`+folder+`"
-`, "still has things")
+`, "hanooz chizi too khodesh dare")
 }
 
 func TestJSONKeepsOrderAndTheLanguageRules(t *testing.T) {
@@ -86,7 +86,7 @@ chap_khat json_benevis([dorost, ghalat, hich])
 }
 
 func TestAJSONKeyThatIsNotTextIsRefused(t *testing.T) {
-	checkFail(t, `chap_khat json_benevis({1: "a"})`, "keys have to be text")
+	checkFail(t, `chap_khat json_benevis({1: "a"})`, "kelid-e JSON faghat mitoone matn bashe")
 }
 
 func TestAnEnvironmentVariableIsTextOrNothing(t *testing.T) {
@@ -136,7 +136,7 @@ chap_khat d["matn"]
 }
 
 func TestDarkhastRefusesAFileAddress(t *testing.T) {
-	checkFail(t, `darkhast "file:///c:/notes.txt"`, "http and https")
+	checkFail(t, `darkhast "file:///c:/notes.txt"`, "http va https")
 }
 
 func TestTheShopPageAndItsAPI(t *testing.T) {

@@ -164,7 +164,7 @@ func (in *Interp) execStmt(st ast.Stmt, env *rt.Env) (rt.Flow, error) {
 	in.Steps++
 	if in.MaxSteps > 0 && in.Steps > in.MaxSteps {
 		return rt.Fatal(rt.Nil), in.faultAt(st, "E4001",
-			"برنامه بیش از حد کار کرد و متوقف شد", "the program ran for too long and was stopped")
+			"barname bish az had kar kard va motevaghef shod", "the program ran for too long and was stopped")
 	}
 
 	switch st.(type) {
@@ -270,7 +270,7 @@ func (in *Interp) execStmt(st ast.Stmt, env *rt.Env) (rt.Flow, error) {
 		return rt.Flow{Kind: rt.CtrlNone, Val: rt.Nil}, nil
 	}
 	return rt.Flow{Kind: rt.CtrlNone, Val: rt.Nil}, in.faultAt(st, "E4002",
-		"این دستور را هنوز نمی‌دانم", "I do not know how to run this statement yet (%s)", st.NodeKind())
+		"in dastoor ro hanooz balad nistam", "I do not know how to run this statement yet (%s)", st.NodeKind())
 }
 
 func (in *Interp) execVarDecl(s *ast.VarDecl, env *rt.Env) error {
@@ -299,7 +299,7 @@ func (in *Interp) execVarDecl(s *ast.VarDecl, env *rt.Env) error {
 
 		if existing.Sabit && existing.Used {
 			return in.faultAt(s, "E4003",
-				"`"+s.Name+"` را با `sabit` ساخته‌اند و دیگر عوض نمی‌شود",
+				"`"+s.Name+"` ba `sabit` sakhte shode va dige avaz nemishe",
 				"%s was declared sabit and cannot be changed", s.Name)
 		}
 		env.Set(s.Name, v)
@@ -343,7 +343,7 @@ func (in *Interp) store(target ast.Expr, v rt.Value, env *rt.Env) error {
 		}
 		if b.Sabit && b.Used {
 			return in.faultAt(target, "E4003",
-				"`"+t.Name+"` با `sabit` ساخته شده و دیگر عوض نمی‌شود",
+				"`"+t.Name+"` ba `sabit` sakhte shode va dige avaz nemishe",
 				"%s was declared sabit and cannot be changed", t.Name)
 		}
 		b.Value = v
@@ -367,7 +367,7 @@ func (in *Interp) store(target ast.Expr, v rt.Value, env *rt.Env) error {
 		return in.setMember(target, recv, t.Name, v)
 	}
 	return in.faultAt(target, "E4004",
-		"نمی‌شود این‌جا مقدار گذاشت", "there is nowhere to put a value here")
+		"inja nemishe meghdar gozasht", "there is nowhere to put a value here")
 }
 
 func (in *Interp) execIf(s *ast.IfStmt, env *rt.Env) (rt.Flow, error) {
@@ -428,7 +428,7 @@ func (in *Interp) execFor(s *ast.ForStmt, env *rt.Env) (rt.Flow, error) {
 	hi, ok2 := toInt(hiV)
 	if !ok1 || !ok2 {
 		return rt.Fatal(rt.Nil), in.faultAt(s, "E4005",
-			"دو سرِ بازه باید عدد باشند", "both ends of a har range must be whole numbers")
+			"do sar-e baze bayad adad bashan", "both ends of a har range must be whole numbers")
 	}
 
 	step := rt.Int(1)
@@ -545,10 +545,10 @@ func (in *Interp) iterate(node ast.Node, v rt.Value) ([]rt.Value, error) {
 		return stepRangeItems(*t), nil
 	case rt.Hich, nil:
 		return nil, in.faultAt(node, "E4006",
-			"روی hich حلقه نمی‌شود زد", "you cannot walk hich; there is nothing in it")
+			"roye hich nemishe halghe zad", "you cannot walk hich; there is nothing in it")
 	}
 	return nil, in.faultAt(node, "E4007",
-		fmt.Sprintf("%s را نمی‌شود در حلقه گرداند", rt.TypeName(v)),
+		fmt.Sprintf("%s ro nemishe too halghe charkhoond", rt.TypeName(v)),
 		"a %s cannot be walked with har dar", rt.TypeName(v))
 }
 
@@ -622,7 +622,7 @@ func (in *Interp) execClassDecl(s *ast.ClassDecl, env *rt.Env) error {
 		parent, ok := in.classes[base]
 		if !ok {
 			return in.faultAt(s, "E4008",
-				fmt.Sprintf("پایه‌ی «%s» پیش از این ساخته نشده", base),
+				fmt.Sprintf("paye-ye '%s' ghabl az in sakhte nashode", base),
 				"%s must be declared before it is used as a base", base)
 		}
 		cls.Parent = parent
@@ -712,6 +712,7 @@ func (in *Interp) faultAt(node ast.Node, code, fa, enFormat string, args ...any)
 	msg := rt.NewError(enFormat, args...)
 	msg.Name = code
 	msg.FA = persian(fa, args...)
+	msg.Message = rt.Str(msg.FA)
 	return in.panicAt(node, msg)
 }
 
@@ -726,6 +727,7 @@ func (in *Interp) faultFA(node ast.Node, code, fa string, faArgs []any, enFormat
 
 	msg := rt.NewError(enFormat, args...)
 	msg.FA = fmt.Sprintf(fa, faArgs...)
+	msg.Message = rt.Str(msg.FA)
 	msg.Name = code
 	return in.panicAt(node, msg)
 }
@@ -766,7 +768,7 @@ func (in *Interp) currentFunction() string {
 func (in *Interp) RenderError(err error, src []byte) string {
 	p, ok := rt.AsPanic(err)
 	if !ok {
-		return "khata: " + err.Error() + "\n  این اشکال از خودم بود، نه از برنامهٔ تو\n  this was a problem inside Mihan, not in your program\n"
+		return "khata: " + err.Error() + "\n  in eshkal az khod-e mihan bood, na az barname-ye to\n"
 	}
 	ev, isErr := p.Value.(*rt.ErrorValue)
 	var b strings.Builder

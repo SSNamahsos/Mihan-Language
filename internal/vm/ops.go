@@ -110,7 +110,7 @@ func compareOp(op ir.Op, a, b Value) (Value, *fault) {
 		return Bool(c >= 0), nil
 	}
 	return Nil(), &fault{code: "E4309",
-		fa: "این مقایسه را نمی‌دانم",
+		fa: "in moghayese ro nemidoonam",
 		en: "I do not know this comparison"}
 }
 
@@ -155,7 +155,7 @@ func contains(coll, item Value) (Value, *fault) {
 		return Bool(false), nil
 	}
 	return Nil(), &fault{code: "E4140",
-		fa: "نمی‌شود در " + coll.TypeName() + " گشت",
+		fa: "nemishe too " + coll.TypeName() + " gasht",
 		en: "`dar` needs a list, set, dict, matn or range, not a " + coll.TypeName()}
 }
 
@@ -328,7 +328,7 @@ func sliceOf(coll, lo, hi Value, inclusive bool) (Value, *fault) {
 		return List(rt.NewList(out...)), nil
 	}
 	return Nil(), &fault{code: "E4186",
-		fa: "از " + coll.TypeName() + " نمی‌شود برش گرفت",
+		fa: "az " + coll.TypeName() + " nemishe bresh gereft",
 		en: "you cannot take a slice of a " + coll.TypeName()}
 }
 
@@ -439,13 +439,13 @@ func length(v Value) Value {
 
 func outOfRange(i, n int64) *fault {
 	return &fault{code: "E4231",
-		fa: "این جایگاه (" + strconv.FormatInt(i, 10) + ") بیرون از فهرستی است که " +
-			strconv.FormatInt(n, 10) + " عضو دارد",
+		fa: "in jaygah (" + strconv.FormatInt(i, 10) + ") biroon az listi ast ke " +
+			strconv.FormatInt(n, 10) + " ozv dare",
 		en: "that index is outside a collection of " + strconv.FormatInt(n, 10) + " items"}
 }
 
 func missingKey(key, coll Value) *fault {
 	return &fault{code: "E4230",
-		fa: "کلیدی به نام «" + key.Text() + "» در این دیکشنری نیست",
+		fa: "kelidi be esm-e '" + key.Text() + "' dar in dict nist",
 		en: "there is no key " + key.Text() + " in this dict"}
 }

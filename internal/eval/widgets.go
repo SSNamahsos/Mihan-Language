@@ -27,13 +27,13 @@ func fnDokme(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	rest, style := takeStyle(args)
 	if len(rest) < 1 {
 		return nil, in.faultAt(node, "E4354",
-			"dokme یک نوشته می‌خواهد",
+			"dokme yek neveshte mikhad",
 			"dokme needs the text on the button")
 	}
 	label, ok := rest[0].(rt.Str)
 	if !ok {
 		return nil, in.faultAt(node, "E4354",
-			"نوشتهٔ دکمه باید متن باشد",
+			"neveshte-ye dokme bayad matn bashe",
 			"the text on a dokme has to be text, not %s", rt.TypeName(rest[0]))
 	}
 	d := styled("dokme", string(label), nil, nil, style)
@@ -41,7 +41,7 @@ func fnDokme(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 		kar, ok := rest[1].(rt.Str)
 		if !ok {
 			return nil, in.faultAt(node, "E4354",
-				"kar باید متن باشد",
+				"kar bayad matn bashe",
 				"the kar of a dokme has to be text, not %s", rt.TypeName(rest[1]))
 		}
 		d.Set(rt.Str("kar"), kar)
@@ -53,14 +53,14 @@ func fnPeyvand(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	rest, style := takeStyle(args)
 	if len(rest) < 2 {
 		return nil, in.faultAt(node, "E4354",
-			"peyvand یک نوشته و یک نشانی می‌خواهد",
+			"peyvand yek neveshte va yek neshani mikhad",
 			"peyvand needs the text and the address it goes to")
 	}
 	label, ok1 := rest[0].(rt.Str)
 	href, ok2 := rest[1].(rt.Str)
 	if !ok1 || !ok2 {
 		return nil, in.faultAt(node, "E4354",
-			"نوشته و نشانی باید متن باشند",
+			"neveshte va neshani bayad matn bashan",
 			"the text and the address of a peyvand have to be text")
 	}
 	d := styled("peyvand", string(label), nil, map[string]rt.Value{
@@ -74,13 +74,13 @@ func fnVorudi(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	rest, style := takeStyle(args)
 	if len(rest) < 1 {
 		return nil, in.faultAt(node, "E4354",
-			"vorudi یک نام می‌خواهد",
+			"vorudi yek esm mikhad",
 			"vorudi needs the name of the field")
 	}
 	name, ok := rest[0].(rt.Str)
 	if !ok {
 		return nil, in.faultAt(node, "E4354",
-			"نامِ ورودی باید متن باشد",
+			"esm-e vorudi bayad matn bashe",
 			"the name of a vorudi has to be text")
 	}
 	d := styled("vorudi", "", nil, map[string]rt.Value{
@@ -95,13 +95,13 @@ func fnForm(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	rest, style := takeStyle(args)
 	if len(rest) < 2 {
 		return nil, in.faultAt(node, "E4354",
-			"form یک نشانی و قطعاتِ داخلش را می‌خواهد",
+			"form yek neshani va ghete-haye dakhelesh ro mikhad",
 			"form needs the address it sends to, and the pieces inside it")
 	}
 	action, ok := rest[0].(rt.Str)
 	if !ok {
 		return nil, in.faultAt(node, "E4354",
-			"نشانیِ فرم باید متن باشد",
+			"neshani-ye form bayad matn bashe",
 			"the address of a form has to be text")
 	}
 	d := styled("form", "", piecesOf(rest[1:]), map[string]rt.Value{
@@ -154,13 +154,13 @@ func fnListe(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	rest, style := takeStyle(args)
 	if len(rest) < 1 {
 		return nil, in.faultAt(node, "E4354",
-			"liste یک فهرست می‌خواهد",
+			"liste yek list mikhad",
 			"liste needs a list")
 	}
 	items, ok := rest[0].(*rt.List)
 	if !ok {
 		return nil, in.faultAt(node, "E4354",
-			"liste یک فهرست می‌خواهد",
+			"liste yek list mikhad",
 			"liste needs a list, not %s", rt.TypeName(rest[0]))
 	}
 	rows := make([]rt.Value, len(items.Items))
@@ -178,14 +178,14 @@ func fnJadval(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	rest, style := takeStyle(args)
 	if len(rest) < 2 {
 		return nil, in.faultAt(node, "E4354",
-			"jadval سرستون‌ها و ردیف‌ها را می‌خواهد",
+			"jadval sarsotoon-ha va radif-ha ro mikhad",
 			"jadval needs the headings and the rows")
 	}
 	heads, ok1 := rest[0].(*rt.List)
 	rows, ok2 := rest[1].(*rt.List)
 	if !ok1 || !ok2 {
 		return nil, in.faultAt(node, "E4354",
-			"سرستون و ردیف باید فهرست باشند",
+			"sarsotoon va radif bayad list bashan",
 			"the headings and the rows of a jadval have to be lists")
 	}
 	headCells := make([]rt.Value, len(heads.Items))
@@ -197,7 +197,7 @@ func fnJadval(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 		cells, ok := row.(*rt.List)
 		if !ok {
 			return nil, in.faultAt(node, "E4354",
-				"هر ردیفِ jadval یک فهرست است",
+				"har radif-e jadval yek list ast",
 				"each row of a jadval is a list")
 		}
 		one := make([]rt.Value, len(cells.Items))
@@ -214,7 +214,7 @@ func fnRah(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	routes, ok2 := args[1].(*rt.List)
 	if !ok || !ok2 {
 		return nil, in.faultAt(node, "E4354",
-			"rah درخواست و فهرستِ راه‌ها را می‌خواهد",
+			"rah darkhast va list-e rah-ha ro mikhad",
 			"rah needs the request and the list of paths")
 	}
 	path := dictStr(req, "path")
@@ -225,7 +225,7 @@ func fnRah(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 		row, ok := item.(*rt.Dict)
 		if !ok {
 			return nil, in.faultAt(node, "E4354",
-				"هر راه یک dict است",
+				"har rah yek dict ast",
 				"each path given to rah has to be a dict")
 		}
 		params := rt.NewDict()
@@ -242,7 +242,7 @@ func fnRah(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 		v, found := row.Get(rt.Str("tabe"))
 		if !found {
 			return nil, in.faultAt(node, "E4354",
-				"این راه تابعی ندارد",
+				"in rah funct nadare",
 				"the path %s has no funct", path)
 		}
 		chosen = v
@@ -285,13 +285,13 @@ func textPiece(in *Interp, kind string, args []rt.Value, node ast.Node) (rt.Valu
 	rest, style := takeStyle(args)
 	if len(rest) < 1 {
 		return nil, in.faultAt(node, "E4354",
-			kind+" یک نوشته می‌خواهد",
+			kind+" yek neveshte mikhad",
 			"%s needs text", kind)
 	}
 	s, ok := rest[0].(rt.Str)
 	if !ok {
 		return nil, in.faultAt(node, "E4354",
-			"نوشته باید متن باشد",
+			"neveshte bayad matn bashe",
 			"the text of %s has to be text, not %s", kind, rt.TypeName(rest[0]))
 	}
 	return styled(kind, string(s), nil, nil, style), nil

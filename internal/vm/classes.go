@@ -13,7 +13,7 @@ type classRuntime struct {
 func (m *Machine) defineClass(nameIdx, classIdx int32, isStruct bool) (Value, *fault) {
 	if int(classIdx) < 0 || int(classIdx) >= len(m.p.Classes) {
 		return Nil(), &fault{code: "E4004",
-			fa: "کلاسی که این دستور می‌سازد پیدا نشد",
+			fa: "darghan-i ke in dastoor misaze peyda nashod",
 			en: "the class named here was not found"}
 	}
 	ic := m.p.Classes[classIdx]
@@ -28,7 +28,7 @@ func (m *Machine) defineClass(nameIdx, classIdx int32, isStruct bool) (Value, *f
 		b, ok := m.classByName(base)
 		if !ok {
 			return Nil(), &fault{code: "E4008",
-				fa: "پایه‌ی «" + base + "» پیش از این ساخته نشده",
+				fa: "paye-ye '" + base + "' ghabl az in sakhte nashode",
 				en: base + " must be declared before it is used as a base"}
 		}
 		c.Parent = b
@@ -79,7 +79,7 @@ func (m *Machine) defineEnum(nameIdx, run int32) (Value, *fault) {
 	at := int(run)
 	if at < 0 || at >= len(m.p.Nums) {
 		return Nil(), &fault{code: "E4005",
-			fa: "اعضای این shenase پیدا نشد",
+			fa: "ozv-haye in shenase peyda nashod",
 			en: "the members of this shenase were not found"}
 	}
 	n := int(m.p.Nums[at])
@@ -152,7 +152,7 @@ func (m *Machine) construct(c *rt.Class, args []Value) (Value, bool, *fault, err
 	}
 	if len(args) > 0 {
 		return Nil(), false, &fault{code: "E4157",
-			fa: "«" + c.Name + "» ساخت‌دهنده ندارد، پس این مقدارها جایی نداشتند",
+			fa: "'" + c.Name + "' sazande nadare, pas in meghdar-ha jaei nadashtan",
 			en: c.Name + " has no constructor, so these values had nowhere to go"}, nil
 	}
 	return Object(rt.NewObject(c)), false, nil, nil
@@ -170,7 +170,7 @@ func (m *Machine) methodOf(c *rt.Class, name string) (*funcVal, *fault, bool) {
 						cell := m.capture(n)
 						if cell == nil {
 							return nil, &fault{code: "E4003",
-								fa: "این متد نامی را می‌خواهد که بیرون از آن پیدا نمی‌شود: " + m.nameText(n),
+								fa: "in method esmi ro mikhad ke biroon azash peyda nemishe: " + m.nameText(n),
 								en: "this method wants a name that is not in sight: " + m.nameText(n)}, true
 						}
 						fv.upvals[i] = cell
@@ -191,7 +191,7 @@ func (m *Machine) getField(recv Value, nameIdx int32) (Value, *fault) {
 			return FromRT(v), nil
 		}
 		return Nil(), &fault{code: "E4160",
-			fa: "«" + n + "» در «" + t.Class.Name + "» نیست",
+			fa: "'" + n + "' dar '" + t.Class.Name + "' nist",
 			en: n + " is not a field or a method of " + t.Class.Name}
 	case *rt.ClassValue:
 		if t.Class.Enumerated {
@@ -200,7 +200,7 @@ func (m *Machine) getField(recv Value, nameIdx int32) (Value, *fault) {
 			}
 		}
 		return Nil(), &fault{code: "E4161",
-			fa: "«" + n + "» روی «" + t.Class.Name + "» نیست",
+			fa: "'" + n + "' roye '" + t.Class.Name + "' nist",
 			en: n + " is not a field or a method of " + t.Class.Name}
 	case *rt.ErrorValue:
 
@@ -213,7 +213,7 @@ func (m *Machine) getField(recv Value, nameIdx int32) (Value, *fault) {
 			return Str(t.Name), nil
 		}
 		return Nil(), &fault{code: "E4162",
-			fa: "روی khata چیزی به نام «" + n + "» نیست",
+			fa: "roye khata chizi be esm-e '" + n + "' nist",
 			en: "a khata has no " + n + "; it carries message, data and name"}
 	case *rt.List:
 
@@ -236,7 +236,7 @@ func (m *Machine) getField(recv Value, nameIdx int32) (Value, *fault) {
 		return length(Iter(it)), nil
 	}
 	return Nil(), &fault{code: "E4164",
-		fa: "از " + recv.TypeName() + " نمی‌شود عضو خواند",
+		fa: "az " + recv.TypeName() + " nemishe ozv khoond",
 		en: "you cannot read a field from a " + recv.TypeName() + "; only a darghan, a sakht or a khata has fields"}
 }
 
@@ -253,7 +253,7 @@ func (m *Machine) setField(recv Value, nameIdx int32, val Value) *fault {
 		}
 	}
 	return &fault{code: "E4161",
-		fa: "روی این مقدار نمی‌شود «" + n + "» را نوشت",
+		fa: "roye in meghdar nemishe '" + n + "' ro nevesht",
 		en: n + " cannot be written on this value"}
 }
 

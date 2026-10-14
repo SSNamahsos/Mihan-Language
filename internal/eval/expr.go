@@ -58,7 +58,7 @@ func (in *Interp) eval(e ast.Expr, env *rt.Env) (rt.Value, error) {
 			}
 			if _, ok := rt.HashKey(k); !ok {
 				return nil, in.faultAt(entry.Key, "E4101",
-					"کلیدِ dict باید عدد، matn، bool یا hich باشد",
+					"kelid-e dict bayad adad, matn, bool ya hich bashe",
 					"a dict key has to be a number, matn, bool or hich, not %s", rt.TypeName(k))
 			}
 			d.Set(k, v)
@@ -74,7 +74,7 @@ func (in *Interp) eval(e ast.Expr, env *rt.Env) (rt.Value, error) {
 			}
 			if _, ok := rt.HashKey(v); !ok {
 				return nil, in.faultAt(el, "E4102",
-					"عضوِ set باید عدد، matn، bool یا hich باشد",
+					"ozv-e set bayad adad, matn, bool ya hich bashe",
 					"a set member has to be a number, matn, bool or hich, not %s", rt.TypeName(v))
 			}
 			s.Add(v)
@@ -119,7 +119,7 @@ func (in *Interp) eval(e ast.Expr, env *rt.Env) (rt.Value, error) {
 		hiI, ok2 := toInt(hi)
 		if !ok1 || !ok2 {
 			return nil, in.faultAt(x, "E4103",
-				"دو سر بازه باید عدد باشند", "both ends of a range must be whole numbers")
+				"do sar-e baze bayad adad bashan", "both ends of a range must be whole numbers")
 		}
 		return &rt.Range{Lo: li, Hi: hiI, Inclusive: x.Inclusive}, nil
 
@@ -151,10 +151,10 @@ func (in *Interp) eval(e ast.Expr, env *rt.Env) (rt.Value, error) {
 		if x.Message != "" {
 			return rt.Nil, in.faultAt(x, "E4104", x.Message, "%s", x.English)
 		}
-		return rt.Nil, in.faultAt(x, "E4104", "این عبارت خوانده نشد", "this expression could not be read")
+		return rt.Nil, in.faultAt(x, "E4104", "in ebarat khoonde nashod", "this expression could not be read")
 	}
 	return rt.Nil, in.faultAt(e, "E4105",
-		"این عبارت را هنوز حساب نمی‌کنم", "I do not know how to work out this expression yet (%s)", e.NodeKind())
+		"in ebarat ro hanooz hesab nemikonam", "I do not know how to work out this expression yet (%s)", e.NodeKind())
 }
 
 func (in *Interp) evalIdent(x *ast.Ident, env *rt.Env) (rt.Value, error) {
@@ -165,13 +165,13 @@ func (in *Interp) evalIdent(x *ast.Ident, env *rt.Env) (rt.Value, error) {
 			return b.Value, nil
 		}
 		return nil, in.faultAt(x, "E4106",
-			"`khod` بیرون از هیچ متدی به کار نیفتاد",
+			"`khod` biroon az method kar nemikone",
 			"khod only means anything inside a method; here there is no current object")
 	}
 	if b := lookupIdent(x, env); b != nil {
 		if !b.Used && b.Value == nil {
 			return rt.Nil, in.faultAt(x, "E4107",
-				fmt.Sprintf("«%s» هنوز مقدار نگرفته", x.Name),
+				fmt.Sprintf("'%s' hanooz meghdar nagerefte", x.Name),
 				"%s was declared but never given a value", x.Name)
 		}
 		return b.Value, nil
@@ -189,9 +189,9 @@ func (in *Interp) evalIdent(x *ast.Ident, env *rt.Env) (rt.Value, error) {
 		return rt.Str(x.Name), nil
 	}
 	return nil, in.faultNote(x, "E4108",
-		fmt.Sprintf("«%s» را هیچ‌جا نساخته‌ام", x.Name),
+		fmt.Sprintf("'%s' ro hich ja nasakhtam", x.Name),
 		"%s is not a name I know; it is not a variable, a funct, a darghan or a builtin",
-		"a name has to be given a value before it is used, and Mihan looks from the inside out; a name made inside a funct lives only in that funct, and a har loop's own name only inside that loop",
+		"har esm bayad ghabl az estefade meghdar begire; esmi ke dakhel-e yek funct sakhte mishe faghat too hamoon funct zende ast, va esm-e halghe-ye har faghat too hamoon halghe",
 		x.Name)
 }
 
@@ -246,7 +246,7 @@ func (in *Interp) unaryOp(x *ast.Unary, v rt.Value) (rt.Value, error) {
 		}
 	}
 	return nil, in.faultAt(x, "E4110",
-		fmt.Sprintf("این یک‌گانه روی %s کار نمی‌کند", rt.TypeName(v)),
+		fmt.Sprintf("in amalgar roye %s kar nemikone", rt.TypeName(v)),
 		"the operator %s does not work on %s", x.Op, rt.TypeName(v))
 }
 
@@ -369,7 +369,7 @@ func (in *Interp) binaryOp(node ast.Node, op token.Kind, l, r rt.Value) (rt.Valu
 		c, ok := rt.Compare(l, r)
 		if !ok {
 			return nil, in.faultAt(node, "E4120",
-				fmt.Sprintf("نمی‌شود %s را با %s سنجید", rt.TypeName(l), rt.TypeName(r)),
+				fmt.Sprintf("nemishe %s ro ba %s moghayese kard", rt.TypeName(l), rt.TypeName(r)),
 				"a %s cannot be measured against a %s", rt.TypeName(l), rt.TypeName(r))
 		}
 		return rt.Int(c), nil
@@ -378,12 +378,12 @@ func (in *Interp) binaryOp(node ast.Node, op token.Kind, l, r rt.Value) (rt.Valu
 		ri, ok2 := toInt(r)
 		if !ok1 || !ok2 {
 			return nil, in.faultAt(node, "E4121",
-				"این کار فقط با عددِ کامل می‌شود", "this operation only works on whole numbers")
+				"in kar faghat ba adad-e kamel mishe", "this operation only works on whole numbers")
 		}
 		return in.bitOp(node, op, li, ri)
 	}
 	return nil, in.faultAt(node, "E4122",
-		fmt.Sprintf("عملگر «%s» را نمی‌شناسم", op),
+		fmt.Sprintf("amalgar-e '%s' ro nemishnasam", op),
 		"the operator %s is not one I know", op)
 }
 
@@ -436,7 +436,7 @@ func (in *Interp) arith(node ast.Node, op token.Kind, l, r rt.Value) (rt.Value, 
 	rf, ok2 := toFloat(r)
 	if !ok1 || !ok2 {
 		return nil, in.faultAt(node, "E4130",
-			fmt.Sprintf("نمی‌شود %s را %s کرد", rt.TypeName(l), rt.TypeName(r)),
+			fmt.Sprintf("nemishe %s ro %s kard", rt.TypeName(l), rt.TypeName(r)),
 			"a %s and a %s cannot be combined this way", rt.TypeName(l), rt.TypeName(r))
 	}
 	switch op {
@@ -448,7 +448,7 @@ func (in *Interp) arith(node ast.Node, op token.Kind, l, r rt.Value) (rt.Value, 
 		return rt.Float(lf * rf), nil
 	}
 	return nil, in.faultAt(node, "E4131",
-		fmt.Sprintf("عملگر «%s» روی این دو مقدار کار نمی‌کند", op),
+		fmt.Sprintf("amalgar-e '%s' roye in do meghdar kar nemikone", op),
 		"the operator %s does not work on a %s and a %s", op, rt.TypeName(l), rt.TypeName(r))
 }
 
@@ -474,7 +474,7 @@ func (in *Interp) intArith(node ast.Node, op token.Kind, a, b rt.Int) (rt.Value,
 
 func (in *Interp) overflow(node ast.Node) error {
 	return in.faultAt(node, "E4126",
-		"این عدد از اندازهٔ عددِ کامل (۶۴ بیتی) بزرگ‌تر شد",
+		"in adad az andaze-ye adad-e kamel (64 biti) bozorgtar shod",
 		"the whole number got too big for 64 bits; use a float (e.g. 1.0 * x) if you need bigger numbers")
 }
 
@@ -482,17 +482,17 @@ func (in *Interp) divide(node ast.Node, l, r rt.Value) (rt.Value, error) {
 	rf, ok := toFloat(r)
 	if !ok {
 		return nil, in.faultAt(node, "E4132",
-			"نمی‌شود بر %s تقسیم کرد", "you cannot divide by %s", rt.TypeName(r))
+			"nemishe bar %s taghsim kard", "you cannot divide by %s", rt.TypeName(r))
 	}
 	if rf == 0 {
 		return nil, in.faultAt(node, "E4133",
-			"نمی‌شود بر صفر تقسیم کرد", "division by zero has no answer")
+			"nemishe bar sefr taghsim kard", "division by zero has no answer")
 	}
 
 	lf, ok := toFloat(l)
 	if !ok {
 		return nil, in.faultAt(node, "E4132",
-			"نمی‌شود %s را بر %s تقسیم کرد", "a %s cannot be divided by a %s", rt.TypeName(l), rt.TypeName(r))
+			"nemishe %s ro bar %s taghsim kard", "a %s cannot be divided by a %s", rt.TypeName(l), rt.TypeName(r))
 	}
 	return rt.Float(lf / rf), nil
 }
@@ -506,18 +506,18 @@ func (in *Interp) floorDiv(node ast.Node, l, r rt.Value) (rt.Value, error) {
 		rf, fok2 := toFloat(r)
 		if !fok1 || !fok2 {
 			return nil, in.faultAt(node, "E4134",
-				"نمی‌شود %s را %s کرد", "a %s and a %s cannot be divided like this",
+				"nemishe %s ro %s kard", "a %s and a %s cannot be divided like this",
 				rt.TypeName(l), rt.TypeName(r))
 		}
 		if rf == 0 {
 			return nil, in.faultAt(node, "E4133",
-				"نمی‌شود بر صفر تقسیم کرد", "division by zero has no answer")
+				"nemishe bar sefr taghsim kard", "division by zero has no answer")
 		}
 		return rt.Int(math.Floor(lf / rf)), nil
 	}
 	if ri == 0 {
 		return nil, in.faultAt(node, "E4133",
-			"نمی‌شود بر صفر تقسیم کرد", "division by zero has no answer")
+			"nemishe bar sefr taghsim kard", "division by zero has no answer")
 	}
 	q := li / ri
 
@@ -533,7 +533,7 @@ func (in *Interp) modulus(node ast.Node, l, r rt.Value) (rt.Value, error) {
 	if ok1 && ok2 {
 		if ri == 0 {
 			return nil, in.faultAt(node, "E4135",
-				"نمی‌شود بر صفر باقی‌مانده گرفت", "the remainder of dividing by zero has no answer")
+				"nemishe bar sefr baghimande gereft", "the remainder of dividing by zero has no answer")
 		}
 		m := li % ri
 		if m != 0 && ((m < 0) != (ri < 0)) {
@@ -545,11 +545,11 @@ func (in *Interp) modulus(node ast.Node, l, r rt.Value) (rt.Value, error) {
 	rf, fok2 := toFloat(r)
 	if !fok1 || !fok2 {
 		return nil, in.faultAt(node, "E4136",
-			"باقی‌مانده فقط برای عدد است", "the remainder is only defined for numbers")
+			"baghimande faghat baraye adad ast", "the remainder is only defined for numbers")
 	}
 	if rf == 0 {
 		return nil, in.faultAt(node, "E4135",
-			"نمی‌شود بر صفر باقی‌مانده گرفت", "the remainder of dividing by zero has no answer")
+			"nemishe bar sefr baghimande gereft", "the remainder of dividing by zero has no answer")
 	}
 	return rt.Float(math.Mod(lf, rf)), nil
 }
@@ -583,7 +583,7 @@ func (in *Interp) power(node ast.Node, l, r rt.Value) (rt.Value, error) {
 		}
 		if li == 0 {
 			return nil, in.faultAt(node, "E4137",
-				"صفر به توان منفی جوابی ندارد", "zero to a negative power has no answer")
+				"sefr be tavan-e manfi javab nadare", "zero to a negative power has no answer")
 		}
 		return rt.Float(1 / math.Pow(float64(li), float64(ri))), nil
 	}
@@ -591,7 +591,7 @@ func (in *Interp) power(node ast.Node, l, r rt.Value) (rt.Value, error) {
 	rf, ok2 := toFloat(r)
 	if !ok1 || !ok2 {
 		return nil, in.faultAt(node, "E4138",
-			"توان فقط برای عدد است", "a power is only defined for numbers")
+			"tavan faghat baraye adad ast", "a power is only defined for numbers")
 	}
 	return rt.Float(math.Pow(lf, rf)), nil
 }
@@ -636,7 +636,7 @@ func (in *Interp) compareOp(node ast.Node, op token.Kind, l, r rt.Value) (rt.Val
 	c, ok := rt.Compare(l, r)
 	if !ok {
 		return nil, in.faultAt(node, "E4139",
-			fmt.Sprintf("نمی‌شود %s را با %s سنجید", rt.TypeName(l), rt.TypeName(r)),
+			fmt.Sprintf("nemishe %s ro ba %s moghayese kard", rt.TypeName(l), rt.TypeName(r)),
 			"a %s cannot be compared with a %s", rt.TypeName(l), rt.TypeName(r))
 	}
 	switch op {
@@ -689,7 +689,7 @@ func (in *Interp) inOp(x *ast.Binary, l, r rt.Value) (rt.Value, error) {
 		return rt.Bool(false), nil
 	}
 	return nil, in.faultAt(x, "E4140",
-		fmt.Sprintf("نمی‌شود در %s گشت", rt.TypeName(r)),
+		fmt.Sprintf("nemishe too %s gasht", rt.TypeName(r)),
 		"`dar` needs a list, set, dict, matn or range, not a %s", rt.TypeName(r))
 }
 

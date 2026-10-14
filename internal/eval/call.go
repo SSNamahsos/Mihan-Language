@@ -39,7 +39,7 @@ func (in *Interp) evalCall(x *ast.Call, env *rt.Env) (rt.Value, error) {
 	}
 	if in.Depth > maxCallDepth {
 		return nil, in.faultAt(x, "E4150",
-			"تابع‌ها بیش از حد همدیگر را صدا زدند و من ایستادم",
+			"funct-ha bish az had hamdige ro seda zadan va man istadam",
 			"the calls went on deeper than %d and I stopped, so this is probably a function that never ends", maxCallDepth)
 	}
 
@@ -58,7 +58,7 @@ func (in *Interp) evalCall(x *ast.Call, env *rt.Env) (rt.Value, error) {
 			return in.callNative(x, fn, args)
 		}
 		return nil, in.faultAt(x, "E4151",
-			fmt.Sprintf("«%s» را هیچ‌جا نساخته‌ام", id.Name),
+			fmt.Sprintf("'%s' ro hich ja nasakhtam", id.Name),
 			"%s is not a name I know; it is not a variable, a funct, a darghan or a builtin", id.Name)
 	}
 
@@ -88,10 +88,10 @@ func (in *Interp) callValue(node ast.Node, callee rt.Value, recv *rt.Object, arg
 	case *rt.ErrorValue:
 
 		return nil, in.faultAt(node, "E4152",
-			"روی یک khata تابع صدا زدی", "you tried to call a khata as if it were a funct")
+			"roye yek khata funct seda zadi", "you tried to call a khata as if it were a funct")
 	}
 	return nil, in.faultAt(node, "E4153",
-		fmt.Sprintf("%s را نمی‌شود صدا زد", rt.TypeName(callee)),
+		fmt.Sprintf("%s ro nemishe seda zad", rt.TypeName(callee)),
 		"a %s cannot be called; you need a funct, a darghan or a builtin name", rt.TypeName(callee))
 }
 
@@ -118,7 +118,7 @@ func (in *Interp) callFunction(node ast.Node, fn *rt.Function, recv *rt.Object, 
 	}
 	if in.Depth > maxCallDepth {
 		return nil, in.faultAt(node, "E4150",
-			"تابع‌ها بیش از حد همدیگر را صدا زدند و من ایستادم",
+			"funct-ha bish az had hamdige ro seda zadan va man istadam",
 			"the calls went on deeper than %d and I stopped, so this is probably a function that never ends", maxCallDepth)
 	}
 	if fn.Fast != nil {
@@ -192,7 +192,7 @@ func (in *Interp) bindParams(node ast.Node, fn *rt.Function, scope *rt.Env, args
 				continue
 			}
 			return faultf(node, "E4155",
-				"به تابع «%s» مقدار %s داده نشد", "%s was not given a value for %s", fn.Name, p.Name)
+				"be funct '%s' meghdar-e %s dade nashod", "%s was not given a value for %s", fn.Name, p.Name)
 		}
 		return nil
 	}
@@ -225,7 +225,7 @@ func (in *Interp) bindParams(node ast.Node, fn *rt.Function, scope *rt.Env, args
 		}
 		if !found {
 			return faultf(node, "E4154",
-				"تابع «%s» پارامتری به نام «%s» ندارد", "the funct %s has no parameter called %s", fn.Name, name)
+				"funct '%s' parametri be esm-e '%s' nadare", "the funct %s has no parameter called %s", fn.Name, name)
 		}
 	}
 
@@ -250,11 +250,11 @@ func (in *Interp) bindParams(node ast.Node, fn *rt.Function, scope *rt.Env, args
 			continue
 		}
 		return faultf(node, "E4155",
-			"به تابع «%s» مقدار %s داده نشد", "%s was not given a value for %s", fn.Name, p.Name)
+			"be funct '%s' meghdar-e %s dade nashod", "%s was not given a value for %s", fn.Name, p.Name)
 	}
 	if pi < len(positional) {
 		return faultf(node, "E4156",
-			"به تابع «%s» %d مقدار داده شد ولی %d پارامتر دارد",
+			"be funct '%s' %d meghdar dade shod vali %d parametr dare",
 			"%s was given %d values but takes %d", fn.Name, len(positional), len(fn.Params))
 	}
 	return nil
@@ -285,7 +285,7 @@ func (in *Interp) constructNode(node ast.Node, c *rt.Class, args []rt.Value) (rt
 	}
 	if len(args) > 0 {
 		return nil, faultf(node, "E4157",
-			fmt.Sprintf("«%s» ساخت‌دهنده ندارد، پس %d مقدار اضافه آمد", c.Name, len(args)),
+			fmt.Sprintf("'%s' sazande nadare, pas %d meghdar ezafe oumad", c.Name, len(args)),
 			"%s has no constructor, so %d values had nowhere to go", c.Name, len(args))
 	}
 	return obj, nil
@@ -313,7 +313,7 @@ func (in *Interp) evalMember(x *ast.Member, env *rt.Env) (rt.Value, error) {
 	default:
 
 		return nil, in.faultAt(x, "E4154",
-			fmt.Sprintf("«%s» یک %s است، نه تابعی که صدا زدنی", x.Name, rt.TypeName(target)),
+			fmt.Sprintf("'%s' yek %s ast, na funct-i ke beshe seda zad", x.Name, rt.TypeName(target)),
 			"%s is a %s, not something to call; write %s without brackets", x.Name, rt.TypeName(target), x.Name)
 	}
 	return in.callValue(x, target, nil, args)
@@ -329,7 +329,7 @@ func (in *Interp) readMember(x *ast.Member, recv rt.Value) (rt.Value, error) {
 			return &rt.BoundMethod{Recv: t, Fn: in.methodFunc(m, owner), Owner: owner}, nil
 		}
 		return nil, in.faultAt(x, "E4160",
-			fmt.Sprintf("«%s» در «%s» نیست", x.Name, t.Class.Name),
+			fmt.Sprintf("'%s' dar '%s' nist", x.Name, t.Class.Name),
 			"%s is not a field or a method of %s", x.Name, t.Class.Name)
 	case *rt.ClassValue:
 
@@ -344,7 +344,7 @@ func (in *Interp) readMember(x *ast.Member, recv rt.Value) (rt.Value, error) {
 			return &rt.Function{Name: m.Name, Params: m.Params, Body: m.Body, Env: in.Globals, Class: owner}, nil
 		}
 		return nil, in.faultAt(x, "E4161",
-			fmt.Sprintf("«%s» روی «%s» نیست", x.Name, t.Class.Name),
+			fmt.Sprintf("'%s' roye '%s' nist", x.Name, t.Class.Name),
 			"%s is not a field or a method of %s", x.Name, t.Class.Name)
 	case *rt.ErrorValue:
 		if x.Name == "message" {
@@ -357,7 +357,7 @@ func (in *Interp) readMember(x *ast.Member, recv rt.Value) (rt.Value, error) {
 			return rt.Str(t.Name), nil
 		}
 		return nil, in.faultAt(x, "E4162",
-			fmt.Sprintf("روی khata چیزی به نام «%s» نیست", x.Name),
+			fmt.Sprintf("roye khata chizi be esm-e '%s' nist", x.Name),
 			"a khata has no %s; it carries message, data and name", x.Name)
 	}
 
@@ -367,7 +367,7 @@ func (in *Interp) readMember(x *ast.Member, recv rt.Value) (rt.Value, error) {
 	if v, ok, handled := in.collectionMember(recv, x.Name); handled {
 		if !ok {
 			return nil, in.faultAt(x, "E4163",
-				fmt.Sprintf("روی %s چیزی به نام «%s» نیست", rt.TypeName(recv), x.Name),
+				fmt.Sprintf("roye %s chizi be esm-e '%s' nist", rt.TypeName(recv), x.Name),
 				"a %s has nothing called %s", rt.TypeName(recv), x.Name)
 		}
 		return v, nil
@@ -376,11 +376,11 @@ func (in *Interp) readMember(x *ast.Member, recv rt.Value) (rt.Value, error) {
 	switch recv.(type) {
 	case rt.Str, *rt.List, *rt.Dict, *rt.Set, *rt.Range:
 		return nil, in.faultAt(x, "E4163",
-			fmt.Sprintf("روی %s چیزی به نام «%s» نیست", rt.TypeName(recv), x.Name),
+			fmt.Sprintf("roye %s chizi be esm-e '%s' nist", rt.TypeName(recv), x.Name),
 			"a %s has nothing called %s", rt.TypeName(recv), x.Name)
 	}
 	return nil, in.faultAt(x, "E4164",
-		fmt.Sprintf("نمی‌شود از %s عضو خواند", rt.TypeName(recv)),
+		fmt.Sprintf("az %s nemishe ozv khoond", rt.TypeName(recv)),
 		"you cannot read a field from a %s; only a darghan, a sakht or a khata has fields", rt.TypeName(recv))
 }
 
@@ -461,14 +461,14 @@ func (in *Interp) getIndex(x ast.Node, recv, at rt.Value) (rt.Value, error) {
 		i, ok := toInt(at)
 		if !ok {
 			return nil, in.faultAt(x, "E4170",
-				"شمارهِ حرف باید عدد باشد", "a matn index must be a whole number")
+				"shomare-ye harf bayad adad bashe", "a matn index must be a whole number")
 		}
 
 		r, found := rt.RuneAt(string(t), int(i))
 		if !found {
 			n := rt.RuneCount(string(t))
 			return nil, in.faultAt(x, "E4171",
-				fmt.Sprintf("حرفِ %d در matnی به بلندی %d نیست", i, n),
+				fmt.Sprintf("harf-e %d dar matn-i be boland-i %d nist", i, n),
 				"position %d is outside a matn of length %d", i, n)
 		}
 		return rt.Str(string(r)), nil
@@ -476,7 +476,7 @@ func (in *Interp) getIndex(x ast.Node, recv, at rt.Value) (rt.Value, error) {
 		i, ok := toInt(at)
 		if !ok {
 			return nil, in.faultAt(x, "E4172",
-				"شماره عضو باید عدد باشد", "a list position must be a whole number")
+				"shomare-ye ozv bayad adad bashe", "a list position must be a whole number")
 		}
 		idx := int(i)
 		if idx < 0 {
@@ -484,7 +484,7 @@ func (in *Interp) getIndex(x ast.Node, recv, at rt.Value) (rt.Value, error) {
 		}
 		if idx < 0 || idx >= len(t.Items) {
 			return nil, in.faultAt(x, "E4173",
-				fmt.Sprintf("عضو %d در listی به بلندی %d نیست", i, len(t.Items)),
+				fmt.Sprintf("ozv-e %d dar list-i be boland-i %d nist", i, len(t.Items)),
 				"position %d is outside a list of length %d", i, len(t.Items))
 		}
 		return t.Items[idx], nil
@@ -492,7 +492,7 @@ func (in *Interp) getIndex(x ast.Node, recv, at rt.Value) (rt.Value, error) {
 		v, ok := t.Get(at)
 		if !ok {
 			return nil, in.faultAt(x, "E4174",
-				fmt.Sprintf("کلید «%s» در dict نیست", rt.Show(at)),
+				fmt.Sprintf("kelid-e '%s' dar dict nist", rt.Show(at)),
 				"there is no %s in this dict", rt.Show(at))
 		}
 		return v, nil
@@ -501,7 +501,7 @@ func (in *Interp) getIndex(x ast.Node, recv, at rt.Value) (rt.Value, error) {
 		i, ok := toInt(at)
 		if !ok {
 			return nil, in.faultAt(x, "E4175",
-				"شماره عضو set باید عدد باشد", "a set position must be a whole number")
+				"shomare-ye ozv-e set bayad adad bashe", "a set position must be a whole number")
 		}
 		idx := int(i)
 		if idx < 0 {
@@ -509,7 +509,7 @@ func (in *Interp) getIndex(x ast.Node, recv, at rt.Value) (rt.Value, error) {
 		}
 		if idx < 0 || idx >= len(items) {
 			return nil, in.faultAt(x, "E4176",
-				fmt.Sprintf("عضو %d در setی به بلندی %d نیست", i, len(items)),
+				fmt.Sprintf("ozv-e %d dar set-i be boland-i %d nist", i, len(items)),
 				"position %d is outside a set of length %d", i, len(items))
 		}
 		return items[idx], nil
@@ -518,7 +518,7 @@ func (in *Interp) getIndex(x ast.Node, recv, at rt.Value) (rt.Value, error) {
 		i, ok := toInt(at)
 		if !ok {
 			return nil, in.faultAt(x, "E4177",
-				"شماره عضو بازه باید عدد باشد", "a range position must be a whole number")
+				"shomare-ye ozv-e baze bayad adad bashe", "a range position must be a whole number")
 		}
 		idx := int(i)
 		if idx < 0 {
@@ -526,13 +526,13 @@ func (in *Interp) getIndex(x ast.Node, recv, at rt.Value) (rt.Value, error) {
 		}
 		if idx < 0 || idx >= len(items) {
 			return nil, in.faultAt(x, "E4178",
-				fmt.Sprintf("عضو %d در بازه‌ای به بلندی %d نیست", i, len(items)),
+				fmt.Sprintf("ozv-e %d dar baze-i be boland-i %d nist", i, len(items)),
 				"position %d is outside a range of length %d", i, len(items))
 		}
 		return items[idx], nil
 	}
 	return nil, in.faultAt(x, "E4179",
-		fmt.Sprintf("%s را نمی‌شود با [] خواند", rt.TypeName(recv)),
+		fmt.Sprintf("%s ro nemishe ba [] khoond", rt.TypeName(recv)),
 		"you cannot use [] with a %s", rt.TypeName(recv))
 }
 
@@ -541,7 +541,7 @@ func (in *Interp) setIndex(node ast.Node, recv, at, v rt.Value) error {
 	case *rt.List:
 		i, ok := toInt(at)
 		if !ok {
-			return in.faultAt(node, "E4180", "شماره عضو باید عدد باشد", "a list position must be a whole number")
+			return in.faultAt(node, "E4180", "shomare-ye ozv bayad adad bashe", "a list position must be a whole number")
 		}
 		idx := int(i)
 		if idx < 0 {
@@ -549,7 +549,7 @@ func (in *Interp) setIndex(node ast.Node, recv, at, v rt.Value) error {
 		}
 		if idx < 0 || idx >= len(t.Items) {
 			return in.faultAt(node, "E4181",
-				fmt.Sprintf("عضو %d در listی به بلندی %d نیست", i, len(t.Items)),
+				fmt.Sprintf("ozv-e %d dar list-i be boland-i %d nist", i, len(t.Items)),
 				"position %d is outside a list of length %d", i, len(t.Items))
 		}
 		t.Items[idx] = v
@@ -557,14 +557,14 @@ func (in *Interp) setIndex(node ast.Node, recv, at, v rt.Value) error {
 	case *rt.Dict:
 		if _, ok := rt.HashKey(at); !ok {
 			return in.faultAt(node, "E4182",
-				"کلید dict باید عدد، matn، bool یا hich باشد",
+				"kelid-e dict bayad adad, matn, bool ya hich bashe",
 				"a dict key has to be a number, matn, bool or hich, not %s", rt.TypeName(at))
 		}
 		t.Set(at, v)
 		return nil
 	}
 	return in.faultAt(node, "E4183",
-		fmt.Sprintf("روی %s با [] نمی‌شود مقدار گذاشت", rt.TypeName(recv)),
+		fmt.Sprintf("roye %s ba [] nemishe meghdar gozasht", rt.TypeName(recv)),
 		"you cannot store into a %s with []", rt.TypeName(recv))
 }
 
@@ -572,12 +572,12 @@ func (in *Interp) setMember(node ast.Node, recv rt.Value, name string, v rt.Valu
 	obj, ok := recv.(*rt.Object)
 	if !ok {
 		return in.faultAt(node, "E4184",
-			fmt.Sprintf("روی %s نمی‌شود عضو گذاشت", rt.TypeName(recv)),
+			fmt.Sprintf("roye %s nemishe ozv gozasht", rt.TypeName(recv)),
 			"you cannot set a field on a %s; only a darghan or a sakht has fields", rt.TypeName(recv))
 	}
 	if _, exists := obj.Class.FindField(name); !exists {
 		return in.faultAt(node, "E4185",
-			fmt.Sprintf("«%s» در «%s» نیست", name, obj.Class.Name),
+			fmt.Sprintf("'%s' dar '%s' nist", name, obj.Class.Name),
 			"%s is not a field of %s, so there is nowhere to put a value", name, obj.Class.Name)
 	}
 	obj.Set(name, v)
@@ -674,7 +674,7 @@ func (in *Interp) sliceOf(x ast.Node, recv, lo, hi rt.Value, inclusive bool) (rt
 		return rt.NewList(out...), nil
 	}
 	return nil, in.faultAt(x, "E4186",
-		fmt.Sprintf("از %s نمی‌شوت برش گرفت", rt.TypeName(recv)),
+		fmt.Sprintf("az %s nemishe bresh gereft", rt.TypeName(recv)),
 		"you cannot take a slice of a %s", rt.TypeName(recv))
 }
 
@@ -731,7 +731,7 @@ func (in *Interp) convertTo(node ast.Node, v rt.Value, typeName string) (rt.Valu
 		return rt.Bool(rt.Truthy(v)), nil
 	}
 	return nil, in.faultAt(node, "E4190",
-		fmt.Sprintf("نمی‌شود %s را «%s» کرد", rt.TypeName(v), typeName),
+		fmt.Sprintf("nemishe %s ro '%s' kard", rt.TypeName(v), typeName),
 		"a %s cannot become %s", rt.TypeName(v), typeName)
 }
 

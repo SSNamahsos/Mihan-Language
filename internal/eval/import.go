@@ -113,7 +113,7 @@ func (in *Interp) findModule(s *ast.ImportDecl) (string, error) {
 func (in *Interp) moduleMissing(s *ast.ImportDecl) error {
 	dir := filepath.Dir(in.File)
 	return in.faultFA(s, "E4009",
-		"پرونده‌ای به نام «%s» پیدا نشد؛ در %s و کنار خود برنامه نگاه کردم",
+		"parvande-i be esm-e '%s' peyda nashod; dar %s va kenar-e khod-e barname gashtam",
 		[]any{s.Path, dir},
 		"module %s was not found; looked beside the program and in the working directory", s.Path)
 }
@@ -126,7 +126,7 @@ func (in *Interp) loadModule(path string, s *ast.ImportDecl) (*module, error) {
 		chain = append(chain, in.imps.stack[i:]...)
 		chain = append(chain, clean)
 		return nil, in.faultFA(s, "E4010",
-			"این پرونده‌ها در یک دایره همدیگر را صدا می‌زنند و هیچ‌وقت تمام نمی‌شود: %s",
+			"in parvande-ha dar yek dayere hamdige ro seda mizanan va hich vaght tamoom nemishe: %s",
 			[]any{strings.Join(chain, " ← ")},
 			"these files import each other in a circle, which would never finish: %s",
 			strings.Join(chain, " -> "))
@@ -144,7 +144,7 @@ func (in *Interp) loadModule(path string, s *ast.ImportDecl) (*module, error) {
 	if bag.HasErrors() {
 		d := bag.Sorted()[0]
 		return nil, in.faultFA(s, "E2001",
-			"پرونده‌ی %s خوانده نشد — %s",
+			"parvande-ye %s khoonde nashod: %s",
 			[]any{clean, d.FA},
 			"module %s did not read: %s", clean, d.EN)
 	}

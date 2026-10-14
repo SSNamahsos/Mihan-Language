@@ -20,6 +20,8 @@ type Server struct {
 	files map[string]*open
 
 	version string
+
+	lastGood map[string]*analysis.File
 }
 
 type open struct {
@@ -33,7 +35,7 @@ type open struct {
 }
 
 func NewServer(conn *Conn, version string) *Server {
-	s := &Server{conn: conn, files: map[string]*open{}, version: version}
+	s := &Server{conn: conn, files: map[string]*open{}, version: version, lastGood: map[string]*analysis.File{}}
 
 	for _, b := range eval.Builtins() {
 		analysis.Builtins[b.Name] = b.Doc
@@ -57,7 +59,7 @@ func (s *Server) Initialize(params *InitializeParams) *InitializeResult {
 			},
 			CompletionProvider: &CompletionOptions{
 
-				TriggerCharacters: []string{"."},
+				TriggerCharacters: []string{".", "\""},
 			},
 		},
 	}
@@ -75,7 +77,10 @@ func (s *Server) DidChange(uri, text string) {
 	s.publish(uri)
 }
 
-func (s *Server) DidClose(uri string) { delete(s.files, uri) }
+func (s *Server) DidClose(uri string) {
+	delete(s.files, uri)
+	delete(s.lastGood, uri)
+}
 
 func (s *Server) set(uri, text string) {
 	f := &open{uri: uri, text: text, bag: &diag.Bag{}}
@@ -87,6 +92,9 @@ func (s *Server) set(uri, text string) {
 
 	ir.Lower(f.tree, f.bag)
 	f.facts = analysis.Build(f.tree)
+	if !f.bag.HasErrors() {
+		s.lastGood[uri] = f.facts
+	}
 	s.files[uri] = f
 }
 
@@ -110,9 +118,6 @@ func diagnosticsOf(text string, bag *diag.Bag) []Diagnostic {
 	out := make([]Diagnostic, 0, len(bag.Sorted()))
 	for _, d := range bag.Sorted() {
 		msg := d.FA
-		if d.EN != "" && d.EN != d.FA {
-			msg = d.FA + "\n\n" + d.EN
-		}
 		out = append(out, Diagnostic{
 			Range:    rangeOf(text, d.Span),
 			Severity: 1,
@@ -124,141 +129,6 @@ func diagnosticsOf(text string, bag *diag.Bag) []Diagnostic {
 	return out
 }
 
-func (s *Server) Completion(uri string, pos Position) *CompletionList {
-	f := s.file(uri)
-	items := make([]CompletionItem, 0, 64)
-	seen := map[string]bool{}
-	add := func(it CompletionItem) {
-		if seen[it.Label] {
-			return
-		}
-		seen[it.Label] = true
-		items = append(items, it)
-	}
-
-	if f != nil && f.facts != nil {
-		if before, ok := s.afterDot(f.text, pos); ok {
-			var found []method
-			if className := classOf(f, before); className != "" {
-				found = methodsOf(f, className, className)
-			} else {
-
-				for _, cl := range classNames(f) {
-					found = append(found, methodsOf(f, cl, before)...)
-				}
-			}
-			for _, m := range found {
-				add(CompletionItem{
-					Label:         m.name,
-					Kind:          KindMethod,
-					Detail:        "method of " + m.owner,
-					Documentation: &MarkupContent{Kind: Markup, Value: "a method of " + m.owner},
-					SortText:      "0" + m.name,
-				})
-			}
-			return &CompletionList{IsIncomplete: false, Items: items}
-		}
-	}
-
-	if f != nil && f.facts != nil {
-		scope := f.facts.ScopeAt(s.posOf(f.text, pos))
-		for _, name := range scope.Names() {
-			d := scope.Lookup(name)
-			kind := KindVariable
-			detail := ""
-			if d != nil {
-				kind = kindOf(d.Kind)
-				if d.TypeName != "" {
-					detail = d.TypeName
-				}
-			}
-			item := CompletionItem{
-				Label:    name,
-				Kind:     kind,
-				Detail:   detail,
-				SortText: "0" + name,
-			}
-
-			if label, _, ok := declSignature(d); ok {
-				item.Detail = label
-				item.Documentation = &MarkupContent{Kind: Markup, Value: "```mihan\n" + label + "\n```\n\nDeclared on line " + itoa(d.Pos.Line) + "."}
-			}
-			add(item)
-		}
-	}
-
-	for _, k := range token.Keywords {
-		if k.Snippet == "" {
-			continue
-		}
-		doc := k.Doc
-		if doc == "" {
-			doc = k.Name
-		}
-		words := append([]string{k.Name}, k.Aliases...)
-		for _, word := range words {
-			add(CompletionItem{
-				Label:            word,
-				Kind:             KindSnippet,
-				Detail:           k.Name,
-				Documentation:    &MarkupContent{Kind: Markup, Value: doc},
-				InsertText:       k.Snippet,
-				InsertTextFormat: InsertSnippet,
-				FilterText:       word,
-				SortText:         "1" + word,
-			})
-		}
-	}
-	for _, b := range eval.Builtins() {
-		add(CompletionItem{
-			Label:         b.Name,
-			Kind:          KindFunction,
-			Detail:        b.Result,
-			Documentation: &MarkupContent{Kind: Markup, Value: b.Doc},
-			SortText:      "2" + b.Name,
-		})
-		if b.Alias != "" {
-			add(CompletionItem{
-				Label:         b.Alias,
-				Kind:          KindFunction,
-				Detail:        b.Name,
-				Documentation: &MarkupContent{Kind: Markup, Value: b.Doc},
-				InsertText:    b.Alias,
-				FilterText:    b.Alias,
-				SortText:      "2" + b.Alias,
-			})
-		}
-	}
-	for _, k := range token.Keywords {
-		if k.Snippet != "" {
-			continue
-		}
-		doc := k.Doc
-		if doc == "" {
-			doc = k.Name
-		}
-		add(CompletionItem{
-			Label:         k.Name,
-			Kind:          KindKeyword,
-			Detail:        k.Group.String(),
-			Documentation: &MarkupContent{Kind: Markup, Value: doc},
-			SortText:      "3" + k.Name,
-		})
-		for _, a := range k.Aliases {
-			add(CompletionItem{
-				Label:         a,
-				Kind:          KindKeyword,
-				Detail:        k.Name,
-				Documentation: &MarkupContent{Kind: Markup, Value: doc},
-				InsertText:    a,
-				FilterText:    a,
-				SortText:      "3" + a,
-			})
-		}
-	}
-	return &CompletionList{IsIncomplete: false, Items: items}
-}
-
 func kindOf(k analysis.DeclKind) CompletionItemKind {
 	switch k {
 	case analysis.DeclFunc:
@@ -266,87 +136,21 @@ func kindOf(k analysis.DeclKind) CompletionItemKind {
 	case analysis.DeclClass:
 		return KindClass
 	case analysis.DeclEnum:
-		return KindConstant
+		return KindEnum
 	case analysis.DeclIface:
 		return KindClass
+	case analysis.DeclMethod:
+		return KindMethod
 	case analysis.DeclParam:
 		return KindVariable
 	}
 	return KindVariable
 }
 
-func (s *Server) afterDot(text string, pos Position) (string, bool) {
-	line := lineOf(text, pos.Line)
-	runes := []rune(line)
-	if pos.Character <= 0 || pos.Character > len(runes) {
-		return "", false
-	}
-
-	i := pos.Character - 1
-	for i > 0 && (runes[i] == ' ' || runes[i] == '\t') {
-		i--
-	}
-
-	if i < 0 || runes[i] != '.' {
-		return "", false
-	}
-
-	end := i
-	start := end
-	for start > 0 && isNameRune(runes[start-1]) {
-		start--
-	}
-	if start == end {
-		return "", false
-	}
-	return string(runes[start:end]), true
-}
-
 func isNameRune(r rune) bool {
 	return r == '_' ||
 		(r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') ||
 		(r >= 0x80 && r != ' ')
-}
-
-func classOf(f *open, name string) string {
-	for _, d := range f.facts.Decls {
-		if d.Name != name {
-			continue
-		}
-		if d.TypeName != "" {
-			return d.TypeName
-		}
-		if d.MadeBy != "" {
-			return d.MadeBy
-		}
-	}
-	return ""
-}
-
-func classNames(f *open) []string {
-	var out []string
-	for _, c := range f.facts.Tree.Decls {
-		if cl, ok := c.(*ast.ClassDecl); ok {
-			out = append(out, cl.Name)
-		}
-	}
-	return out
-}
-
-type method struct{ name, owner string }
-
-func methodsOf(f *open, className, owner string) []method {
-	var out []method
-	for _, c := range f.facts.Tree.Decls {
-		cl, ok := c.(*ast.ClassDecl)
-		if !ok || cl.Name != className {
-			continue
-		}
-		for _, m := range cl.Methods {
-			out = append(out, method{name: m.Name, owner: owner})
-		}
-	}
-	return out
 }
 
 func (s *Server) wordRange(text string, pos Position) (lo, hi int, word string) {

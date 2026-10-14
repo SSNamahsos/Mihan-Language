@@ -40,7 +40,7 @@ chap_khat s
 }
 
 func TestAnUnknownStyleWordIsNamed(t *testing.T) {
-	checkFail(t, `safhe_kon({"ghalat_style": "1"})`, "not one I know")
+	checkFail(t, `safhe_kon({"ghalat_style": "1"})`, "nemishnasam")
 }
 
 func TestAFormComesBackAsADict(t *testing.T) {

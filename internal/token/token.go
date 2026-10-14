@@ -69,32 +69,32 @@ func (t Token) String() string {
 func (t Token) DescribeFarsi() string {
 	switch t.Kind {
 	case EOF:
-		return "پایان پرونده"
+		return "payan-e parvande"
 	case NEWLINE:
-		return "پایان سطر"
+		return "payan-e khat"
 	case INDENT:
-		return "بلوکِ تورفتگی"
+		return "block-e torafteghi"
 	case DEDENT:
-		return "پایانِ بلوکِ تورفتگی"
+		return "payan-e block-e torafteghi"
 	case ILLEGAL:
 		if t.Text != "" {
-			return fmt.Sprintf("«%s»", t.Text)
+			return fmt.Sprintf("'%s'", t.Text)
 		}
-		return "نشانه‌ای که معنی ندارد"
+		return "neshane-i ke mani nadare"
 	}
 	if t.Kind.IsKeyword() {
-		return fmt.Sprintf("کلیدواژهٔ «%s»", t.Lit)
+		return fmt.Sprintf("kalame-ye kelidi-ye '%s'", t.Lit)
 	}
 	switch t.Kind {
 	case IDENT:
-		return fmt.Sprintf("نامِ «%s»", t.Lit)
+		return fmt.Sprintf("esm-e '%s'", t.Lit)
 	case INT, FLOAT:
-		return fmt.Sprintf("عددِ %s", t.Lit)
+		return fmt.Sprintf("adad-e %s", t.Lit)
 	case STRING:
-		return "متن"
+		return "matn"
 	}
 	if t.Text != "" {
-		return fmt.Sprintf("«%s»", t.Text)
+		return fmt.Sprintf("'%s'", t.Text)
 	}
 	return string(t.Kind)
 }

@@ -3,141 +3,330 @@
   "name": "Mihan",
   "scopeName": "source.mihan",
   "patterns": [
-    { "include": "#comment" },
-    { "include": "#interpolated" },
-    { "include": "#string" },
-    { "include": "#char" },
-    { "include": "#declaration" },
-    { "include": "#control" },
-    { "include": "#type" },
-    { "include": "#builtin" },
-    { "include": "#keyword" },
-    { "include": "#builtin-method" },
-    { "include": "#constant" },
-    { "include": "#number" },
-    { "include": "#operator" },
-    { "include": "#variable" },
-    { "include": "#punctuation" }
+    {
+      "include": "#comment"
+    },
+    {
+      "include": "#style-key"
+    },
+    {
+      "include": "#interpolated"
+    },
+    {
+      "include": "#string"
+    },
+    {
+      "include": "#char"
+    },
+    {
+      "include": "#declaration"
+    },
+    {
+      "include": "#control"
+    },
+    {
+      "include": "#type"
+    },
+    {
+      "include": "#builtin"
+    },
+    {
+      "include": "#keyword"
+    },
+    {
+      "include": "#builtin-method"
+    },
+    {
+      "include": "#constant"
+    },
+    {
+      "include": "#number"
+    },
+    {
+      "include": "#operator"
+    },
+    {
+      "include": "#variable"
+    },
+    {
+      "include": "#punctuation"
+    }
   ],
   "repository": {
-    "declarations": {
-      "darghan": { "patterns": [{ "match": "\\b(class|struct)\\b\\s+([A-Z]\\w*)", "captures": { "2": { "name": "entity.name.type.class.mihan" } } }] },
-      "funct": { "patterns": [{ "match": "\\b(funct)\\s+(\\w+)", "captures": { "1": { "name": "keyword.declaration.function.mihan" }, "2": { "name": "entity.name.function.mihan" } } }] },
-      "shenase": { "patterns": [{ "match": "\\b(enum)\\b\\s+([A-Z]\\w*)", "captures": { "2": { "name": "entity.name.type.enum.mihan" } } }] },
-      "dastoor": { "patterns": [{ "match": "\\b(interface)\\b\\s+([A-Z]\\w*)", "captures": { "2": { "name": "entity.name.type.interface.mihan" } } }] },
-      "variable": { "patterns": [{ "match": "\\b(sabit|const|let|var)\\s+([a-zA-Z_]\\w*)", "captures": { "2": { "name": "variable.other.constant.mihan" } } }] }
-    }
-  },
-  "comment": {
-    "patterns": [
-      { "name": "comment.line.number-sign.mihan", "match": "#.*$" }
-    ]
-  },
-  "interpolated": {
-    "name": "string.template.mihan",
-    "begin": "\\$([\"`])",
-    "beginCaptures": { "1": { "name": "punctuation.definition.string.begin.mihan" } },
-    "end": "([\"`])(?!\\{)",
-    "endCaptures": { "1": { "name": "punctuation.definition.string.end.mihan" } },
-    "patterns": [
-      { "name": "constant.character.escape.mihan", "match": "\\{\\{" },
-      { "name": "constant.character.escape.mihan", "match": "\\}\\}" },
-      {
-        "name": "meta.template.expression.mihan",
-        "begin": "\\{",
-        "beginCaptures": { "0": { "name": "punctuation.section.embedded.begin.mihan" } },
-        "end": "\\}",
-        "endCaptures": { "0": { "name": "punctuation.section.embedded.end.mihan" } },
-        "patterns": [{ "include": "$self" }]
-      }
-    ]
-  },
-  "string": {
-    "patterns": [
-      {
-        "name": "string.quoted.double.mihan",
-        "begin": "\"",
-        "end": "\"",
-        "patterns": [{ "name": "constant.character.escape.mihan", "match": "\\\\." }]
+    "comment": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign.mihan",
+          "match": "#.*$"
+        }
+      ]
+    },
+    "interpolated": {
+      "name": "string.template.mihan",
+      "begin": "\\$([\"`])",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.string.begin.mihan"
+        }
       },
-      {
-        "name": "string.quoted.other.mihan",
-        "begin": "`",
-        "end": "`",
-        "patterns": [{ "name": "constant.character.escape.mihan", "match": "\\\\." }]
+      "end": "([\"`])(?!\\{)",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.string.end.mihan"
+        }
+      },
+      "patterns": [
+        {
+          "name": "constant.character.escape.mihan",
+          "match": "\\{\\{"
+        },
+        {
+          "name": "constant.character.escape.mihan",
+          "match": "\\}\\}"
+        },
+        {
+          "name": "meta.template.expression.mihan",
+          "begin": "\\{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.embedded.begin.mihan"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.embedded.end.mihan"
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        }
+      ]
+    },
+    "string": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.mihan",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.mihan",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.other.mihan",
+          "begin": "`",
+          "end": "`",
+          "patterns": [
+            {
+              "name": "constant.character.escape.mihan",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "char": {
+      "name": "string.quoted.single.mihan",
+      "begin": "'",
+      "end": "'",
+      "patterns": [
+        {
+          "name": "constant.character.escape.mihan",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "declaration": {
+      "patterns": [
+        {
+          "match": "\\b(darghan|class|sakht|struct)\\s+([A-Za-z_]\\w*)",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.class.mihan"
+            },
+            "2": {
+              "name": "entity.name.type.class.mihan"
+            }
+          }
+        },
+        {
+          "match": "\\b(funct|def|fn|func|tabe)\\s+(\\w+)",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.function.mihan"
+            },
+            "2": {
+              "name": "entity.name.function.mihan"
+            }
+          }
+        },
+        {
+          "match": "\\b(shenase)\\s+([A-Z]\\w*)",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.enum.mihan"
+            },
+            "2": {
+              "name": "entity.name.type.enum.mihan"
+            }
+          }
+        },
+        {
+          "match": "\\b(dastoor)\\s+([A-Z]\\w*)",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.interface.mihan"
+            },
+            "2": {
+              "name": "entity.name.type.interface.mihan"
+            }
+          }
+        },
+        {
+          "match": "\\b(arz|sabit)\\s+([a-zA-Z_]\\w*)",
+          "captures": {
+            "1": {
+              "name": "storage.type.mihan"
+            },
+            "2": {
+              "name": "variable.other.mihan"
+            }
+          }
+        }
+      ]
+    },
+    "control": {
+      "patterns": [
+        {
+          "match": "\\b(agar|if|va|and|ya|or|na|not|warna|else|ta|while|har|for|az|from|ke|where|edame|continue|shek|break|bargard|return|khod|self)\\b",
+          "name": "keyword.control.mihan"
+        },
+        {
+          "match": "\\b(koshish|try|giroft|catch|nemigir|finally|portab|throw|raise|khata|error)\\b",
+          "name": "keyword.control.exception.mihan"
+        }
+      ]
+    },
+    "type": {
+      "patterns": [
+        {
+          "match": "\\b(ADAD|KESR|MATN|DOROST|GHALAT|RANG|LISTAR|DICTAR|SETAR|BATRI|HICH|NUM)\\b",
+          "name": "support.type.primitive.mihan"
+        }
+      ]
+    },
+    "builtin": {
+      "patterns": [
+        {
+          "match": "\\b(chap|print|chap_khat|println|neshan|tule|len|bast|taghib|forogh|bekhan|readfile|benevis|writefile|fehrest|listdir|hazf|deletefile|pooshe|mkdir|masir|joinpath|masir_hast|pathexists|mohit|env|json_bekhan|fromjson|json_benevis|tojson|parvande_pasokh|sendfile|safhe_kon|page|sabk|css|sabk_khat|inline_style|form_bekhan|readform|darkhast|request|serva_bgo|serve|serva_khod|serva_band|baza_bgo|gooshband|por|goosh|adad_karda|adad_ya_hich|to_number|zaman|now|tarikh|date|sabr|sleep)\\b",
+          "name": "support.function.builtin.mihan"
+        },
+        {
+          "match": "\\b(doreh|range|dar|in)\\b",
+          "name": "support.function.builtin.mihan"
+        },
+        {
+          "match": "\\b(jabe|band|onvan|onvan2|dokme|peyvand|vorudi|form|karte|navar|ofoghi|amudi|liste|jadval|rah|safhe_kon)\\b",
+          "name": "support.function.builtin.mihan"
+        }
+      ]
+    },
+    "keyword": {
+      "patterns": [
+        {
+          "match": "\\b(biar|import|use|modul|module|barname|program)\\b",
+          "name": "keyword.control.import.mihan"
+        },
+        {
+          "match": "\\b(gozaresh|mahram|osta|baza)\\b",
+          "name": "storage.modifier.mihan"
+        }
+      ]
+    },
+    "builtin-method": {
+      "patterns": [
+        {
+          "match": "(\\.)\\s*([a-zA-Z_]\\w*)",
+          "captures": {
+            "2": {
+              "name": "support.function.builtin.mihan"
+            }
+          }
+        }
+      ]
+    },
+    "constant": {
+      "patterns": [
+        {
+          "match": "\\b(dorost|ghalat|hich)\\b",
+          "name": "constant.language.mihan"
+        }
+      ]
+    },
+    "number": {
+      "patterns": [
+        {
+          "name": "constant.numeric.integer.mihan",
+          "match": "\\b\\d[\\d_]*\\b"
+        },
+        {
+          "name": "constant.numeric.float.mihan",
+          "match": "\\b\\d[\\d_]*\\.\\d[\\d_]*\\b"
+        }
+      ]
+    },
+    "operator": {
+      "patterns": [
+        {
+          "match": "\\+|-|\\*\\*|\\*|/|%|\\*\\*=|[-+*/%]=|=",
+          "name": "keyword.operator.arithmetic.mihan"
+        },
+        {
+          "match": "==|!=|<=|>=|<|>",
+          "name": "keyword.operator.comparison.mihan"
+        },
+        {
+          "match": "\\b(ghesmat|and|or)\\b",
+          "name": "keyword.operator.word.mihan"
+        }
+      ]
+    },
+    "variable": {
+      "patterns": [
+        {
+          "match": "\\b[a-zA-Z_]\\w*\\b",
+          "name": "variable.other.mihan"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "match": "[,;:()\\[\\]{}]",
+          "name": "punctuation.separator.mihan"
+        }
+      ]
+    },
+    "style-key": {
+      "match": "(\")(rang|zamine|rang_zamine|pas_zamine|tasvir_zamine|andaze_zamine|jaye_zamine|hashie|khat|rang_hashie|khat_rang|pahnaye_hashie|sabk_hashie|hashie_bala|hashie_payin|hashie_chap|hashie_rast|gooshe_gerd|khat_dor|khat_birooni|fasele_dakheli|fasele|fasele_dakheli_bala|fasele_dakheli_payin|fasele_dakheli_chap|fasele_dakheli_rast|fasele_birooni|fasele_birun|fasele_birooni_bala|fasele_birooni_payin|fasele_birooni_chap|fasele_birooni_rast|fasele_beyn|fasele_khane|fasele_radif|fasele_sotun|pahna|ertefa|bala|kamtarin_pahna|bishtarin_pahna|kamtarin_ertefa|bishtarin_ertefa|andaze_jabe|ghalam|khane|andaze_matn|andaze|vazn_matn|vazn|sabk_matn|tarazbandi|chid|ertefa_khat|fasele_harf|tazin_matn|halat_harf|saye_matn|shekastan_kalame|faza_khali|jahat_matn|nemayesh|jahat|pichesh|chidman|hamtarazi|hamtarazi_khod|hamtarazi_mohtava|felex|roshd|kahesh|paye|tartib|sotun_ha|radif_ha|nahie_ha|nahie|sotun_shabake|radif_shabake|jaygozari|mogheiyat|az_bala|az_payin|az_chap|az_rast|laye|sarriz|sarriz_ofoghi|sarriz_amudi|shenavar|saye|shafafiat|shafaf|didani|safi|safi_posht|enteghal|tabdil|mabda_tabdil|harekat|nam_harekat|modat_harekat|takhir_harekat|tekrar_harekat|nashangar|lams|entekhab|jaygiri_tasvir|nesbat|neshane_fehrest|mohtava)(\")(?=\\s*:)",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.string.begin.mihan"
+        },
+        "2": {
+          "name": "support.type.property-name.css.mihan"
+        },
+        "3": {
+          "name": "punctuation.definition.string.end.mihan"
+        }
       }
-    ]
-  },
-  "char": {
-    "name": "string.quoted.single.mihan",
-    "begin": "'",
-    "end": "'",
-    "patterns": [{ "name": "constant.character.escape.mihan", "match": "\\\\." }]
-  },
-  "declaration": {
-    "patterns": [
-      { "match": "\\b(darghan|class|sakht|struct)\\s+([A-Za-z_]\\w*)", "captures": { "1": { "name": "keyword.declaration.class.mihan" }, "2": { "name": "entity.name.type.class.mihan" } } },
-      { "match": "\\b(funct|def|fn|func|tabe)\\s+(\\w+)", "captures": { "1": { "name": "keyword.declaration.function.mihan" }, "2": { "name": "entity.name.function.mihan" } } },
-      { "match": "\\b(shenase)\\s+([A-Z]\\w*)", "captures": { "1": { "name": "keyword.declaration.enum.mihan" }, "2": { "name": "entity.name.type.enum.mihan" } } },
-      { "match": "\\b(dastoor)\\s+([A-Z]\\w*)", "captures": { "1": { "name": "keyword.declaration.interface.mihan" }, "2": { "name": "entity.name.type.interface.mihan" } } },
-      { "match": "\\b(arz|sabit)\\s+([a-zA-Z_]\\w*)", "captures": { "1": { "name": "storage.type.mihan" }, "2": { "name": "variable.other.mihan" } } }
-    ]
-  },
-  "control": {
-    "patterns": [
-      { "match": "\\b(agar|if|va|and|ya|or|na|not|warna|else|ta|while|har|for|az|from|ke|where|edame|continue|shek|break|bargard|return|khod|self)\\b", "name": "keyword.control.mihan" },
-      { "match": "\\b(koshish|try|giroft|catch|nemigir|finally|portab|throw|raise|khata|error)\\b", "name": "keyword.control.exception.mihan" }
-    ]
-  },
-  "type": {
-    "patterns": [
-      { "match": "\\b(ADAD|KESR|MATN|DOROST|GHALAT|RANG|LISTAR|DICTAR|SETAR|BATRI|HICH|NUM)\\b", "name": "support.type.primitive.mihan" }
-    ]
-  },
-  "builtin": {
-    "patterns": [
-      { "match": "\\b(chap|print|chap_khat|println|neshan|tule|len|bast|taghib|forogh|bekhan|readfile|benevis|writefile|fehrest|listdir|hazf|deletefile|pooshe|mkdir|masir|joinpath|masir_hast|pathexists|mohit|env|json_bekhan|fromjson|json_benevis|tojson|parvande_pasokh|sendfile|safhe_kon|page|form_bekhan|readform|darkhast|request|serva_bgo|serve|serva_khod|serva_band|baza_bgo|gooshband|por|goosh|adad_karda|adad_ya_hich|to_number|zaman|now|tarikh|date|sabr|sleep)\\b", "name": "support.function.builtin.mihan" },
-      { "match": "\\b(doreh|range|dar|in)\\b", "name": "support.function.builtin.mihan" },
-      { "match": "\\b(jabe|band|onvan|onvan2|dokme|peyvand|vorudi|form|karte|navar|ofoghi|amudi|liste|jadval|rah|safhe_kon)\\b", "name": "support.function.builtin.mihan" }
-    ]
-  },
-  "keyword": {
-    "patterns": [
-      { "match": "\\b(biar|import|use|modul|module|barname|program)\\b", "name": "keyword.control.import.mihan" },
-      { "match": "\\b(gozaresh|mahram|osta|baza)\\b", "name": "storage.modifier.mihan" }
-    ]
-  },
-  "builtin-method": {
-    "patterns": [
-      { "match": "(\\.)\\s*([a-zA-Z_]\\w*)", "captures": { "2": { "name": "support.function.builtin.mihan" } } }
-    ]
-  },
-  "constant": {
-    "patterns": [
-      { "match": "\\b(dorost|ghalat|hich)\\b", "name": "constant.language.mihan" }
-    ]
-  },
-  "number": {
-    "patterns": [
-      { "name": "constant.numeric.integer.mihan", "match": "\\b\\d[\\d_]*\\b" },
-      { "name": "constant.numeric.float.mihan", "match": "\\b\\d[\\d_]*\\.\\d[\\d_]*\\b" }
-    ]
-  },
-  "operator": {
-    "patterns": [
-      { "match": "\\+|-|\\*\\*|\\*|/|%|\\*\\*=|[-+*/%]=|=", "name": "keyword.operator.arithmetic.mihan" },
-      { "match": "==|!=|<=|>=|<|>", "name": "keyword.operator.comparison.mihan" },
-      { "match": "\\b(ghesmat|and|or)\\b", "name": "keyword.operator.word.mihan" }
-    ]
-  },
-  "variable": {
-    "patterns": [
-      { "match": "\\b[a-zA-Z_]\\w*\\b", "name": "variable.other.mihan" }
-    ]
-  },
-  "punctuation": {
-    "patterns": [
-      { "match": "[,;:()\\[\\]{}]", "name": "punctuation.separator.mihan" }
-    ]
+    }
   }
 }

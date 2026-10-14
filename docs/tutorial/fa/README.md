@@ -30,6 +30,7 @@ English: [../README.md](../README.md)
 | ۱۵ | [روی گوشی اندروید](15-android.md) | `mihan build --os android`، یک APK |
 | ۱۶ | [یک API واقعی وب](16-web-api.md) | مسیرهای `:id`، متدها، CORS، کوکی، `jalase`، آپلود، `qaleb`، رویدادهای زنده |
 | ۱۷ | [امتحان کردن اپ اندروید](17-preview.md) | `mihan preview --android`، `mihan.toast/vibrate/share/onBack` |
+| ۱۸ | [مرجع و ابزارهای بیشتر](18-marja.md) | همه‌ی کلمه‌های داخلی، ریاضی، بررسی نوع |
 
 فایل‌های کوتاه `NN-*.mhn` در پوشه‌ی [`docs/tutorial/`](../) برنامه‌های مرجع یک‌صفحه‌ای اولیه
 هستند؛ `mihan test` اجرایشان می‌کند و مکمل درس‌ها هستند.

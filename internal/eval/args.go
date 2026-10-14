@@ -19,19 +19,19 @@ func fnArgs(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	}
 	if len(args) > 1 {
 		return rt.Nil, in.faultAt(node, "E4121",
-			"`arghoman` یک عدد می‌خواهد یا هیچ",
+			"`arghoman` ya yek adad mikhad ya hich",
 			"arghoman takes one number or none")
 	}
 	i, ok := toInt(args[0])
 	if !ok {
 		return rt.Nil, in.faultAt(node, "E4122",
-			"شماره‌ی یک آرگومان باید عدد باشد",
+			"shomare-ye arghoman bayad adad bashe",
 			"the position of an argument must be a number")
 	}
 
 	if i < 0 || int(i) >= len(all) {
 		return rt.Nil, in.faultFA(node, "E4123",
-			"فقط %d آرگومان داده شده، و شماره‌ی %d خواسته شد",
+			"faghat %d arghoman dade shode, vali shomare-ye %d khaste shod",
 			[]any{len(all), i},
 			"there are only %d arguments, and %d was asked for", len(all), i)
 	}
@@ -42,14 +42,14 @@ func fnNumber(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	s, ok := args[0].(rt.Str)
 	if !ok {
 		return rt.Nil, in.faultAt(node, "E4124",
-			"عدد باید متن باشد",
+			"adad bayad aval matn bashe",
 			"a number has to be written as text first")
 	}
 	word := strings.TrimSpace(string(s))
 	n, err := strconv.ParseFloat(word, 64)
 	if err != nil {
 		return rt.Nil, in.faultFA(node, "E4125",
-			"«%s» عدد نیست",
+			"'%s' adad nist",
 			[]any{word},
 			"%s is not a number", word)
 	}

@@ -110,7 +110,7 @@ func TestAFileThatImportsItselfIsStopped(t *testing.T) {
 		t.Fatal("a circle of imports ran for ever instead of being stopped")
 	}
 	msg := err.Error()
-	if !strings.Contains(msg, "دایره") && !strings.Contains(msg, "circle") {
+	if !strings.Contains(msg, "dayere") {
 		t.Errorf("the mistake did not say it was a circle: %v", err)
 	}
 

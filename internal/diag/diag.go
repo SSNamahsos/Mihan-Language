@@ -65,26 +65,28 @@ type Diagnostic struct {
 func (d *Diagnostic) Error() string { return d.Render(nil) }
 
 func (d *Diagnostic) Message() string {
-	return fmt.Sprintf("line %d: %s / %s", d.Span.Start.Line, d.FA, d.EN)
+	return fmt.Sprintf("khat %d: %s", d.Span.Start.Line, d.FA)
 }
 
 func (d *Diagnostic) Render(src []byte) string {
 	var b strings.Builder
-	sev := "error"
+	sev := "khata"
 	switch d.Severity {
 	case Warning:
-		sev = "warning"
+		sev = "hoshdar"
 	case Hint:
-		sev = "hint"
+		sev = "rahnama"
 	}
 	fmt.Fprintf(&b, "%s: %s\n", sev, d.Code)
 	fmt.Fprintf(&b, "  %s\n", d.FA)
-	fmt.Fprintf(&b, "  %s\n", d.EN)
 	if src != nil {
 		b.WriteString(renderExcerpt(src, d.Span))
+		if len(d.Notes) > 0 {
+			b.WriteString("\n")
+		}
 	}
 	for _, n := range d.Notes {
-		fmt.Fprintf(&b, "  note: %s\n", n)
+		fmt.Fprintf(&b, "  nokte: %s\n", n)
 	}
 	return b.String()
 }

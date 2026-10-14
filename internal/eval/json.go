@@ -16,7 +16,7 @@ func fnJSONRead(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	s, ok := args[0].(rt.Str)
 	if !ok {
 		return nil, in.faultAt(node, "E4320",
-			"json_bekhan متن می‌خواهد",
+			"json_bekhan matn mikhad",
 			"json_bekhan needs text, not %s", rt.TypeName(args[0]))
 	}
 	text := strings.TrimPrefix(string(s), "\uFEFF")
@@ -30,12 +30,12 @@ func fnJSONRead(in *Interp, args []rt.Value, node ast.Node) (rt.Value, error) {
 	v, err := readJSON(dec)
 	if err != nil {
 		return nil, in.faultAt(node, "E4321",
-			"این متن JSON نیست",
+			"in matn JSON nist",
 			"this text is not JSON: %v", err)
 	}
 	if dec.More() {
 		return nil, in.faultAt(node, "E4321",
-			"این متن بیش از یک مقدار JSON دارد",
+			"in matn bish az yek meghdar-e JSON dare",
 			"this text has more than one JSON value")
 	}
 	return v, nil
@@ -163,7 +163,7 @@ func (w *jsonWriter) write(b *strings.Builder, v rt.Value) *jsonFail {
 		f := float64(t)
 		if math.IsNaN(f) || math.IsInf(f, 0) {
 			return &jsonFail{
-				fa: "JSON عددِ بی‌پایان یا بی‌معنا ندارد",
+				fa: "JSON adad-e bi-payan ya bi-mani nadare",
 				en: "JSON has no infinity and no not-a-number",
 			}
 		}
@@ -175,7 +175,7 @@ func (w *jsonWriter) write(b *strings.Builder, v rt.Value) *jsonFail {
 	case rt.Str:
 		raw, err := json.Marshal(string(t))
 		if err != nil {
-			return &jsonFail{fa: "این متن JSON نمی‌شود", en: "this text cannot be JSON"}
+			return &jsonFail{fa: "in matn JSON nemishe", en: "this text cannot be JSON"}
 		}
 		b.Write(raw)
 	case *rt.List:
@@ -184,7 +184,7 @@ func (w *jsonWriter) write(b *strings.Builder, v rt.Value) *jsonFail {
 		}
 		if w.lists[t] {
 			return &jsonFail{
-				fa: "این مقدار خودش را در خود دارد و JSON تمام نمی‌شود",
+				fa: "in meghdar khodesh ro too khodesh dare va JSON tamoom nemishe",
 				en: "this value contains itself, so it cannot be JSON",
 			}
 		}
@@ -206,7 +206,7 @@ func (w *jsonWriter) write(b *strings.Builder, v rt.Value) *jsonFail {
 		}
 		if w.dicts[t] {
 			return &jsonFail{
-				fa: "این مقدار خودش را در خود دارد و JSON تمام نمی‌شود",
+				fa: "in meghdar khodesh ro too khodesh dare va JSON tamoom nemishe",
 				en: "this value contains itself, so it cannot be JSON",
 			}
 		}
@@ -216,7 +216,7 @@ func (w *jsonWriter) write(b *strings.Builder, v rt.Value) *jsonFail {
 			key, ok := jsonKey(k)
 			if !ok {
 				return &jsonFail{
-					fa: "کلیدِ JSON فقط می‌تواند متن باشد",
+					fa: "kelid-e JSON faghat mitoone matn bashe",
 					en: "a JSON object's keys have to be text, not " + rt.TypeName(k),
 				}
 			}
@@ -225,7 +225,7 @@ func (w *jsonWriter) write(b *strings.Builder, v rt.Value) *jsonFail {
 			}
 			raw, err := json.Marshal(key)
 			if err != nil {
-				return &jsonFail{fa: "این متن JSON نمی‌شود", en: "this text cannot be JSON"}
+				return &jsonFail{fa: "in matn JSON nemishe", en: "this text cannot be JSON"}
 			}
 			b.Write(raw)
 			b.WriteByte(':')
@@ -238,7 +238,7 @@ func (w *jsonWriter) write(b *strings.Builder, v rt.Value) *jsonFail {
 		delete(w.dicts, t)
 	default:
 		return &jsonFail{
-			fa: "این مقدار را نمی‌شود JSON کرد",
+			fa: "in meghdar ro nemishe JSON kard",
 			en: "a " + rt.TypeName(v) + " cannot be written as JSON",
 		}
 	}
